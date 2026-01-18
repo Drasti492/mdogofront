@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lipa Mdogo Mdogo Form</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="container nav">
+      <h1 class="logo">MdogoPay<span>Phones</span></h1>
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="#">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="brands">
+    <div class="container">
+      <h3>Fill Your Details for the Selected Phone</h3>
+
+      <!-- SELECTED PHONE DETAILS (AUTO FILLED BY JS) -->
+      <div id="phone-summary"></div>
+
+      <!-- APPLICATION FORM -->
+      <form id="application-form">
+
+        <label for="full-name">Full Names:</label>
+        <input type="text" id="full-name" placeholder="John Doe" required>
+
+        <label for="id-number">ID Number:</label>
+        <input type="text" id="id-number" placeholder="National ID Number" required>
+
+        <label for="phone-number">Phone Number:</label>
+        <input type="tel" id="phone-number" placeholder="07XXXXXXXX" required>
+
+        <label for="guarantor-phone">Guarantor Phone Number:</label>
+        <input type="tel" id="guarantor-phone" placeholder="07XXXXXXXX" required>
+
+        <label for="pickup-town">Pick Up Town:</label>
+        <select id="pickup-town" required>
+          <option value="">Select Town</option>
+          <option value="Nairobi">Nairobi</option>
+          <option value="Mombasa">Mombasa</option>
+          <option value="Kisumu">Kisumu</option>
+          <option value="Nakuru">Nakuru</option>
+          <option value="Eldoret">Eldoret</option>
+          <option value="Thika">Thika</option>
+          <option value="Malindi">Malindi</option>
+          <option value="Kitale">Kitale</option>
+          <option value="Garissa">Garissa</option>
+          <option value="Kakamega">Kakamega</option>
+          <option value="Nyeri">Nyeri</option>
+          <option value="Meru">Meru</option>
+          <option value="Embu">Embu</option>
+          <option value="Nanyuki">Nanyuki</option>
+          <option value="Machakos">Machakos</option>
+          <option value="Kericho">Kericho</option>
+          <option value="Kisii">Kisii</option>
+          <option value="Isiolo">Isiolo</option>
+          <option value="Bungoma">Bungoma</option>
+          <option value="Busia">Busia</option>
+          <option value="Siaya">Siaya</option>
+          <option value="Vihiga">Vihiga</option>
+          <option value="Baringo">Baringo</option>
+          <option value="Narok">Narok</option>
+          <option value="Kajiado">Kajiado</option>
+          <option value="Kapenguria">Kapenguria</option>
+          <option value="Migori">Migori</option>
+          <option value="Kerugoya">Kerugoya</option>
+          <option value="Homa Bay">Homa Bay</option>
+          <option value="Lamu">Lamu</option>
+        </select>
+
+        <button type="submit" class="btn">
+          Proceed to Acquire Phone
+        </button>
+
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 MdogoPay Phones</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>
