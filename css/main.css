@@ -84,6 +84,207 @@ h4 {
   text-align: center;
 }
 
+
+
+
+/* ================= HERO SECTION ================= */
+.hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    padding: 120px 0 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.12) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+}
+
+.hero-text .highlight {
+    font-size: 4.2rem;
+    font-weight: 800;
+    color: #60a5fa;
+    margin: 0.3rem 0 1.5rem;
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 2rem 0 2.5rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    opacity: 0.95;
+}
+
+.feature-icon {
+    font-size: 1.6rem;
+}
+
+.hero-text .btn-primary {
+    padding: 16px 40px;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.hero-image-wrapper {
+    position: relative;
+}
+
+.hero-phone {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.55));
+    transform: perspective(1200px) rotateY(8deg) rotateX(5deg);
+    transition: transform 0.6s ease;
+}
+
+.hero-phone:hover {
+    transform: perspective(1200px) rotateY(4deg) rotateX(3deg) scale(1.03);
+}
+
+/* ================= HOW IT WORKS SECTION ================= */
+.how-it-works-section {
+    padding: 100px 0;
+    background: #f8fafc;
+}
+
+.section-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 70px;
+}
+
+.section-header h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #0f172a;
+}
+
+.section-subtitle {
+    font-size: 1.22rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+}
+
+.step-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.step-number {
+    width: 64px;
+    height: 64px;
+    background: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 auto 1.6rem;
+    box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+}
+
+.step-card h3 {
+    font-size: 1.45rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+}
+
+.step-card p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 1.03rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .hero-text .btn-primary {
+        margin: 0 auto;
+    }
+    
+    .hero-phone {
+        max-width: 380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 90px 0 70px;
+    }
+    
+    .hero-text h1 { font-size: 2.6rem; }
+    .hero-text .highlight { font-size: 3.4rem; }
+    
+    .how-it-works-section {
+        padding: 80px 0;
+    }
+}
+
+
+
+
+
 /* BRAND GRID (Phone Cards) */
 .brand-grid {
   display: grid;
@@ -144,6 +345,7 @@ h4 {
   font-weight: 500;
   text-decoration: none;
   transition: all 0.3s ease;
+  margin-bottom: 3px;
 }
 
 .btn-secondary:hover {
@@ -266,4 +468,117 @@ form select:focus {
   .brand-card {
     padding: 20px;
   }
+}
+
+
+/* ================= PAYMENT MODAL ================= */
+
+.payment-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.payment-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e0e0e0;
+  border-top-color: #4caf50;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+
+
+/* Fix for the primary button in hero */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 40px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 12px;
+    text-decoration: none !important;           /* Remove any underline */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5);
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+/* Extra safety: make sure no underline ever appears */
+.btn-primary,
+.btn-primary:visited,
+.btn-primary:link,
+.btn-primary:hover,
+.btn-primary:focus {
+    text-decoration: none !important;
+}
+
+/* If you want bigger/more prominent button (recommended for hero) */
+.btn-lg {
+    padding: 18px 48px;
+    font-size: 1.25rem;
+    min-width: 240px;
+}
+
+/* Optional: Add subtle shine/gradient animation on hover */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.25),
+        transparent
+    );
+    transition: left 0.6s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
