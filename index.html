@@ -1,165 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Lipa Mdogo Mdogo Phones | Pay Pole Pole</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="./css/main.css">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haraka Loans — Quick Personal Loans When You Need Them</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="header">
-    <div class="container">
-        <div class="nav-wrapper">
-            <h1 class="logo">
-                MdogoPay<span>Phones</span>
-            </h1>
-
-          
-            <nav class="main-nav">
-                <ul class="nav-links">
-                    <li><a href="../index.html" class="nav-link active">Home</a></li>
-                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
-                    <li><a href="#brands" class="nav-link">Browse Phones</a></li>
-                </ul>
-            </nav>
-
-         
-            <button class="hamburger" aria-label="Toggle Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </div>
+<!-- ============ TOP NAV ============ -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand" data-nav="landing">
+      <span class="brand-mark">H</span>
+      <span class="brand-name">Haraka<span>Loans</span></span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#why" class="nav-link">Why Us</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#eligibility" class="nav-link">Eligibility</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <button class="btn btn-primary btn-small" data-action="start-application">Apply Now</button>
+    </nav>
+  </div>
 </header>
 
+<main id="app">
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-    <div class="container hero-container">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Get Your Dream Smartphone Today</h1>
-                <h2 class="highlight">Pay Mdogo Mdogo</h2>
-                
-                <div class="hero-features">
-                    <div class="feature-item">
-                        <span class="feature-icon">📱</span>
-                        <span>Tecno • Infinix • Samsung</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">💰</span>
-                        <span>From <strong>KES 500 Deposit</strong></span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">⚡</span>
-                        <span>MPESA • Fast Delivery</span>
-                    </div>
-                </div>
+<!-- ============ 1. LANDING PAGE ============ -->
+<section class="screen screen-landing active" id="screen-landing" data-screen="landing">
 
-                <a href="#brands" class="btn-primary btn-lg">Browse Phones Now</a>
-            </div>
-
-            <div class="hero-image-wrapper">
-                <img src="./images/brands/mdogopay.png" alt="Modern smartphones on installment" class="hero-phone">
-            </div>
-        </div>
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Licensed digital lender · Kenya</p>
+      <h1 class="hero-title">Quick personal loans,<br> when you need them.</h1>
+      <p class="hero-sub">Check your eligibility online in minutes. No paperwork, no branch visits — just your phone, your details, and a straight answer.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-large" data-action="start-application">Apply Now</button>
+        <a href="#how" class="btn btn-ghost btn-large">See how it works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">5 min</span><span class="stat-label">Average application time</span></div>
+        <div class="stat"><span class="stat-num">KSh 5K–150K</span><span class="stat-label">Loan range</span></div>
+        <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Apply anytime</span></div>
+      </div>
     </div>
+    <div class="hero-slip" aria-hidden="true">
+      <div class="slip-card">
+        <div class="slip-row"><span>Applicant</span><span>J. Wanjiru</span></div>
+        <div class="slip-row"><span>Status</span><span class="slip-tag">Approved</span></div>
+        <div class="slip-perf"></div>
+        <div class="slip-row slip-amount"><span>Offer</span><span>KSh 24,600</span></div>
+        <div class="slip-row"><span>Term</span><span>90 days</span></div>
+        <div class="slip-ref">REF-HK294831</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="why">
+    <p class="section-eyebrow">Why choose us</p>
+    <h2 class="section-title">Built around your time, not ours</h2>
+    <div class="card-grid">
+      <div class="feature-card">
+        <div class="feature-icon">01</div>
+        <h3>Simple online application</h3>
+        <p>Every step is designed for a phone screen — fill it in on the move, no printing, no queuing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">02</div>
+        <h3>Fast eligibility assessment</h3>
+        <p>Your income and employment details are checked instantly, so you're never left guessing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">03</div>
+        <h3>Secure handling of information</h3>
+        <p>Your ID, income, and contact details stay on your device during this demo and are never shared.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">04</div>
+        <h3>Transparent process</h3>
+        <p>You see exactly how your offer was worked out — no hidden steps, no surprise fees.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="how">
+    <p class="section-eyebrow">How it works</p>
+    <h2 class="section-title">Four steps to an answer</h2>
+    <div class="steps-row">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <h3>Create your account</h3>
+        <p>Register with your mobile number and set a 4-digit PIN to secure your application.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <h3>Complete your application</h3>
+        <p>Tell us about yourself, your work, and your income — it only takes a few minutes.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <h3>Eligibility assessment</h3>
+        <p>We review what you've shared and work out what you qualify for.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <h3>Receive your loan offer</h3>
+        <p>Get a clear offer with your amount, term, and repayment estimate.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="eligibility">
+    <p class="section-eyebrow">Eligibility</p>
+    <h2 class="section-title">Who can apply</h2>
+    <ul class="check-list">
+      <li>Kenyan citizen</li>
+      <li>Valid National ID</li>
+      <li>Active Kenyan mobile number</li>
+      <li>Regular source of income</li>
+      <li>18 years or older</li>
+    </ul>
+  </section>
+
+  <section class="section section-alt" id="faq">
+    <p class="section-eyebrow">Frequently asked questions</p>
+    <h2 class="section-title">Good to know</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Who can apply?</summary>
+        <p>Any Kenyan citizen aged 18 or older, with a valid National ID, an active mobile number, and a regular source of income.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How long does the application take?</summary>
+        <p>Most applicants finish in under five minutes. The eligibility assessment itself takes only a few seconds.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my information secure?</summary>
+        <p>In this demo, your details are stored only on your own device and are never transmitted anywhere.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What documents are required?</summary>
+        <p>Just your National ID number and basic details about your employment and income — no uploads needed.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are there any fees to apply or receive an offer?</summary>
+        <p>No. Checking your eligibility and receiving an offer is completely free. We will never ask you to pay a fee to "unlock," "release," or "clear" a loan.</p>
+      </details>
+    </div>
+  </section>
+
 </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section id="how-it-works" class="how-it-works-section">
-    <div class="container">
-        <div class="section-header">
-            <h2>How Lipa Mdogo Mdogo Works</h2>
-            <p class="section-subtitle">Simple. Fast. Affordable. Own your phone in easy steps.</p>
-        </div>
+<!-- ============ 2. REGISTER / CREATE ACCOUNT ============ -->
+<section class="screen screen-flow" id="screen-register" data-screen="register">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 1 of 8</p>
+      <h2 class="flow-title">Create your account</h2>
+      <p class="flow-sub">This number will be linked to your application.</p>
 
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Choose Your Phone</h3>
-                <p>Browse our wide range of Tecno, Infinix & Samsung devices.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Pay Small Deposit</h3>
-                <p>Start from as low as KES 500 deposit.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Get Your Phone</h3>
-                <p>Fast delivery to your location anywhere in Kenya.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">4</div>
-                <h3>Pay Daily/Weekly</h3>
-                <p>Convenient daily or weekly installments via MPESA.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">5</div>
-                <h3>Own It Completely</h3>
-                <p>Finish payments and the phone is 100% yours!</p>
-            </div>
-        </div>
+      <form class="flow-form" id="form-register" novalidate>
+        <label class="field">
+          <span class="field-label">Mobile number</span>
+          <input type="tel" id="reg-phone" placeholder="07XX XXX XXX" inputmode="numeric" autocomplete="tel">
+          <span class="field-error" id="err-reg-phone"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Create 4-digit PIN</span>
+          <input type="password" id="reg-pin" placeholder="••••" inputmode="numeric" maxlength="4" autocomplete="new-password">
+          <span class="field-error" id="err-reg-pin"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Confirm PIN</span>
+          <input type="password" id="reg-pin-confirm" placeholder="••••" inputmode="numeric" maxlength="4" autocomplete="new-password">
+          <span class="field-error" id="err-reg-pin-confirm"></span>
+        </label>
+        <button type="submit" class="btn btn-primary btn-full">Continue</button>
+      </form>
     </div>
+  </div>
 </section>
 
-<!-- ================= BRANDS ================= -->
-<section id="brands" class="brands">
-    <div class="container">
-        <h3>Select Phone Brand</h3>
+<!-- ============ 3. PERSONAL DETAILS ============ -->
+<section class="screen screen-flow" id="screen-personal" data-screen="personal">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 2 of 8</p>
+      <h2 class="flow-title">Personal details</h2>
+      <p class="flow-sub">As they appear on your National ID.</p>
 
-        <div class="brand-grid">
-
-            <!-- INFINIX -->
-            <div class="brand-card">
-                <img src="./images/brands/infinix.jpg" alt="Infinix">
-                <h4>Infinix</h4>
-                <p>Smart • Hot • Note Series</p>
-                <a href="phones/infinix.html" class="btn-secondary">View Infinix Phones</a>
-            </div>
-
-            <!-- TECNO -->
-            <div class="brand-card">
-                <img src="./images/brands/tecno.jpg" alt="Tecno">
-                <h4>Tecno</h4>
-                <p>Pop • Spark • Camon Series</p>
-                <a href="phones/tecno.html" class="btn-secondary">View Tecno Phones</a>
-            </div>
-
-            <!-- SAMSUNG -->
-            <div class="brand-card">
-                <img src="./images/brands/samsung.jpg" alt="Samsung">
-                <h4>Samsung</h4>
-                <p>Galaxy A & S Series</p>
-                <a href="phones/samsung.html" class="btn-secondary">View Samsung Phones</a>
-            </div>
-
+      <form class="flow-form" id="form-personal" novalidate>
+        <label class="field">
+          <span class="field-label">Full name</span>
+          <input type="text" id="p-fullname" placeholder="e.g. Grace Achieng Otieno" autocomplete="name">
+          <span class="field-error" id="err-p-fullname"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">National ID number</span>
+          <input type="text" id="p-idnumber" placeholder="e.g. 30112233" inputmode="numeric">
+          <span class="field-error" id="err-p-idnumber"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Date of birth</span>
+          <input type="date" id="p-dob">
+          <span class="field-error" id="err-p-dob"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Gender</span>
+          <select id="p-gender">
+            <option value="">Select</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Prefer not to say</option>
+          </select>
+          <span class="field-error" id="err-p-gender"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">County</span>
+          <select id="p-county">
+            <option value="">Select county</option>
+          </select>
+          <span class="field-error" id="err-p-county"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Constituency</span>
+          <input type="text" id="p-constituency" placeholder="e.g. Westlands">
+          <span class="field-error" id="err-p-constituency"></span>
+        </label>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary">Continue</button>
         </div>
+      </form>
     </div>
+  </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="footer">
-    <div class="container">
-        <p>© 2026 MdogoPay Phones. All rights reserved.</p>
-        <p>Pay Mdogo Mdogo • Own Pole Pole</p>
+<!-- ============ 4. EMPLOYMENT INFORMATION ============ -->
+<section class="screen screen-flow" id="screen-employment" data-screen="employment">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 3 of 8</p>
+      <h2 class="flow-title">Employment information</h2>
+      <p class="flow-sub">Tell us how you earn.</p>
+
+      <form class="flow-form" id="form-employment" novalidate>
+        <label class="field">
+          <span class="field-label">Employment type</span>
+          <select id="e-type">
+            <option value="">Select</option>
+            <option value="government">Government employee</option>
+            <option value="private">Private employee</option>
+            <option value="self">Self-employed</option>
+            <option value="business">Business owner</option>
+            <option value="casual">Casual worker</option>
+            <option value="student">Student</option>
+            <option value="unemployed">Unemployed</option>
+          </select>
+          <span class="field-error" id="err-e-type"></span>
+        </label>
+        <label class="field" id="field-employer">
+          <span class="field-label">Employer / business name</span>
+          <input type="text" id="e-employer" placeholder="e.g. Acme Logistics Ltd">
+          <span class="field-error" id="err-e-employer"></span>
+        </label>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+      </form>
     </div>
+  </div>
+</section>
+
+<!-- ============ 5. INCOME INFORMATION ============ -->
+<section class="screen screen-flow" id="screen-income" data-screen="income">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 4 of 8</p>
+      <h2 class="flow-title">Income information</h2>
+      <p class="flow-sub">Select your average monthly income.</p>
+
+      <form class="flow-form" id="form-income" novalidate>
+        <div class="radio-list" id="income-options">
+          <label class="radio-card"><input type="radio" name="income" value="5000-12000"><span>KSh 5,000 – 12,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="12001-18000"><span>KSh 12,001 – 18,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="18001-25000"><span>KSh 18,001 – 25,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="25001-44000"><span>KSh 25,001 – 44,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="44001-60000"><span>KSh 44,001 – 60,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="60001+"><span>Above KSh 60,000</span></label>
+          <label class="radio-card"><input type="radio" name="income" value="none"><span>No regular income</span></label>
+        </div>
+        <span class="field-error" id="err-income"></span>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. EDUCATION ============ -->
+<section class="screen screen-flow" id="screen-education" data-screen="education">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 5 of 8</p>
+      <h2 class="flow-title">Education</h2>
+      <p class="flow-sub">Highest level completed.</p>
+
+      <form class="flow-form" id="form-education" novalidate>
+        <div class="radio-list">
+          <label class="radio-card"><input type="radio" name="education" value="primary"><span>Primary</span></label>
+          <label class="radio-card"><input type="radio" name="education" value="secondary"><span>Secondary</span></label>
+          <label class="radio-card"><input type="radio" name="education" value="certificate"><span>Certificate</span></label>
+          <label class="radio-card"><input type="radio" name="education" value="diploma"><span>Diploma</span></label>
+          <label class="radio-card"><input type="radio" name="education" value="university"><span>University</span></label>
+          <label class="radio-card"><input type="radio" name="education" value="postgraduate"><span>Postgraduate</span></label>
+        </div>
+        <span class="field-error" id="err-education"></span>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. GUARANTOR ============ -->
+<section class="screen screen-flow" id="screen-guarantor" data-screen="guarantor">
+  <div class="flow-shell">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 6 of 8</p>
+      <h2 class="flow-title">Guarantor details</h2>
+      <p class="flow-sub">Someone we can reach if we can't reach you.</p>
+
+      <form class="flow-form" id="form-guarantor" novalidate>
+        <label class="field">
+          <span class="field-label">Full name</span>
+          <input type="text" id="g-name" placeholder="e.g. Peter Kamau Mwangi">
+          <span class="field-error" id="err-g-name"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Phone number</span>
+          <input type="tel" id="g-phone" placeholder="07XX XXX XXX" inputmode="numeric">
+          <span class="field-error" id="err-g-phone"></span>
+        </label>
+        <label class="field">
+          <span class="field-label">Relationship</span>
+          <select id="g-relationship">
+            <option value="">Select</option>
+            <option>Parent</option>
+            <option>Sibling</option>
+            <option>Spouse</option>
+            <option>Relative</option>
+            <option>Friend</option>
+            <option>Colleague</option>
+          </select>
+          <span class="field-error" id="err-g-relationship"></span>
+        </label>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. REVIEW ============ -->
+<section class="screen screen-flow" id="screen-review" data-screen="review">
+  <div class="flow-shell flow-shell-wide">
+    <div class="flow-main">
+      <p class="flow-eyebrow">Step 7 of 8</p>
+      <h2 class="flow-title">Review your application</h2>
+      <p class="flow-sub">Make sure everything below is correct before you continue.</p>
+
+      <div class="review-grid" id="review-grid"></div>
+
+      <form id="form-terms">
+        <label class="check-field">
+          <input type="checkbox" id="terms-check">
+          <span>I have read and agree to the <a href="#" data-static-link>Terms &amp; Conditions</a> and <a href="#" data-static-link>Privacy Policy</a>.</span>
+        </label>
+        <span class="field-error" id="err-terms"></span>
+        <div class="flow-actions">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-application">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. PROCESSING ============ -->
+<section class="screen screen-processing" id="screen-processing" data-screen="processing">
+  <div class="processing-shell">
+    <div class="processing-ring" aria-hidden="true">
+      <svg viewBox="0 0 120 120" class="ring-svg">
+        <circle cx="60" cy="60" r="52" class="ring-track"></circle>
+        <circle cx="60" cy="60" r="52" class="ring-progress" id="ring-progress"></circle>
+      </svg>
+      <span class="ring-pct" id="ring-pct">0%</span>
+    </div>
+    <ul class="processing-steps" id="processing-steps">
+      <li data-step="0"><span class="proc-icon"></span><span>Verifying application…</span></li>
+      <li data-step="1"><span class="proc-icon"></span><span>Reviewing employment details…</span></li>
+      <li data-step="2"><span class="proc-icon"></span><span>Assessing eligibility…</span></li>
+      <li data-step="3"><span class="proc-icon"></span><span>Preparing your loan offer…</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 10. LOAN OFFER (APPROVED) ============ -->
+<section class="screen screen-outcome" id="screen-offer" data-screen="offer">
+  <div class="outcome-shell">
+    <div class="outcome-badge outcome-badge-success" aria-hidden="true">✓</div>
+    <p class="outcome-eyebrow">Congratulations!</p>
+    <h2 class="outcome-title">Based on the information you provided, you currently qualify for:</h2>
+    <div class="offer-amount" id="offer-amount">KSh 0</div>
+    <div class="offer-slip">
+      <div class="slip-row"><span>Application reference</span><span id="offer-ref" class="mono"></span></div>
+      <div class="slip-row"><span>Maximum approved amount</span><span id="offer-max" class="mono"></span></div>
+      <div class="slip-row"><span>Repayment period</span><span id="offer-term" class="mono"></span></div>
+      <div class="slip-row"><span>Estimated monthly repayment</span><span id="offer-monthly" class="mono"></span></div>
+    </div>
+    <p class="offer-note">Repayment figures are estimates for demonstration purposes and may change on final review.</p>
+    <div class="outcome-actions">
+      <button class="btn btn-primary btn-large" data-action="go-dashboard">Continue</button>
+      <button class="btn btn-ghost btn-large" data-action="go-home">Return Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10b. LOAN OFFER (DECLINED) ============ -->
+<section class="screen screen-outcome" id="screen-decline" data-screen="decline">
+  <div class="outcome-shell">
+    <div class="outcome-badge outcome-badge-decline" aria-hidden="true">!</div>
+    <p class="outcome-eyebrow">We're unable to make an offer right now</p>
+    <h2 class="outcome-title">Based on the information you provided, we can't extend a loan offer at this time.</h2>
+    <div class="decline-reasons">
+      <p>This is usually because:</p>
+      <ul>
+        <li>No regular source of income was provided</li>
+        <li>The details given don't yet meet our minimum criteria</li>
+      </ul>
+    </div>
+    <p class="offer-note">You're welcome to apply again once your income situation changes. This does not affect your credit standing.</p>
+    <div class="outcome-actions">
+      <button class="btn btn-primary btn-large" data-action="go-home">Return Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. DASHBOARD ============ -->
+<section class="screen screen-dashboard" id="screen-dashboard" data-screen="dashboard">
+  <div class="dash-shell">
+    <div class="dash-header">
+      <div>
+        <p class="flow-eyebrow">Welcome back</p>
+        <h2 class="flow-title" id="dash-name">—</h2>
+      </div>
+      <button class="btn btn-ghost btn-small" data-action="go-home">Log out</button>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <span class="dash-label">Registered phone number</span>
+        <span class="dash-value" id="dash-phone">—</span>
+      </div>
+      <div class="dash-card">
+        <span class="dash-label">Application reference</span>
+        <span class="dash-value mono" id="dash-ref">—</span>
+      </div>
+      <div class="dash-card">
+        <span class="dash-label">Loan amount</span>
+        <span class="dash-value" id="dash-amount">—</span>
+      </div>
+      <div class="dash-card">
+        <span class="dash-label">Application date</span>
+        <span class="dash-value" id="dash-date">—</span>
+      </div>
+      <div class="dash-card dash-card-wide">
+        <span class="dash-label">Status</span>
+        <span class="dash-status" id="dash-status">Application Received</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer" id="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark">H</span>
+      <span class="brand-name">Haraka<span>Loans</span></span>
+      <p>Quick personal loans when you need them.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#" data-static-link>About Us</a>
+      <a href="#" data-static-link>Contact Us</a>
+      <a href="#" data-static-link>Privacy Policy</a>
+      <a href="#" data-static-link>Terms &amp; Conditions</a>
+      <a href="#" data-static-link>Responsible Lending</a>
+      <a href="#" data-static-link>Help Centre</a>
+    </div>
+  </div>
+  <p class="footer-legal">This is a student coursework prototype built for a software engineering presentation. It is not a licensed lender and does not process real loans or payments.</p>
 </footer>
 
-<!-- Main JS -->
-<script src="js/main.js"></script>
+<!-- Static info modal (About/Contact/Privacy/etc placeholders) -->
+<div class="modal-backdrop" id="staticModalBackdrop">
+  <div class="modal">
+    <button class="modal-close" id="staticModalClose" aria-label="Close">×</button>
+    <h3 id="staticModalTitle">Title</h3>
+    <p id="staticModalBody">Body</p>
+  </div>
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>
