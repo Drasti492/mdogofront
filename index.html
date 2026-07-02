@@ -2,423 +2,4983 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KwikLoan - Personal Loans Kenya</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KwikLoan Demo • Personal Loans Kenya</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap');
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .heading-font { font-family: 'Poppins', sans-serif; }
-        .hero-bg { background: linear-gradient(135deg, #0052cc 0%, #003399 100%); }
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            font-family:'Inter',sans-serif;
+            background:#f8fafc;
+            color:#111827;
+        }
+
+        .heading{
+            font-family:'Poppins',sans-serif;
+        }
+
+        .hero-bg{
+            background:
+            linear-gradient(135deg,#0d47a1 0%,#1565c0 55%,#1e88e5 100%);
+        }
+
+        .glass{
+            background:rgba(255,255,255,.12);
+            backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,.18);
+        }
+
+        .card{
+            background:#fff;
+            border-radius:24px;
+            box-shadow:0 15px 45px rgba(15,23,42,.08);
+        }
+
+        .input{
+            width:100%;
+            border:1px solid #d1d5db;
+            border-radius:18px;
+            padding:15px 18px;
+            outline:none;
+            transition:.25s;
+            font-size:15px;
+        }
+
+        .input:focus{
+            border-color:#2563eb;
+            box-shadow:0 0 0 4px rgba(37,99,235,.12);
+        }
+
+        .btn-primary{
+            width:100%;
+            background:#2563eb;
+            color:#fff;
+            border:none;
+            border-radius:18px;
+            padding:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:.25s;
+        }
+
+        .btn-primary:hover{
+            background:#1d4ed8;
+        }
+
+        .btn-secondary{
+            width:100%;
+            border:1px solid #d1d5db;
+            background:#fff;
+            border-radius:18px;
+            padding:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:.25s;
+        }
+
+        .btn-secondary:hover{
+            background:#f3f4f6;
+        }
+
+        .step-active{
+            background:#2563eb;
+            color:#fff;
+        }
+
+        .step-complete{
+            background:#16a34a;
+            color:#fff;
+        }
+
+        .fade-in{
+            animation:fade .35s ease;
+        }
+
+        @keyframes fade{
+
+            from{
+                opacity:0;
+                transform:translateY(12px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
+        .spinner{
+            width:70px;
+            height:70px;
+            border:5px solid #dbeafe;
+            border-top:5px solid #2563eb;
+            border-radius:50%;
+            animation:spin .8s linear infinite;
+        }
+
+        @keyframes spin{
+
+            to{
+                transform:rotate(360deg);
+            }
+
+        }
+
     </style>
+
 </head>
-<body class="bg-gray-50">
 
-    <!-- NAVBAR -->
-    <nav class="bg-white border-b shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">K</div>
-                <span class="heading-font text-2xl font-semibold text-blue-700">KwikLoan</span>
+<body>
+
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+
+        <div class="flex items-center gap-3">
+
+            <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl font-bold">
+                K
             </div>
-            <button onclick="showSection('landing')" class="text-gray-600 hover:text-blue-600 font-medium">Home</button>
-        </div>
-    </nav>
 
-    <!-- LANDING -->
-    <div id="landing" class="section">
-        <div class="hero-bg text-white py-24 text-center">
-            <div class="max-w-4xl mx-auto px-6">
-                <h1 class="heading-font text-5xl md:text-6xl font-semibold leading-tight">Quick Personal Loans<br>When You Need Them</h1>
-                <p class="text-xl mt-4 text-blue-100">Instant eligibility • Funds to M-Pesa in 24 hours</p>
+            <div>
 
-                <div class="max-w-md mx-auto mt-12 bg-white/10 backdrop-blur p-8 rounded-3xl">
-                    <h3 class="font-semibold mb-6">Loan Calculator</h3>
-                    <input type="range" id="calc-amount" min="5000" max="12000" value="8000" step="500" 
-                           oninput="updateCalculator()" class="w-full accent-white">
-                    <div class="flex justify-between text-sm mt-2">
-                        <span>KSh 5,000</span>
-                        <span id="calc-val" class="font-bold">8,000</span>
-                        <span>KSh 12,000</span>
-                    </div>
-                    <div class="mt-6">Est. Monthly: <span id="calc-monthly" class="font-bold">KSh 1,600</span></div>
-                </div>
+                <h1 class="heading text-2xl font-bold text-blue-700">
+                    KwikLoan
+                </h1>
 
-                <button onclick="startApplication()" 
-                        class="mt-10 bg-white text-blue-700 px-12 py-5 rounded-3xl text-lg font-semibold hover:bg-blue-50">
-                    Apply Now
-                </button>
+                <p class="text-xs text-gray-500">
+                    Demo Application
+                </p>
+
             </div>
+
         </div>
+
+        <div class="hidden md:flex items-center gap-8 text-sm">
+
+            <a href="#features"
+               class="hover:text-blue-600">
+                Features
+            </a>
+
+            <a href="#calculator"
+               class="hover:text-blue-600">
+                Calculator
+            </a>
+
+            <a href="#faq"
+               class="hover:text-blue-600">
+                FAQs
+            </a>
+
+            <button
+                onclick="startApplication()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3 rounded-xl font-semibold">
+
+                Apply Now
+
+            </button>
+
+        </div>
+
     </div>
 
-    <!-- APPLICATION -->
-    <div id="apply-section" class="section hidden">
-        <div class="max-w-2xl mx-auto bg-white min-h-screen shadow-2xl">
-            <!-- Progress -->
-            <div class="sticky top-0 bg-white border-b p-6 z-50">
-                <div id="progress-steps" class="flex gap-2 overflow-x-auto pb-3 text-xs font-medium"></div>
-                <div class="h-1.5 bg-gray-100 rounded-full mt-3">
-                    <div id="progress-bar" class="h-1.5 bg-blue-600 rounded-full transition-all"></div>
-                </div>
-            </div>
+</nav>
 
-            <div id="step-container" class="p-8"></div>
-        </div>
+<div id="landing" class="section">
+
+<section class="hero-bg text-white">
+
+<div class="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-16 items-center">
+
+<div>
+
+<span class="inline-flex items-center gap-2 bg-white/15 px-5 py-2 rounded-full text-sm mb-8">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+Secure • Fast • Demo Project
+
+</span>
+
+<h1 class="heading text-5xl lg:text-6xl font-bold leading-tight">
+
+Quick Personal Loans
+
+<br>
+
+For Everyday Kenyans
+
+</h1>
+<p class="mt-8 text-xl text-blue-100 leading-9 max-w-xl">
+
+Apply for a personal loan in minutes through this professional
+<strong>KwikLoan Demo</strong>.
+Complete your application, receive a smart eligibility assessment,
+and view your pre-approved loan limit based on your employment and
+monthly income.
+
+</p>
+
+<div class="flex flex-col sm:flex-row gap-5 mt-12">
+
+    <button
+        onclick="startApplication()"
+        class="bg-white text-blue-700 hover:bg-gray-100 font-semibold px-10 py-5 rounded-2xl transition flex items-center justify-center gap-3">
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+        Apply Now
+
+    </button>
+
+    <button
+        class="glass px-10 py-5 rounded-2xl font-semibold flex items-center justify-center gap-3">
+
+        <i class="fa-solid fa-circle-play"></i>
+
+        Live Demo
+
+    </button>
+
+</div>
+
+<div class="grid grid-cols-3 gap-8 mt-16">
+
+    <div>
+
+        <h2 class="heading text-3xl font-bold">
+
+            50K+
+
+        </h2>
+
+        <p class="text-blue-100 text-sm mt-2">
+
+            Applications Processed
+
+        </p>
+
     </div>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard-section" class="section hidden min-h-screen bg-gray-100 py-12">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="bg-white rounded-3xl shadow-2xl p-10">
-                <div class="flex justify-between">
-                    <div>
-                        <h1 id="dash-name" class="text-3xl font-semibold"></h1>
-                        <p id="dash-phone" class="text-gray-500"></p>
-                    </div>
-                    <span class="px-5 py-2 bg-emerald-100 text-emerald-700 rounded-3xl text-sm font-medium">Pending Verification</span>
-                </div>
+    <div>
 
-                <div class="mt-12 bg-emerald-50 border border-emerald-200 rounded-3xl p-10 text-center">
-                    <p class="text-emerald-600 text-sm font-medium">PRE-APPROVED LIMIT</p>
-                    <p id="dash-amount" class="text-6xl font-bold text-emerald-700 mt-3"></p>
-                </div>
+        <h2 class="heading text-3xl font-bold">
 
-                <div class="grid grid-cols-2 gap-8 mt-12 text-sm">
-                    <div><span class="text-gray-500">Reference</span><br><span id="dash-ref" class="font-mono"></span></div>
-                    <div><span class="text-gray-500">Employment</span><br><span id="dash-emp"></span></div>
-                    <div><span class="text-gray-500">Monthly Income</span><br><span id="dash-income"></span></div>
-                    <div><span class="text-gray-500">Guarantor</span><br><span id="dash-guarantor"></span></div>
-                </div>
+            97%
 
-                <div class="mt-12 bg-amber-50 border border-amber-200 rounded-3xl p-6 text-sm">
-                    <strong>Important:</strong> Late repayment may result in penalties and credit impact. Borrow responsibly.
-                </div>
+        </h2>
 
-                <button onclick="showSection('landing')" class="mt-12 w-full py-6 border-2 rounded-3xl font-semibold hover:bg-gray-50">
-                    Return Home
-                </button>
-            </div>
-        </div>
+        <p class="text-blue-100 text-sm mt-2">
+
+            Customer Satisfaction
+
+        </p>
+
     </div>
 
-    <script>
-        let currentStep = 1;
-        let applicationData = {};
+    <div>
 
-        const counties = [
-            "Nairobi", "Kiambu", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Nyeri", "Meru", "Kakamega", "Bungoma",
-            "Busia", "Siaya", "Homa Bay", "Migori", "Kisii", "Nyamira", "Kericho", "Bomet", "Trans Nzoia", "Uasin Gishu",
-            "Nandi", "Laikipia", "Isiolo", "Marsabit", "Mandera", "Wajir", "Garissa", "Tana River", "Kilifi", "Lamu",
-            "Taita Taveta", "Kwale", "Machakos", "Makueni", "Kitui", "Embu", "Tharaka Nithi", "Murang'a", "Kirinyaga",
-            "Turkana", "West Pokot", "Baringo", "Kajiado", "Samburu", "Elgeyo Marakwet", "Narok", "Nyandarua", "Vihiga"
-        ];
+        <h2 class="heading text-3xl font-bold">
 
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        }
+            24/7
 
-        function updateProgress() {
-            const percent = Math.min(((currentStep - 1) / 7) * 100, 100);
-            document.getElementById('progress-bar').style.width = percent + '%';
+        </h2>
 
-            const stepsHTML = `
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Account</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 2 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Personal</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 3 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Employment</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 4 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Income</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 5 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Guarantor</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 6 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Review</div>
-                <div class="px-5 py-2 rounded-3xl ${currentStep === 7 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Agreement</div>
-            `;
-            document.getElementById('progress-steps').innerHTML = stepsHTML;
-        }
+        <p class="text-blue-100 text-sm mt-2">
 
-        function calculateLoanAmount() {
-            const income = applicationData.income || "";
-            const job = applicationData.employment || "";
-            let amount = 5500;
+            Customer Support
 
-            if (income.includes("80k") || income.includes("120k")) amount = 12000;
-            else if (income.includes("60k") || income.includes("44k")) amount = 10500;
-            else if (income.includes("25k")) amount = 8500;
-            else if (income.includes("18k")) amount = 6800;
+        </p>
 
-            if (job.includes("Government") || job.includes("NGO") || job.includes("SACCO")) amount += 1500;
-            if (job.includes("Business")) amount += 1000;
+    </div>
 
-            amount = Math.max(5000, Math.min(12000, amount + Math.floor(Math.random() * 600) - 300));
-            return Math.round(amount / 100) * 100;
-        }
+</div>
 
-        function generateReference() {
-            return `KL-2026-KE-${Math.floor(100000 + Math.random() * 900000)}`;
-        }
+</div>
 
-        function startApplication() {
-            applicationData = {};
-            currentStep = 1;
-            showSection('apply-section');
-            loadStep(1);
-        }
+<div>
 
-        function loadStep(step) {
-            currentStep = step;
-            updateProgress();
-            const container = document.getElementById('step-container');
-            let html = '';
+<div
+id="calculator"
+class="glass rounded-3xl p-8">
 
-            switch(step) {
-                case 1:
-                    html = `
-                        <div class="max-w-md mx-auto fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-2">Create Account</h2>
-                            <label class="block text-sm mb-2">Phone Number</label>
-                            <div class="flex">
-                                <span class="bg-gray-100 px-6 flex items-center border border-r-0 rounded-l-3xl">+254</span>
-                                <input id="phone" maxlength="9" placeholder="712345678" class="flex-1 border border-gray-300 rounded-r-3xl px-6 py-5">
+<div class="flex items-center gap-3 mb-8">
+
+<div
+class="w-12 h-12 rounded-2xl bg-white text-blue-700 flex items-center justify-center">
+
+<i class="fa-solid fa-calculator text-xl"></i>
+
+</div>
+
+<div>
+
+<h2 class="heading text-2xl font-semibold">
+
+Loan Calculator
+
+</h2>
+
+<p class="text-blue-100 text-sm">
+
+Estimate your monthly repayment
+
+</p>
+
+</div>
+
+</div>
+
+<div class="space-y-8">
+
+<div>
+
+<div class="flex justify-between mb-3">
+
+<span>
+
+Desired Amount
+
+</span>
+
+<strong id="calc-display">
+
+KSh 10,000
+
+</strong>
+
+</div>
+
+<input
+id="calc-amount"
+type="range"
+min="5000"
+max="18000"
+step="500"
+value="10000"
+oninput="updateCalculator()"
+class="w-full accent-white">
+
+<div class="flex justify-between text-sm mt-2 text-blue-100">
+
+<span>KSh 5,000</span>
+
+<span>KSh 18,000</span>
+
+</div>
+
+</div>
+
+<div>
+
+<label class="block mb-3">
+
+Repayment Period
+
+</label>
+
+<select
+id="calc-period"
+class="input text-gray-800"
+onchange="updateCalculator()">
+
+<option value="3">
+
+3 Months
+
+</option>
+
+<option value="6" selected>
+
+6 Months
+
+</option>
+
+<option value="9">
+
+9 Months
+
+</option>
+
+<option value="12">
+
+12 Months
+
+</option>
+
+</select>
+
+</div>
+
+<div class="bg-white rounded-2xl p-6 text-gray-800">
+
+<div class="flex justify-between items-center">
+
+<div>
+
+<p class="text-gray-500 text-sm">
+
+Estimated Monthly Repayment
+
+</p>
+
+<h2
+id="calc-monthly"
+class="heading text-4xl font-bold text-blue-700 mt-2">
+
+KSh 1,667
+
+</h2>
+
+</div>
+
+<i class="fa-solid fa-money-bill-wave text-5xl text-blue-600"></i>
+
+</div>
+
+</div>
+
+<button
+onclick="startApplication()"
+class="btn-primary">
+
+Start Loan Application
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section
+id="features"
+class="py-20 bg-white">
+
+<div class="max-w-7xl mx-auto px-6">
+
+<div class="text-center mb-16">
+
+<h2 class="heading text-4xl font-bold">
+
+Why Choose KwikLoan?
+
+</h2>
+
+<p class="text-gray-500 mt-4 max-w-2xl mx-auto">
+
+Designed as a modern lending experience with quick assessments,
+responsive design and an intuitive application process.
+
+</p>
+
+</div>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+<div class="card p-8 text-center">
+
+<div class="w-16 h-16 mx-auto rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-3xl">
+
+<i class="fa-solid fa-bolt"></i>
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+Fast Processing
+
+</h3>
+
+<p class="text-gray-500 mt-3">
+
+Complete your application within minutes.
+
+</p>
+
+</div>
+
+<div class="card p-8 text-center">
+
+<div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl">
+
+<i class="fa-solid fa-lock"></i>
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+256-bit Encryption
+
+</h3>
+
+<p class="text-gray-500 mt-3">
+
+All information is protected using secure encryption.
+
+</p>
+
+</div>
+<div class="card p-8 text-center">
+
+    <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl">
+
+        <i class="fa-solid fa-mobile-screen-button"></i>
+
+    </div>
+
+    <h3 class="heading text-xl font-semibold mt-6">
+
+        Mobile First
+
+    </h3>
+
+    <p class="text-gray-500 mt-3">
+
+        Optimized for Android, iPhone, tablets and desktop devices.
+
+    </p>
+
+</div>
+
+<div class="card p-8 text-center">
+
+    <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-3xl">
+
+        <i class="fa-solid fa-headset"></i>
+
+    </div>
+
+    <h3 class="heading text-xl font-semibold mt-6">
+
+        24/7 Support
+
+    </h3>
+
+    <p class="text-gray-500 mt-3">
+
+        Customer support available whenever assistance is required.
+
+    </p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="py-20 bg-gray-50">
+
+<div class="max-w-7xl mx-auto px-6">
+
+<div class="text-center mb-16">
+
+<h2 class="heading text-4xl font-bold">
+
+How It Works
+
+</h2>
+
+<p class="text-gray-500 mt-4">
+
+Complete four simple stages and receive your personalised loan offer.
+
+</p>
+
+</div>
+
+<div class="grid md:grid-cols-4 gap-8">
+
+<div class="card p-8">
+
+<div class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+
+1
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+Create Account
+
+</h3>
+
+<p class="text-gray-500 mt-3 leading-7">
+
+Register securely using your Kenyan mobile number.
+
+</p>
+
+</div>
+
+<div class="card p-8">
+
+<div class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+
+2
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+Complete Profile
+
+</h3>
+
+<p class="text-gray-500 mt-3 leading-7">
+
+Provide your employment details, county, income and guarantor.
+
+</p>
+
+</div>
+
+<div class="card p-8">
+
+<div class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+
+3
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+Eligibility Review
+
+</h3>
+
+<p class="text-gray-500 mt-3 leading-7">
+
+Our assessment engine calculates an appropriate loan limit.
+
+</p>
+
+</div>
+
+<div class="card p-8">
+
+<div class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+
+4
+
+</div>
+
+<h3 class="heading text-xl font-semibold mt-6">
+
+Receive Offer
+
+</h3>
+
+<p class="text-gray-500 mt-3 leading-7">
+
+View your pre-approved amount and continue to your dashboard.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="faq" class="py-20 bg-white">
+
+<div class="max-w-5xl mx-auto px-6">
+
+<div class="text-center mb-16">
+
+<h2 class="heading text-4xl font-bold">
+
+Frequently Asked Questions
+
+</h2>
+
+<p class="text-gray-500 mt-4">
+
+Common questions about this demonstration application.
+
+</p>
+
+</div>
+
+<div class="space-y-6">
+
+<div class="card p-8">
+
+<h3 class="heading text-xl font-semibold">
+
+Is this a real loan application?
+
+</h3>
+
+<p class="text-gray-500 mt-4 leading-8">
+
+No. This project is a demonstration interface created for portfolio
+and presentation purposes. No personal information is submitted to any lender.
+
+</p>
+
+</div>
+
+<div class="card p-8">
+
+<h3 class="heading text-xl font-semibold">
+
+How is the loan limit determined?
+
+</h3>
+
+<p class="text-gray-500 mt-4 leading-8">
+
+The demo calculates eligibility using employment category and monthly
+income to generate a realistic pre-approved amount between
+KSh 5,000 and KSh 18,000.
+
+</p>
+
+</div>
+
+<div class="card p-8">
+
+<h3 class="heading text-xl font-semibold">
+
+How long does the application take?
+
+</h3>
+
+<p class="text-gray-500 mt-4 leading-8">
+
+Most users can complete the full application in under five minutes.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="bg-slate-900 text-white py-16">
+
+<div class="max-w-7xl mx-auto px-6">
+
+<div class="grid md:grid-cols-4 gap-10">
+
+<div>
+
+<h2 class="heading text-2xl font-bold">
+
+KwikLoan Demo
+
+</h2>
+
+<p class="text-gray-400 mt-5 leading-8">
+
+A modern responsive loan application interface built for software
+engineering portfolio demonstration.
+
+</p>
+
+</div>
+
+<div>
+
+<h3 class="font-semibold mb-5">
+
+Company
+
+</h3>
+
+<ul class="space-y-3 text-gray-400">
+
+<li>About Us</li>
+
+<li>Careers</li>
+
+<li>Contact</li>
+
+<li>FAQs</li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h3 class="font-semibold mb-5">
+
+Legal
+
+</h3>
+
+<ul class="space-y-3 text-gray-400">
+
+<li>Privacy Policy</li>
+
+<li>Terms & Conditions</li>
+
+<li>Responsible Lending</li>
+
+<li>Data Protection</li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h3 class="font-semibold mb-5">
+
+Support
+
+</h3>
+
+<ul class="space-y-3 text-gray-400">
+
+<li>Complaints</li>
+
+<li>Cookies</li>
+
+<li>Help Centre</li>
+
+<li>Customer Support</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="border-t border-slate-700 mt-12 pt-8 text-center text-gray-500 text-sm">
+
+© 2026 KwikLoan Demo. Portfolio Project • Built for demonstration purposes only.
+
+</div>
+
+</div>
+
+</footer>
+
+</div>
+
+<!-- ===========================
+APPLICATION SECTION STARTS HERE
+=========================== -->
+
+<div
+id="application"
+class="section hidden min-h-screen bg-slate-100">
+
+<div class="max-w-3xl mx-auto py-10 px-5">
+
+<div class="card overflow-hidden">
+
+<div class="border-b bg-white sticky top-0 z-40">
+
+<div id="progressSteps"
+class="flex overflow-x-auto gap-3 px-6 pt-6 pb-4">
+
+<!-- JavaScript Progress Steps -->
+
+</div>
+
+<div class="px-6 pb-6">
+
+<div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+
+<div
+id="progressBar"
+class="h-full bg-blue-600 transition-all duration-500"
+style="width:11%;">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+id="formContainer"
+class="p-8">
+
+<!-- Dynamic form loads here -->
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===========================
+DASHBOARD
+=========================== -->
+
+<div
+id="dashboard"
+class="section hidden min-h-screen bg-slate-100">
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+<div class="flex items-center justify-between mb-8">
+
+<div>
+
+<h1 class="heading text-4xl font-bold">
+
+My Dashboard
+
+</h1>
+
+<p class="text-gray-500 mt-2">
+
+Your loan application summary
+
+</p>
+
+</div>
+
+<div
+class="flex items-center gap-4">
+
+<div
+id="profileAvatar"
+class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold">
+
+JK
+
+</div>
+
+<div>
+
+<h2
+id="dashName"
+class="font-semibold text-xl">
+
+John Kamau
+
+</h2>
+
+<p
+id="dashPhone"
+class="text-gray-500">
+
++254712345678
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="grid lg:grid-cols-3 gap-8">
+
+<div class="lg:col-span-2">
+
+<div class="card p-8">
+
+<div class="flex items-center justify-between">
+
+<div>
+
+<p class="text-gray-500">
+
+Eligible Loan Amount
+
+</p>
+
+<h1
+id="dashLimit"
+class="heading text-6xl font-bold text-emerald-600 mt-4">
+
+KSh 10,500
+
+</h1>
+
+</div>
+
+<i class="fa-solid fa-wallet text-6xl text-emerald-500"></i>
+
+</div>
+
+</div>
+
+<div class="grid md:grid-cols-2 gap-6 mt-8">
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Loan Status
+
+</p>
+
+<h3
+class="font-semibold text-xl mt-2 text-amber-600">
+
+Pending Verification
+
+</h3>
+
+</div>
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Reference Number
+
+</p>
+
+<h3
+id="dashReference"
+class="font-semibold mt-2">
+
+KL-2026-NRB-593842
+
+</h3>
+
+</div>
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Employment
+
+</p>
+
+<h3
+id="dashEmployment"
+class="font-semibold mt-2">
+
+Private Employee
+
+</h3>
+
+</div>
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Monthly Income
+
+</p>
+
+<h3
+id="dashIncome"
+class="font-semibold mt-2">
+
+KSh 25,001–44,000
+
+</h3>
+
+</div>
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Application Date
+
+</p>
+
+<h3
+id="dashDate"
+class="font-semibold mt-2">
+
+02 July 2026
+
+</h3>
+
+</div>
+
+<div class="card p-6">
+
+<p class="text-gray-500">
+
+Next Step
+
+</p>
+
+<h3
+class="font-semibold mt-2">
+
+Verification In Progress
+
+</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div>
+
+<div class="card p-8">
+
+<h2 class="heading text-2xl font-semibold">
+
+Application Summary
+
+</h2>
+
+<div class="space-y-6 mt-8 text-sm">
+
+<div>
+
+<p class="text-gray-500">
+
+Applicant
+
+</p>
+
+<strong
+id="summaryApplicant">
+
+John Kamau
+
+</strong>
+
+</div>
+
+<div>
+
+<p class="text-gray-500">
+
+Registered Number
+
+</p>
+
+<strong
+id="summaryPhone">
+
++254712345678
+
+</strong>
+
+</div>
+
+<div>
+
+<p class="text-gray-500">
+
+County
+
+</p>
+
+<strong
+id="summaryCounty">
+
+Nairobi
+
+</strong>
+
+</div>
+
+<div>
+
+<p class="text-gray-500">
+
+Guarantor
+
+</p>
+
+<strong
+id="summaryGuarantor">
+
+James Kariuki
+
+</strong>
+
+</div>
+
+</div>
+
+<button
+onclick="goHome()"
+class="btn-secondary mt-10">
+
+Back Home
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let currentStep = 1;
+
+const TOTAL_STEPS = 10;
+
+const stepTitles = [
+
+"Account",
+
+"Personal",
+
+"Employment",
+
+"Income",
+
+"Guarantor",
+
+"Review",
+
+"Agreement",
+
+"Processing",
+
+"Offer",
+
+"Dashboard"
+
+];
+
+let applicationData = {
+
+phone : "",
+
+fullName : "",
+
+idNumber : "",
+
+county : "",
+
+employment : "",
+
+income : "",
+
+guarantorName : "",
+
+guarantorPhone : "",
+
+loanLimit : 0,
+
+reference : ""
+
+};
+
+const counties = [
+
+"Nairobi",
+"Mombasa",
+"Kwale",
+"Kilifi",
+"Tana River",
+"Lamu",
+"Taita Taveta",
+"Garissa",
+"Wajir",
+"Mandera",
+"Marsabit",
+"Isiolo",
+"Meru",
+"Tharaka Nithi",
+"Embu",
+"Kitui",
+"Machakos",
+"Makueni",
+"Nyandarua",
+"Nyeri",
+"Kirinyaga",
+"Murang'a",
+"Kiambu",
+"Turkana",
+"West Pokot",
+"Samburu",
+"Trans Nzoia",
+"Uasin Gishu",
+"Elgeyo Marakwet",
+"Nandi",
+"Baringo",
+"Laikipia",
+"Nakuru",
+"Narok",
+"Kajiado",
+"Kericho",
+"Bomet",
+"Kakamega",
+"Vihiga",
+"Bungoma",
+"Busia",
+"Siaya",
+"Kisumu",
+"Homa Bay",
+"Migori",
+"Kisii",
+"Nyamira"
+
+];
+
+const employmentCategories = [
+
+"Government Employee",
+
+"Private Employee",
+
+"Business Owner",
+
+"Self Employed",
+
+"NGO Employee",
+
+"SACCO Employee",
+
+"Contract Employee",
+
+"Farmer",
+
+"Freelancer",
+
+"Casual Worker",
+
+"Pensioner"
+
+];
+
+const incomeRanges = [
+
+"KSh 5,000–12,000",
+
+"KSh 12,001–18,000",
+
+"KSh 18,001–25,000",
+
+"KSh 25,001–44,000",
+
+"KSh 44,001–60,000",
+
+"KSh 60,001–80,000",
+
+"KSh 80,001–120,000",
+
+"Above KSh 120,000"
+
+];
+
+function showSection(id){
+
+document
+.querySelectorAll(".section")
+.forEach(section=>{
+
+section.classList.add("hidden");
+
+});
+
+document
+.getElementById(id)
+.classList.remove("hidden");
+
+}
+
+function goHome(){
+
+showSection("landing");
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+}
+function updateProgress(){
+
+const progressContainer =
+document.getElementById("progressSteps");
+
+const progressBar =
+document.getElementById("progressBar");
+
+let html = "";
+
+stepTitles.forEach((step,index)=>{
+
+const stepNo = index + 1;
+
+let classes =
+"px-5 py-2 rounded-full text-sm whitespace-nowrap transition-all duration-300 ";
+
+if(stepNo < currentStep){
+
+classes +=
+"bg-emerald-500 text-white";
+
+}else if(stepNo === currentStep){
+
+classes +=
+"bg-blue-600 text-white";
+
+}else{
+
+classes +=
+"bg-gray-100 text-gray-500";
+
+}
+
+html += `
+<div class="${classes}">
+${step}
+</div>
+`;
+
+});
+
+progressContainer.innerHTML = html;
+
+progressBar.style.width =
+((currentStep-1)/(TOTAL_STEPS-1))*100 + "%";
+
+}
+
+function startApplication(){
+
+applicationData = {
+
+phone:"",
+fullName:"",
+idNumber:"",
+county:"",
+employment:"",
+income:"",
+guarantorName:"",
+guarantorPhone:"",
+loanLimit:0,
+reference:""
+
+};
+
+currentStep = 1;
+
+showSection("application");
+
+updateProgress();
+
+loadStep();
+
+}
+
+function nextStep(){
+
+currentStep++;
+
+updateProgress();
+
+loadStep();
+
+}
+
+function previousStep(){
+
+if(currentStep>1){
+
+currentStep--;
+
+updateProgress();
+
+loadStep();
+
+}
+
+}
+
+function loadStep(){
+
+const container =
+document.getElementById("formContainer");
+
+switch(currentStep){
+
+case 1:
+
+container.innerHTML = `
+
+<div class="fade-in max-w-lg mx-auto">
+
+<h2 class="heading text-3xl font-bold mb-2">
+
+Create Your Account
+
+</h2>
+
+<p class="text-gray-500 mb-8">
+
+Enter your Kenyan mobile number to continue.
+
+</p>
+
+<label class="block mb-3 font-medium">
+
+Phone Number
+
+</label>
+
+<div class="flex">
+
+<div
+class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">
+
++254
+
+</div>
+
+<input
+id="phone"
+maxlength="9"
+placeholder="712345678"
+class="input rounded-l-none"
+value="${applicationData.phone.replace("+254","")}">
+
+</div>
+
+<div class="grid grid-cols-2 gap-5 mt-8">
+
+<div>
+
+<label class="block mb-3">
+
+Create PIN
+
+</label>
+
+<input
+id="pin"
+maxlength="4"
+type="password"
+class="input text-center text-xl tracking-widest">
+
+</div>
+
+<div>
+
+<label class="block mb-3">
+
+Confirm PIN
+
+</label>
+
+<input
+id="confirmPin"
+maxlength="4"
+type="password"
+class="input text-center text-xl tracking-widest">
+
+</div>
+
+</div>
+
+<button
+onclick="saveAccount()"
+class="btn-primary mt-10">
+
+Continue
+
+</button>
+
+</div>
+
+`;
+
+break;
+
+case 2:
+
+container.innerHTML = `
+
+<div class="fade-in">
+
+<h2 class="heading text-3xl font-bold">
+
+Personal Information
+
+</h2>
+
+<p class="text-gray-500 mt-2 mb-8">
+
+Fill in your official identification details.
+
+</p>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+<div>
+
+<label class="block mb-3">
+
+Full Name
+
+</label>
+
+<input
+id="fullName"
+class="input"
+placeholder="John Kamau Mwangi"
+value="${applicationData.fullName}">
+
+</div>
+
+<div>
+
+<label class="block mb-3">
+
+National ID
+
+</label>
+
+<input
+id="idNumber"
+maxlength="8"
+class="input"
+placeholder="12345678"
+value="${applicationData.idNumber}">
+
+</div>
+
+<div>
+
+<label class="block mb-3">
+
+County
+
+</label>
+
+<select
+id="county"
+class="input">
+
+<option value="">
+
+Select County
+
+</option>
+
+${counties.map(county=>`
+
+<option
+value="${county}"
+${applicationData.county===county?"selected":""}>
+
+${county}
+
+</option>
+
+`).join("")}
+
+</select>
+
+</div>
+
+<div>
+
+<label class="block mb-3">
+
+Gender
+
+</label>
+
+<select
+class="input">
+
+<option>
+
+Male
+
+</option>
+
+<option>
+
+Female
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="flex gap-4 mt-10">
+
+<button
+onclick="previousStep()"
+class="btn-secondary">
+
+Back
+
+</button>
+
+<button
+onclick="savePersonal()"
+class="btn-primary">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+break;
+<!-- Trust & Statistics -->
+                <section class="py-16 bg-gray-50">
+                    <div class="max-w-7xl mx-auto px-6">
+
+                        <div class="text-center mb-12">
+                            <h2 class="heading-font text-3xl font-semibold text-gray-800">
+                                Trusted by Thousands of Kenyans
+                            </h2>
+
+                            <p class="text-gray-500 mt-3">
+                                Fast applications, secure processing and transparent lending.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+
+                            <div class="bg-white rounded-3xl shadow-sm p-8 text-center">
+                                <div class="w-16 h-16 mx-auto rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+
+                                <h3 class="text-3xl font-bold mt-5 text-gray-800">
+                                    50,000+
+                                </h3>
+
+                                <p class="text-gray-500 mt-2">
+                                    Applications Processed
+                                </p>
                             </div>
-                            <button onclick="saveAccount()" class="w-full mt-10 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>`;
-                    break;
 
-                case 2:
-                    html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-8">Personal Details</h2>
-                            <input id="full-name" placeholder="Full Name" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
-                            <input id="id-no" maxlength="8" placeholder="National ID" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
-                            <select id="county" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
-                                <option value="">Select County</option>
-                                ${counties.map(c => `<option value="${c}">${c}</option>`).join('')}
-                            </select>
-                            <button onclick="savePersonal()" class="w-full mt-10 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>`;
-                    break;
+                            <div class="bg-white rounded-3xl shadow-sm p-8 text-center">
+                                <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-2xl">
+                                    <i class="fa-solid fa-face-smile"></i>
+                                </div>
 
-                case 3:
-                    const jobs = ["Government Employee","Private Sector","Self Employed","Business Owner","NGO Staff","SACCO Employee","Contract Worker","Farmer","Freelancer","Casual Worker","Pensioner"];
-                    html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-8">Employment Type</h2>
-                            <div id="job-grid" class="grid grid-cols-2 gap-4"></div>
-                            <button onclick="saveEmployment()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>`;
-                    setTimeout(() => {
-                        const grid = document.getElementById('job-grid');
-                        grid.innerHTML = jobs.map(job => `
-                            <div onclick="selectJob(this)" data-job="${job}" class="employment-option border-2 p-6 rounded-3xl text-center cursor-pointer hover:border-blue-200">${job}</div>
-                        `).join('');
-                    }, 100);
-                    break;
+                                <h3 class="text-3xl font-bold mt-5 text-gray-800">
+                                    97%
+                                </h3>
 
-                case 4:
-                    const brackets = ["KSh 5,000–12,000","KSh 12,001–18,000","KSh 18,001–25,000","KSh 25,001–44,000","KSh 44,001–60,000","KSh 60,001–80,000","KSh 80,001–120,000","Above KSh 120,000"];
-                    html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-8">Monthly Income</h2>
-                            <div id="income-grid" class="grid grid-cols-1 gap-4"></div>
-                            <button onclick="saveIncome()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>`;
-                    setTimeout(() => {
-                        const grid = document.getElementById('income-grid');
-                        grid.innerHTML = brackets.map(br => `
-                            <div onclick="selectIncome(this)" data-val="${br}" class="income-opt border-2 p-6 rounded-3xl text-center cursor-pointer">${br}</div>
-                        `).join('');
-                    }, 100);
-                    break;
+                                <p class="text-gray-500 mt-2">
+                                    Customer Satisfaction
+                                </p>
+                            </div>
 
-                case 5:
+                            <div class="bg-white rounded-3xl shadow-sm p-8 text-center">
+                                <div class="w-16 h-16 mx-auto rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-2xl">
+                                    <i class="fa-solid fa-headset"></i>
+                                </div>
+
+                                <h3 class="text-3xl font-bold mt-5 text-gray-800">
+                                    24/7
+                                </h3>
+
+                                <p class="text-gray-500 mt-2">
+                                    Customer Support
+                                </p>
+                            </div>
+
+                            <div class="bg-white rounded-3xl shadow-sm p-8 text-center">
+                                <div class="w-16 h-16 mx-auto rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl">
+                                    <i class="fa-solid fa-lock"></i>
+                                </div>
+
+                                <h3 class="text-3xl font-bold mt-5 text-gray-800">
+                                    256-bit
+                                </h3>
+
+                                <p class="text-gray-500 mt-2">
+                                    Secure Encryption
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- How It Works -->
+                <section class="py-20 bg-white">
+
+                    <div class="max-w-7xl mx-auto px-6">
+
+                        <div class="text-center mb-14">
+
+                            <h2 class="heading-font text-3xl font-semibold">
+                                How It Works
+                            </h2>
+
+                            <p class="text-gray-500 mt-3">
+                                Your application only takes a few minutes.
+                            </p>
+
+                        </div>
+
+                        <div class="grid md:grid-cols-4 gap-8">
+
+                            <div class="text-center">
+
+                                <div class="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl mx-auto mb-6">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+
+                                <h3 class="font-semibold text-lg">
+                                    Create Account
+                                </h3>
+
+                                <p class="text-gray-500 mt-3 text-sm">
+                                    Register using your Kenyan mobile number.
+                                </p>
+
+                            </div>
+
+                            <div class="text-center">
+
+                                <div class="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl mx-auto mb-6">
+                                    <i class="fa-solid fa-id-card"></i>
+                                </div>
+
+                                <h3 class="font-semibold text-lg">
+                                    Complete Profile
+                                </h3>
+
+                                <p class="text-gray-500 mt-3 text-sm">
+                                    Fill in your personal and employment information.
+                                </p>
+
+                            </div>
+
+                            <div class="text-center">
+
+                                <div class="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl mx-auto mb-6">
+                                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                </div>
+
+                                <h3 class="font-semibold text-lg">
+                                    Eligibility Check
+                                </h3>
+
+                                <p class="text-gray-500 mt-3 text-sm">
+                                    Our demo engine calculates your eligible limit.
+                                </p>
+
+                            </div>
+
+                            <div class="text-center">
+
+                                <div class="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl mx-auto mb-6">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+
+                                <h3 class="font-semibold text-lg">
+                                    Receive Offer
+                                </h3>
+
+                                <p class="text-gray-500 mt-3 text-sm">
+                                    Review your loan offer inside your dashboard.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Eligibility -->
+
+                <section class="py-20 bg-gray-50">
+
+                    <div class="max-w-6xl mx-auto px-6">
+
+                        <div class="text-center mb-12">
+
+                            <h2 class="heading-font text-3xl font-semibold">
+                                Basic Eligibility
+                            </h2>
+
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+
+                            <div class="bg-white rounded-3xl p-8 shadow-sm">
+
+                                <h3 class="font-semibold text-xl mb-6">
+                                    Requirements
+                                </h3>
+
+                                <ul class="space-y-5">
+
+                                    <li class="flex items-center gap-4">
+                                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                        Kenyan National ID
+                                    </li>
+
+                                    <li class="flex items-center gap-4">
+                                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                        Active Mobile Number
+                                    </li>
+
+                                    <li class="flex items-center gap-4">
+                                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                        Regular Source of Income
+                                    </li>
+
+                                    <li class="flex items-center gap-4">
+                                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                                        18 Years or Older
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="bg-blue-600 rounded-3xl text-white p-8">
+
+                                <h3 class="font-semibold text-xl mb-6">
+                                    Demo Features
+                                </h3>
+
+                                <ul class="space-y-5">
+
+                                    <li>
+                                        ✔ Responsive Design
+                                    </li>
+
+                                    <li>
+                                        ✔ Multi-step Application
+                                    </li>
+
+                                    <li>
+                                        ✔ Dynamic Loan Assessment
+                                    </li>
+
+                                    <li>
+                                        ✔ Professional Dashboard
+                                    </li>
+
+                                    <li>
+                                        ✔ Animated Processing Screen
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+<!-- FAQ Section -->
+                <section class="py-20 bg-white">
+
+                    <div class="max-w-5xl mx-auto px-6">
+
+                        <div class="text-center mb-14">
+
+                            <h2 class="heading-font text-3xl font-semibold">
+                                Frequently Asked Questions
+                            </h2>
+
+                            <p class="text-gray-500 mt-3">
+                                Common questions about this demo application.
+                            </p>
+
+                        </div>
+
+                        <div class="space-y-5">
+
+                            <details class="bg-gray-50 rounded-3xl p-6 border border-gray-200">
+                                <summary class="cursor-pointer font-semibold">
+                                    How long does the application take?
+                                </summary>
+
+                                <p class="mt-4 text-gray-600">
+                                    Most users complete the demo application in less than five
+                                    minutes.
+                                </p>
+                            </details>
+
+                            <details class="bg-gray-50 rounded-3xl p-6 border border-gray-200">
+                                <summary class="cursor-pointer font-semibold">
+                                    How is my eligible amount calculated?
+                                </summary>
+
+                                <p class="mt-4 text-gray-600">
+                                    The demo uses your employment category together with your
+                                    monthly income bracket to estimate a pre-approved limit.
+                                </p>
+                            </details>
+
+                            <details class="bg-gray-50 rounded-3xl p-6 border border-gray-200">
+                                <summary class="cursor-pointer font-semibold">
+                                    Will I receive money after applying?
+                                </summary>
+
+                                <p class="mt-4 text-gray-600">
+                                    No. This is a software demonstration created for portfolio
+                                    purposes only.
+                                </p>
+                            </details>
+
+                            <details class="bg-gray-50 rounded-3xl p-6 border border-gray-200">
+                                <summary class="cursor-pointer font-semibold">
+                                    Is my information stored?
+                                </summary>
+
+                                <p class="mt-4 text-gray-600">
+                                    Information entered is only stored locally in your browser
+                                    for demonstration purposes.
+                                </p>
+                            </details>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Footer -->
+
+                <footer class="bg-slate-900 text-white">
+
+                    <div class="max-w-7xl mx-auto px-6 py-16">
+
+                        <div class="grid md:grid-cols-4 gap-10">
+
+                            <div>
+
+                                <div class="flex items-center gap-3 mb-5">
+
+                                    <div class="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center font-bold">
+                                        K
+                                    </div>
+
+                                    <span class="heading-font text-2xl">
+                                        KwikLoan
+                                    </span>
+
+                                </div>
+
+                                <p class="text-gray-400 text-sm leading-7">
+                                    Demo project showcasing a professional Kenyan digital
+                                    lending application interface.
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="font-semibold mb-5">
+                                    Company
+                                </h3>
+
+                                <ul class="space-y-3 text-gray-400">
+
+                                    <li><a href="#">About Us</a></li>
+
+                                    <li><a href="#">Careers</a></li>
+
+                                    <li><a href="#">FAQs</a></li>
+
+                                    <li><a href="#">Contact</a></li>
+
+                                </ul>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="font-semibold mb-5">
+                                    Legal
+                                </h3>
+
+                                <ul class="space-y-3 text-gray-400">
+
+                                    <li><a href="#">Privacy Policy</a></li>
+
+                                    <li><a href="#">Terms & Conditions</a></li>
+
+                                    <li><a href="#">Responsible Lending</a></li>
+
+                                    <li><a href="#">Complaints</a></li>
+
+                                </ul>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="font-semibold mb-5">
+                                    Security
+                                </h3>
+
+                                <ul class="space-y-3 text-gray-400">
+
+                                    <li>256-bit Encryption</li>
+
+                                    <li>Secure Authentication</li>
+
+                                    <li>Data Protection</li>
+
+                                    <li>Fraud Prevention</li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <div class="border-t border-slate-700 mt-14 pt-8 flex flex-col md:flex-row justify-between gap-5">
+
+                            <p class="text-gray-500 text-sm">
+                                © 2026 KwikLoan Demo Project.
+                            </p>
+
+                            <p class="text-gray-500 text-sm">
+                                Designed for Software Developer Portfolio Presentation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </footer>
+
+            </div>
+            <!-- END LANDING PAGE -->
+
+
+            <!-- ============================= -->
+            <!-- APPLICATION SECTION -->
+            <!-- ============================= -->
+
+            <section id="applicationSection"
+                     class="hidden min-h-screen bg-gray-100 py-10">
+
+                <div class="max-w-3xl mx-auto">
+
+                    <div class="bg-white rounded-[32px] shadow-xl overflow-hidden">
+
+                        <!-- Progress Header -->
+
+                        <div class="sticky top-0 bg-white border-b z-30">
+
+                            <div class="p-6">
+
+                                <div id="progressSteps"
+                                     class="flex gap-3 overflow-x-auto pb-4 whitespace-nowrap">
+
+                                </div>
+
+                                <div class="mt-2 h-2 rounded-full bg-gray-200">
+
+                                    <div id="progressBar"
+                                         class="h-2 rounded-full bg-blue-600 transition-all duration-500"
+                                         style="width:10%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Dynamic Step Content -->
+
+                        <div id="stepContainer"
+                             class="p-8">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+<script>
+
+const application = {
+
+    phone : "",
+
+    fullName : "",
+
+    nationalId : "",
+
+    county : "",
+
+    employment : "",
+
+    income : "",
+
+    guarantorName : "",
+
+    guarantorPhone : "",
+
+    eligibleAmount : 0,
+
+    reference : ""
+
+};
+
+let currentStep = 1;
+
+const progressTitles = [
+
+"Account",
+
+"Personal",
+
+"Employment",
+
+"Income",
+
+"Guarantor",
+
+"Review",
+
+"Agreement",
+
+"Processing",
+
+"Offer",
+
+"Dashboard"
+
+];
+
+const counties = [
+
+"Nairobi",
+
+"Mombasa",
+
+"Kwale",
+
+"Kilifi",
+
+"Tana River",
+
+"Lamu",
+
+"Taita Taveta",
+
+"Garissa",
+
+"Wajir",
+
+"Mandera",
+
+"Marsabit",
+
+"Isiolo",
+
+"Meru",
+
+"Tharaka Nithi",
+
+"Embu",
+
+"Kitui",
+
+"Machakos",
+
+"Makueni",
+
+"Nyandarua",
+
+"Nyeri",
+
+"Kirinyaga",
+
+"Murang'a",
+
+"Kiambu",
+
+"Turkana",
+
+"West Pokot",
+
+"Samburu",
+
+"Trans Nzoia",
+
+"Uasin Gishu",
+
+"Elgeyo Marakwet",
+
+"Nandi",
+
+"Baringo",
+
+"Laikipia",
+
+"Nakuru",
+
+"Narok",
+
+"Kajiado",
+
+"Kericho",
+
+"Bomet",
+
+"Kakamega",
+
+"Vihiga",
+
+"Bungoma",
+
+"Busia",
+
+"Siaya",
+
+"Kisumu",
+
+"Homa Bay",
+
+"Migori",
+
+"Kisii",
+
+"Nyamira"
+
+];
+
+const employmentCategories = [
+
+"Government Employee",
+
+"Private Employee",
+
+"Business Owner",
+
+"Self Employed",
+
+"NGO Employee",
+
+"SACCO Employee",
+
+"Contract Employee",
+
+"Farmer",
+
+"Freelancer",
+
+"Casual Worker",
+
+"Pensioner"
+
+];
+
+const incomeBrackets = [
+
+"KSh 5,000 - 12,000",
+
+"KSh 12,001 - 18,000",
+
+"KSh 18,001 - 25,000",
+
+"KSh 25,001 - 44,000",
+
+"KSh 44,001 - 60,000",
+
+"KSh 60,001 - 80,000",
+
+"KSh 80,001 - 120,000",
+
+"Above KSh 120,000"
+
+];
+function showSection(id){
+
+    document.querySelectorAll(".section").forEach(section=>{
+        section.classList.add("hidden");
+    });
+
+    document.getElementById(id).classList.remove("hidden");
+
+}
+
+function startApplication(){
+
+    currentStep = 1;
+
+    renderProgress();
+
+    showSection("applicationSection");
+
+    loadStep(currentStep);
+
+}
+
+function renderProgress(){
+
+    let html = "";
+
+    progressTitles.forEach((title,index)=>{
+
+        const step = index + 1;
+
+        const active = currentStep === step;
+
+        const completed = currentStep > step;
+
+        html += `
+            <div class="
+                flex items-center gap-2
+                px-5
+                py-2
+                rounded-full
+                text-sm
+                font-medium
+                whitespace-nowrap
+                transition-all
+                ${
+                    active
+                    ? "bg-blue-600 text-white"
+                    : completed
+                    ? "bg-emerald-500 text-white"
+                    : "bg-gray-100 text-gray-500"
+                }">
+
+                ${
+                    completed
+                    ? `<i class="fa-solid fa-check"></i>`
+                    : `<span>${step}</span>`
+                }
+
+                ${title}
+
+            </div>
+        `;
+
+    });
+
+    document.getElementById("progressSteps").innerHTML = html;
+
+    document.getElementById("progressBar").style.width =
+        ((currentStep-1)/(progressTitles.length-1))*100 + "%";
+
+}
+
+function nextStep(){
+
+    currentStep++;
+
+    renderProgress();
+
+    loadStep(currentStep);
+
+}
+
+function previousStep(){
+
+    currentStep--;
+
+    renderProgress();
+
+    loadStep(currentStep);
+
+}
+
+function loadStep(step){
+
+const container=document.getElementById("stepContainer");
+
+switch(step){
+
+case 1:
+
+container.innerHTML=`
+
+<div class="fade-in max-w-lg mx-auto">
+
+<div class="text-center mb-10">
+
+<div class="w-24 h-24 rounded-full bg-blue-100 mx-auto flex items-center justify-center text-blue-600 text-4xl">
+
+<i class="fa-solid fa-user-plus"></i>
+
+</div>
+
+<h2 class="heading-font text-3xl font-semibold mt-6">
+
+Create Account
+
+</h2>
+
+<p class="text-gray-500 mt-3">
+
+Enter your mobile number to begin your application.
+
+</p>
+
+</div>
+
+<div class="space-y-6">
+
+<div>
+
+<label class="block mb-2 font-medium">
+
+Mobile Number
+
+</label>
+
+<div class="flex">
+
+<span class="px-6 flex items-center bg-gray-100 rounded-l-2xl border">
+
++254
+
+</span>
+
+<input
+
+id="phone"
+
+maxlength="9"
+
+placeholder="712345678"
+
+class="flex-1 border rounded-r-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500">
+
+</div>
+
+</div>
+
+<div>
+
+<label class="block mb-2 font-medium">
+
+Create PIN
+
+</label>
+
+<input
+
+id="pin"
+
+maxlength="4"
+
+type="password"
+
+class="w-full border rounded-2xl px-5 py-4 tracking-[10px] text-center">
+
+</div>
+
+<div>
+
+<label class="block mb-2 font-medium">
+
+Confirm PIN
+
+</label>
+
+<input
+
+id="confirmPin"
+
+maxlength="4"
+
+type="password"
+
+class="w-full border rounded-2xl px-5 py-4 tracking-[10px] text-center">
+
+</div>
+
+<button
+
+onclick="saveAccount()"
+
+class="w-full py-5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+break;
+
+case 2:
+
+container.innerHTML=`
+
+<div class="fade-in">
+
+<h2 class="heading-font text-3xl font-semibold mb-8">
+
+Personal Information
+
+</h2>
+
+<div class="space-y-5">
+
+<input
+
+id="fullName"
+
+placeholder="Full Name"
+
+class="w-full border rounded-2xl px-5 py-4">
+
+<input
+
+id="nationalId"
+
+maxlength="8"
+
+placeholder="National ID Number"
+
+class="w-full border rounded-2xl px-5 py-4">
+
+<input
+
+id="dob"
+
+type="date"
+
+class="w-full border rounded-2xl px-5 py-4">
+
+<select
+
+id="county"
+
+class="w-full border rounded-2xl px-5 py-4">
+
+<option value="">
+
+Select County
+
+</option>
+
+${counties.map(county=>`
+
+<option value="${county}">
+
+${county}
+
+</option>
+
+`).join("")}
+
+</select>
+
+<div class="flex gap-4">
+
+<button
+
+onclick="previousStep()"
+
+class="flex-1 border py-4 rounded-2xl">
+
+Back
+
+</button>
+
+<button
+
+onclick="savePersonal()"
+
+class="flex-1 bg-blue-600 text-white py-4 rounded-2xl">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+break;
+
+}
+
+}
+
+function saveAccount(){
+
+const phone=document.getElementById("phone").value.trim();
+
+const pin=document.getElementById("pin").value;
+
+const confirm=document.getElementById("confirmPin").value;
+
+if(phone.length!==9){
+
+alert("Enter a valid Kenyan mobile number.");
+
+return;
+
+}
+
+if(pin.length!==4){
+
+alert("PIN must contain 4 digits.");
+
+return;
+
+}
+
+if(pin!==confirm){
+
+alert("PINs do not match.");
+
+return;
+
+}
+
+application.phone="+254"+phone;
+
+nextStep();
+
+}
+
+function savePersonal(){
+
+application.fullName=document.getElementById("fullName").value;
+
+application.nationalId=document.getElementById("nationalId").value;
+
+application.county=document.getElementById("county").value;
+
+if(application.fullName===""){
+
+alert("Enter your full name.");
+
+return;
+
+}
+
+if(application.nationalId.length<7){
+
+alert("Enter a valid ID number.");
+
+return;
+
+}
+
+if(application.county===""){
+
+alert("Select your county.");
+
+return;
+
+}
+
+nextStep();
+
+}
+
+case 3:
+
+container.innerHTML=`
+
+<div class="fade-in">
+
+<div class="text-center mb-10">
+
+<div class="w-24 h-24 rounded-full bg-blue-100 mx-auto flex items-center justify-center text-blue-600 text-4xl">
+
+<i class="fa-solid fa-briefcase"></i>
+
+</div>
+
+<h2 class="heading-font text-3xl font-semibold mt-6">
+
+Employment Information
+
+</h2>
+
+<p class="text-gray-500 mt-3">
+
+Select the option that best describes your current employment.
+
+</p>
+
+</div>
+
+<div
+id="employmentGrid"
+class="grid md:grid-cols-2 gap-5">
+
+${employmentCategories.map(job=>`
+
+<div
+onclick="selectEmployment(this)"
+data-job="${job}"
+class="employment-card cursor-pointer border-2 border-gray-200 rounded-3xl p-6 transition-all hover:border-blue-500 hover:bg-blue-50">
+
+<div class="flex items-center justify-between">
+
+<span class="font-medium">
+
+${job}
+
+</span>
+
+<i class="fa-solid fa-circle text-gray-300"></i>
+
+</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<div class="flex gap-4 mt-10">
+
+<button
+onclick="previousStep()"
+class="flex-1 border rounded-2xl py-4">
+
+Back
+
+</button>
+
+<button
+onclick="saveEmployment()"
+class="flex-1 bg-blue-600 text-white rounded-2xl py-4">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+break;
+
+case 4:
+
+container.innerHTML=`
+
+<div class="fade-in">
+
+<div class="text-center mb-10">
+
+<div class="w-24 h-24 rounded-full bg-emerald-100 mx-auto flex items-center justify-center text-emerald-600 text-4xl">
+
+<i class="fa-solid fa-money-bill-wave"></i>
+
+</div>
+
+<h2 class="heading-font text-3xl font-semibold mt-6">
+
+Monthly Income
+
+</h2>
+
+<p class="text-gray-500 mt-3">
+
+Choose your monthly income bracket.
+
+</p>
+
+</div>
+
+<div
+id="incomeGrid"
+class="space-y-4">
+
+${incomeBrackets.map(item=>`
+
+<div
+onclick="selectIncome(this)"
+data-income="${item}"
+class="income-card cursor-pointer border-2 border-gray-200 rounded-3xl p-5 hover:border-blue-500 hover:bg-blue-50 transition-all">
+
+<div class="flex justify-between items-center">
+
+<span class="font-medium">
+
+${item}
+
+</span>
+
+<i class="fa-solid fa-circle text-gray-300"></i>
+
+</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<div class="flex gap-4 mt-10">
+
+<button
+onclick="previousStep()"
+class="flex-1 border rounded-2xl py-4">
+
+Back
+
+</button>
+
+<button
+onclick="saveIncome()"
+class="flex-1 bg-blue-600 text-white rounded-2xl py-4">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+break;
+
+
+
+function selectEmployment(card){
+
+document.querySelectorAll(".employment-card").forEach(item=>{
+
+item.classList.remove("border-blue-600","bg-blue-50");
+
+item.querySelector("i").className="fa-solid fa-circle text-gray-300";
+
+});
+
+card.classList.add("border-blue-600","bg-blue-50");
+
+card.querySelector("i").className="fa-solid fa-circle-check text-blue-600";
+
+application.employment=card.dataset.job;
+
+}
+
+
+
+function saveEmployment(){
+
+if(!application.employment){
+
+alert("Please select your employment category.");
+
+return;
+
+}
+
+nextStep();
+
+}
+
+
+
+function selectIncome(card){
+
+document.querySelectorAll(".income-card").forEach(item=>{
+
+item.classList.remove("border-blue-600","bg-blue-50");
+
+item.querySelector("i").className="fa-solid fa-circle text-gray-300";
+
+});
+
+card.classList.add("border-blue-600","bg-blue-50");
+
+card.querySelector("i").className="fa-solid fa-circle-check text-blue-600";
+
+application.income=card.dataset.income;
+
+}
+
+
+
+function saveIncome(){
+
+if(!application.income){
+
+alert("Please select your income bracket.");
+
+return;
+
+}
+
+application.eligibleAmount = calculateEligibility();
+
+nextStep();
+
+}
+
+
+
+function calculateEligibility(){
+
+let amount=5000;
+
+
+
+/* Employment Score */
+
+switch(application.employment){
+
+case "Government Employee":
+
+amount+=4200;
+
+break;
+
+case "NGO Employee":
+
+amount+=3600;
+
+break;
+
+case "Private Employee":
+
+amount+=3200;
+
+break;
+
+case "SACCO Employee":
+
+amount+=3500;
+
+break;
+
+case "Business Owner":
+
+amount+=2700;
+
+break;
+
+case "Self Employed":
+
+amount+=2400;
+
+break;
+
+case "Contract Employee":
+
+amount+=2100;
+
+break;
+
+case "Farmer":
+
+amount+=1800;
+
+break;
+
+case "Freelancer":
+
+amount+=1600;
+
+break;
+
+case "Casual Worker":
+
+amount+=1200;
+
+break;
+
+case "Pensioner":
+
+amount+=1700;
+
+break;
+
+}
+
+
+
+/* Income Score */
+
+if(application.income.includes("120")){
+
+amount+=5200;
+
+}
+
+else if(application.income.includes("80")){
+
+amount+=4200;
+
+}
+
+else if(application.income.includes("60")){
+
+amount+=3300;
+
+}
+
+else if(application.income.includes("44")){
+
+amount+=2500;
+
+}
+
+else if(application.income.includes("25")){
+
+amount+=1800;
+
+}
+
+else if(application.income.includes("18")){
+
+amount+=1200;
+
+}
+
+else{
+
+amount+=600;
+
+}
+
+
+
+/* Small Random Difference */
+
+amount+=Math.floor(Math.random()*500);
+
+
+
+/* Clamp */
+
+if(amount<5000){
+
+amount=5000;
+
+}
+
+if(amount>18000){
+
+amount=18000;
+
+}
+
+
+
+/* Round */
+
+amount=Math.round(amount/100)*100;
+
+return amount;
+
+}
+case 5:
+
+container.innerHTML = `
+
+<div class="fade-in">
+
+    <div class="text-center mb-10">
+
+        <div class="w-24 h-24 rounded-full bg-amber-100 mx-auto flex items-center justify-center text-amber-600 text-4xl">
+
+            <i class="fa-solid fa-user-group"></i>
+
+        </div>
+
+        <h2 class="heading-font text-3xl font-semibold mt-6">
+            Guarantor Information
+        </h2>
+
+        <p class="text-gray-500 mt-3">
+            Provide one guarantor who can be contacted if necessary.
+        </p>
+
+    </div>
+
+    <div class="space-y-6">
+
+        <div>
+
+            <label class="block mb-2 font-medium">
+                Guarantor Full Name
+            </label>
+
+            <input
+                id="guarantorName"
+                type="text"
+                class="w-full border rounded-2xl px-5 py-4"
+                placeholder="e.g. James Kariuki">
+
+        </div>
+
+        <div>
+
+            <label class="block mb-2 font-medium">
+                Guarantor Phone Number
+            </label>
+
+            <div class="flex">
+
+                <span class="bg-gray-100 border rounded-l-2xl px-6 flex items-center">
+                    +254
+                </span>
+
+                <input
+                    id="guarantorPhone"
+                    maxlength="9"
+                    class="flex-1 border rounded-r-2xl px-5 py-4"
+                    placeholder="712345678">
+
+            </div>
+
+        </div>
+
+        <div class="flex gap-4 pt-4">
+
+            <button
+                onclick="previousStep()"
+                class="flex-1 border rounded-2xl py-4">
+
+                Back
+
+            </button>
+
+            <button
+                onclick="saveGuarantor()"
+                class="flex-1 bg-blue-600 text-white rounded-2xl py-4">
+
+                Continue
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+`;
+
+break;
+
+
+
+case 6:
+
+container.innerHTML = `
+
+<div class="fade-in">
+
+    <div class="text-center mb-10">
+
+        <div class="w-24 h-24 rounded-full bg-emerald-100 mx-auto flex items-center justify-center text-emerald-600 text-4xl">
+
+            <i class="fa-solid fa-file-circle-check"></i>
+
+        </div>
+
+        <h2 class="heading-font text-3xl font-semibold mt-6">
+            Review Application
+        </h2>
+
+        <p class="text-gray-500 mt-3">
+            Please confirm that your information is correct.
+        </p>
+
+    </div>
+
+    <div class="bg-gray-50 border rounded-3xl p-8">
+
+        <div class="grid md:grid-cols-2 gap-8">
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Applicant</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.fullName}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Phone</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.phone}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">National ID</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.nationalId}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">County</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.county}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Employment</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.employment}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Monthly Income</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.income}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Guarantor</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.guarantorName}
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="text-gray-500 text-sm">Guarantor Phone</span>
+
+                <p class="font-semibold mt-1">
+                    ${application.guarantorPhone}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="bg-blue-50 border border-blue-200 rounded-3xl p-8 mt-8">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <p class="text-sm text-blue-600">
+
+                    Estimated Eligible Amount
+
+                </p>
+
+                <h2 class="text-4xl font-bold text-blue-700 mt-2">
+
+                    KSh ${application.eligibleAmount.toLocaleString()}
+
+                </h2>
+
+            </div>
+
+            <i class="fa-solid fa-sack-dollar text-5xl text-blue-600"></i>
+
+        </div>
+
+    </div>
+
+    <div class="flex gap-4 mt-10">
+
+        <button
+            onclick="previousStep()"
+            class="flex-1 border rounded-2xl py-4">
+
+            Back
+
+        </button>
+
+        <button
+            onclick="nextStep()"
+            class="flex-1 bg-blue-600 text-white rounded-2xl py-4">
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+
+`;
+
+break;
+
+
+
+function saveGuarantor(){
+
+const name=document.getElementById("guarantorName").value.trim();
+
+const phone=document.getElementById("guarantorPhone").value.trim();
+
+if(name.length<4){
+
+alert("Enter guarantor name.");
+
+return;
+
+}
+
+if(phone.length!=9){
+
+alert("Enter a valid guarantor phone number.");
+
+return;
+
+}
+
+application.guarantorName=name;
+
+application.guarantorPhone="+254"+phone;
+
+nextStep();
+
+}
+case 7:
+
+container.innerHTML = `
+
+<div class="fade-in max-w-2xl mx-auto">
+
+    <div class="text-center mb-10">
+
+        <div class="w-24 h-24 rounded-full bg-indigo-100 mx-auto flex items-center justify-center text-indigo-600 text-4xl">
+
+            <i class="fa-solid fa-file-signature"></i>
+
+        </div>
+
+        <h2 class="heading-font text-3xl font-semibold mt-6">
+            Terms & Agreement
+        </h2>
+
+        <p class="text-gray-500 mt-3">
+            Please read and accept the declaration below before continuing.
+        </p>
+
+    </div>
+
+    <div class="border rounded-3xl p-8 bg-gray-50 h-72 overflow-y-auto text-sm leading-7">
+
+        <p>
+            This application is submitted based on the information you have
+            provided. By continuing, you confirm that all information entered
+            is accurate to the best of your knowledge.
+        </p>
+
+        <br>
+
+        <p>
+            This project is a software demonstration created for portfolio
+            presentation purposes. Loan eligibility displayed is simulated
+            using a scoring algorithm based on employment category and income
+            bracket.
+        </p>
+
+        <br>
+
+        <p>
+            Your information is processed locally within this demonstration
+            and is not submitted to any financial institution.
+        </p>
+
+    </div>
+
+    <label
+        class="flex items-start gap-4 mt-8 cursor-pointer">
+
+        <input
+            id="agreeTerms"
+            type="checkbox"
+            class="mt-1 w-5 h-5 accent-blue-600">
+
+        <span>
+
+            I confirm that all the information provided is correct and I
+            agree to the Terms & Conditions.
+
+        </span>
+
+    </label>
+
+    <div class="flex gap-4 mt-10">
+
+        <button
+            onclick="previousStep()"
+            class="flex-1 border rounded-2xl py-4">
+
+            Back
+
+        </button>
+
+        <button
+            onclick="submitApplication()"
+            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-4">
+
+            Submit Application
+
+        </button>
+
+    </div>
+
+</div>
+
+`;
+
+break;
+
+
+
+function submitApplication(){
+
+if(!document.getElementById("agreeTerms").checked){
+
+alert("Please accept the Terms & Conditions.");
+
+return;
+
+}
+
+showProcessing();
+
+}
+
+
+
+function showProcessing(){
+
+currentStep = 8;
+
+renderProgress();
+
+const container = document.getElementById("stepContainer");
+
+container.innerHTML = `
+
+<div class="fade-in text-center py-16">
+
+    <div class="w-24 h-24 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin">
+
+    </div>
+
+    <h2 class="heading-font text-3xl font-semibold mt-10">
+
+        Processing Application
+
+    </h2>
+
+    <p class="text-gray-500 mt-3">
+
+        Please wait while we assess your application.
+
+    </p>
+
+    <div
+        id="processingList"
+        class="max-w-md mx-auto mt-12 space-y-5 text-left">
+
+    </div>
+
+</div>
+
+`;
+
+const stages = [
+
+"Verifying National ID",
+
+"Checking Employment",
+
+"Reviewing Income",
+
+"Calculating Eligibility",
+
+"Preparing Loan Offer"
+
+];
+
+let index = 0;
+
+const list = document.getElementById("processingList");
+
+const timer = setInterval(()=>{
+
+if(index < stages.length){
+
+list.innerHTML += `
+
+<div class="flex items-center gap-4 bg-gray-50 rounded-2xl p-4">
+
+<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>
+
+<span class="font-medium">
+
+${stages[index]}
+
+</span>
+
+</div>
+
+`;
+
+index++;
+
+}else{
+
+clearInterval(timer);
+
+setTimeout(showLoanOffer,900);
+
+}
+
+},900);
+
+}
+
+
+
+function generateReference(){
+
+const year = new Date().getFullYear();
+
+const random = Math.floor(100000 + Math.random()*900000);
+
+return `KL-${year}-NRB-${random}`;
+
+}
+
+
+
+function getInitials(name){
+
+return name
+
+.split(" ")
+
+.map(word=>word.charAt(0))
+
+.join("")
+
+.substring(0,2)
+
+.toUpperCase();
+
+}
+
+
+
+function showLoanOffer(){
+
+currentStep = 9;
+
+renderProgress();
+
+application.reference = generateReference();
+
+const container = document.getElementById("stepContainer");
+
+container.innerHTML = `
+
+<div class="fade-in text-center py-10">
+
+<div class="w-28 h-28 rounded-full bg-blue-600 text-white text-4xl font-bold flex items-center justify-center mx-auto">
+
+${getInitials(application.fullName)}
+
+</div>
+
+<h2 class="heading-font text-3xl font-semibold mt-8">
+
+${application.fullName}
+
+</h2>
+
+<p class="text-gray-500 mt-2">
+
+${application.phone}
+
+</p>
+
+<div class="mt-12 bg-emerald-50 border border-emerald-200 rounded-3xl p-10">
+
+<p class="text-emerald-600 text-sm tracking-wide">
+
+PRE-APPROVED LIMIT
+
+</p>
+
+<h1 class="text-6xl font-bold text-emerald-700 mt-4">
+
+KSh ${application.eligibleAmount.toLocaleString()}
+
+</h1>
+
+</div>
+
+<div class="grid md:grid-cols-2 gap-6 mt-10 text-left">
+
+<div class="bg-gray-50 rounded-3xl p-6">
+
+<p class="text-gray-500 text-sm">
+
+Reference Number
+
+</p>
+
+<h3 class="font-semibold mt-2">
+
+${application.reference}
+
+</h3>
+
+</div>
+
+<div class="bg-gray-50 rounded-3xl p-6">
+
+<p class="text-gray-500 text-sm">
+
+Loan Status
+
+</p>
+
+<h3 class="font-semibold mt-2 text-amber-600">
+
+Pending Verification
+
+</h3>
+
+</div>
+
+</div>
+
+<button
+
+onclick="loadDashboard()"
+
+class="mt-12 w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-2xl font-semibold">
+
+Continue to Dashboard
+
+</button>
+
+</div>
+
+`;
+
+}
+case 5: // GUARANTOR
                     html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-8">Guarantor</h2>
-                            <input id="g-name" placeholder="Guarantor Full Name" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
-                            <input id="g-phone" placeholder="Guarantor Phone" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
-                            <button onclick="saveGuarantor()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>`;
+                    <div class="fade-in">
+                        <div class="mb-8">
+                            <h2 class="heading-font text-3xl font-semibold">
+                                Guarantor Information
+                            </h2>
+                            <p class="text-gray-500 mt-2">
+                                Enter someone we can contact if necessary.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+
+                            <div>
+                                <label class="block mb-2 font-medium">
+                                    Guarantor Full Name
+                                </label>
+
+                                <input
+                                    id="g-name"
+                                    value="${applicationData.guarantorName || ""}"
+                                    placeholder="John Mwangi"
+                                    class="w-full border border-gray-300 rounded-3xl px-6 py-5 focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block mb-2 font-medium">
+                                    Guarantor Phone Number
+                                </label>
+
+                                <div class="flex">
+                                    <span class="bg-gray-100 border border-r-0 rounded-l-3xl px-6 flex items-center">
+                                        +254
+                                    </span>
+
+                                    <input
+                                        id="g-phone"
+                                        maxlength="9"
+                                        value="${applicationData.guarantorPhone || ""}"
+                                        placeholder="712345678"
+                                        class="flex-1 border border-gray-300 rounded-r-3xl px-6 py-5 focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2 font-medium">
+                                    Relationship
+                                </label>
+
+                                <select
+                                    id="relationship"
+                                    class="w-full border border-gray-300 rounded-3xl px-6 py-5 focus:ring-2 focus:ring-blue-500 outline-none">
+
+                                    <option value="">Select Relationship</option>
+
+                                    <option>Parent</option>
+                                    <option>Sibling</option>
+                                    <option>Spouse</option>
+                                    <option>Relative</option>
+                                    <option>Friend</option>
+                                    <option>Employer</option>
+
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="flex gap-4 mt-12">
+
+                            <button
+                                onclick="loadStep(4)"
+                                class="flex-1 border border-gray-300 py-5 rounded-3xl font-semibold hover:bg-gray-50">
+                                Back
+                            </button>
+
+                            <button
+                                onclick="saveGuarantor()"
+                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-3xl font-semibold">
+                                Continue
+                            </button>
+
+                        </div>
+
+                    </div>
+                    `;
                     break;
 
                 case 6: // REVIEW
                     html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-8">Review Your Application</h2>
-                            <div id="review-content" class="bg-gray-50 border rounded-3xl p-8 space-y-6 text-sm"></div>
-                            <div class="flex gap-4 mt-12">
-                                <button onclick="editApplication()" class="flex-1 py-6 border border-gray-300 rounded-3xl font-semibold">Edit Details</button>
-                                <button onclick="nextStep(7)" class="flex-1 bg-blue-600 text-white py-6 rounded-3xl font-semibold">Everything Correct</button>
-                            </div>
-                        </div>`;
+                    <div class="fade-in">
+
+                        <div class="mb-8">
+
+                            <h2 class="heading-font text-3xl font-semibold">
+                                Review Application
+                            </h2>
+
+                            <p class="text-gray-500 mt-2">
+                                Please confirm every detail before submitting.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="review-card"
+                            class="bg-gray-50 border rounded-3xl p-8 space-y-6">
+
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mt-10">
+
+                            <button
+                                onclick="loadStep(2)"
+                                class="border border-gray-300 py-5 rounded-3xl font-semibold hover:bg-gray-100">
+
+                                Edit Details
+
+                            </button>
+
+                            <button
+                                onclick="loadStep(7)"
+                                class="bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-3xl font-semibold">
+
+                                Everything Looks Good
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                    `;
                     break;
 
-                case 7:
+                case 7: // AGREEMENT
                     html = `
-                        <div class="fade-in">
-                            <h2 class="heading-font text-3xl font-semibold mb-6">Terms &amp; Agreement</h2>
-                            <div class="h-64 overflow-auto bg-gray-50 border rounded-3xl p-6 text-sm mb-8">
-                                I confirm that all information provided is accurate and I agree to KwikLoan Terms &amp; Conditions and Privacy Policy.
-                            </div>
-                            <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" id="terms-check" class="w-5 h-5 accent-blue-600">
-                                <span>I have read and agree to the Terms &amp; Conditions</span>
-                            </label>
-                            <button onclick="submitApplication()" class="w-full mt-12 bg-blue-600 text-white py-6 rounded-3xl font-semibold">Submit Application</button>
-                        </div>`;
+                    <div class="fade-in">
+
+                        <h2 class="heading-font text-3xl font-semibold mb-6">
+                            Loan Agreement
+                        </h2>
+
+                        <div class="bg-gray-50 border rounded-3xl p-6 h-64 overflow-y-auto text-sm leading-7">
+
+                            <p>
+                                This demonstration project illustrates a mock loan
+                                application workflow for UI presentation purposes.
+                            </p>
+
+                            <br>
+
+                            <p>
+                                By proceeding, you confirm that the information
+                                provided is accurate and that you understand this
+                                application is subject to verification.
+                            </p>
+
+                            <br>
+
+                            <p>
+                                Responsible borrowing is encouraged. Late repayments
+                                may attract additional charges depending on lender
+                                policies.
+                            </p>
+
+                        </div>
+
+                        <label
+                            class="flex items-center gap-3 mt-8 cursor-pointer">
+
+                            <input
+                                id="terms-check"
+                                type="checkbox"
+                                class="w-5 h-5 accent-blue-600">
+
+                            <span>
+                                I have read and agree to the Terms &
+                                Conditions.
+                            </span>
+
+                        </label>
+
+                        <button
+                            onclick="submitApplication()"
+                            class="w-full mt-10 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-3xl font-semibold">
+
+                            Submit Application
+
+                        </button>
+
+                    </div>
+                    `;
                     break;
+
             }
 
             container.innerHTML = html;
 
-            if (step === 6) renderReview();
-        }
-
-        function saveAccount() {
-            const phone = document.getElementById('phone').value.trim();
-            if (!phone || phone.length < 9) return alert("Please enter a valid phone number");
-            applicationData.phone = "+254" + phone;
-            nextStep(2);
-        }
-
-        function savePersonal() {
-            applicationData.fullName = document.getElementById('full-name').value || "John Kamau Mwangi";
-            applicationData.idNumber = document.getElementById('id-no').value;
-            applicationData.county = document.getElementById('county').value;
-            nextStep(3);
-        }
-
-        function selectJob(el) {
-            document.querySelectorAll('.employment-option').forEach(e => e.classList.remove('border-blue-600','bg-blue-50'));
-            el.classList.add('border-blue-600','bg-blue-50');
-            applicationData.employment = el.dataset.job;
-        }
-
-        function saveEmployment() {
-            if (!applicationData.employment) return alert("Please select your employment type");
-            nextStep(4);
-        }
-
-        function selectIncome(el) {
-            document.querySelectorAll('.income-opt').forEach(e => e.classList.remove('border-blue-600','bg-blue-50'));
-            el.classList.add('border-blue-600','bg-blue-50');
-            applicationData.income = el.dataset.val;
-        }
-
-        function saveIncome() {
-            if (!applicationData.income) return alert("Please select your monthly income range");
-            nextStep(5);
-        }
-
-        function saveGuarantor() {
-            applicationData.guarantorName = document.getElementById('g-name').value || "N/A";
-            applicationData.guarantorPhone = document.getElementById('g-phone').value || "N/A";
-            nextStep(6);
-        }
-
-        function renderReview() {
-            const content = document.getElementById('review-content');
-            content.innerHTML = `
-                <div class="grid grid-cols-2 gap-y-8">
-                    <div><span class="text-gray-500">Full Name</span><br><strong>${applicationData.fullName || 'John Kamau Mwangi'}</strong></div>
-                    <div><span class="text-gray-500">Phone</span><br><strong>${applicationData.phone}</strong></div>
-                    <div><span class="text-gray-500">National ID</span><br><strong>${applicationData.idNumber || 'N/A'}</strong></div>
-                    <div><span class="text-gray-500">County</span><br><strong>${applicationData.county || 'Nairobi'}</strong></div>
-                    <div><span class="text-gray-500">Employment</span><br><strong>${applicationData.employment || 'N/A'}</strong></div>
-                    <div><span class="text-gray-500">Monthly Income</span><br><strong>${applicationData.income || 'N/A'}</strong></div>
-                    <div><span class="text-gray-500">Guarantor</span><br><strong>${applicationData.guarantorName || 'N/A'}</strong></div>
-                    <div><span class="text-gray-500">Guarantor Phone</span><br><strong>${applicationData.guarantorPhone || 'N/A'}</strong></div>
-                </div>`;
-        }
-
-        function editApplication() {
-            currentStep = 2;
-            loadStep(2);
-        }
-
-        function nextStep(n) {
-            loadStep(n);
-        }
-
-        function submitApplication() {
-            if (!document.getElementById('terms-check').checked) {
-                return alert("Please agree to the Terms & Conditions");
+            if (step === 6) {
+                renderReview();
             }
-            currentStep = 7;
-            updateProgress();
-            showProcessing();
+/* ===========================================================
+   SAVE FUNCTIONS
+=========================================================== */
+
+function saveAccount() {
+
+    const phone = document.getElementById("phone").value.trim();
+
+    if (phone.length !== 9 || !/^[0-9]+$/.test(phone)) {
+        alert("Please enter a valid Kenyan phone number.");
+        return;
+    }
+
+    applicationData.phone = "+254" + phone;
+
+    loadStep(2);
+
+}
+
+function savePersonal() {
+
+    const fullName = document.getElementById("full-name").value.trim();
+    const idNumber = document.getElementById("id-no").value.trim();
+    const county = document.getElementById("county").value;
+
+    if (fullName.length < 5) {
+        alert("Enter your full name.");
+        return;
+    }
+
+    if (idNumber.length < 7) {
+        alert("Enter a valid National ID.");
+        return;
+    }
+
+    if (county === "") {
+        alert("Please select your county.");
+        return;
+    }
+
+    applicationData.fullName = fullName;
+    applicationData.idNumber = idNumber;
+    applicationData.county = county;
+
+    loadStep(3);
+
+}
+
+
+/* ===========================================================
+   EMPLOYMENT
+=========================================================== */
+
+function selectJob(card){
+
+    document.querySelectorAll(".employment-option")
+        .forEach(el=>{
+
+            el.classList.remove(
+                "border-blue-600",
+                "bg-blue-50",
+                "shadow-lg"
+            );
+
+        });
+
+    card.classList.add(
+        "border-blue-600",
+        "bg-blue-50",
+        "shadow-lg"
+    );
+
+    applicationData.employment = card.dataset.job;
+
+}
+
+function saveEmployment(){
+
+    if(!applicationData.employment){
+
+        alert("Please choose your employment type.");
+
+        return;
+
+    }
+
+    loadStep(4);
+
+}
+
+
+/* ===========================================================
+   INCOME
+=========================================================== */
+
+function selectIncome(card){
+
+    document.querySelectorAll(".income-opt")
+        .forEach(el=>{
+
+            el.classList.remove(
+                "border-blue-600",
+                "bg-blue-50",
+                "shadow-lg"
+            );
+
+        });
+
+    card.classList.add(
+        "border-blue-600",
+        "bg-blue-50",
+        "shadow-lg"
+    );
+
+    applicationData.income = card.dataset.val;
+
+}
+
+function saveIncome(){
+
+    if(!applicationData.income){
+
+        alert("Please choose your monthly income.");
+
+        return;
+
+    }
+
+    loadStep(5);
+
+}
+
+
+/* ===========================================================
+   GUARANTOR
+=========================================================== */
+
+function saveGuarantor(){
+
+    const name =
+        document.getElementById("g-name").value.trim();
+
+    const phone =
+        document.getElementById("g-phone").value.trim();
+
+    const relationship =
+        document.getElementById("relationship").value;
+
+    if(name.length < 5){
+
+        alert("Enter guarantor name.");
+
+        return;
+
+    }
+
+    if(phone.length !== 9){
+
+        alert("Enter valid guarantor phone number.");
+
+        return;
+
+    }
+
+    if(relationship === ""){
+
+        alert("Select relationship.");
+
+        return;
+
+    }
+
+    applicationData.guarantorName = name;
+
+    applicationData.guarantorPhone = "+254"+phone;
+
+    applicationData.relationship = relationship;
+
+    loadStep(6);
+
+}
+
+
+/* ===========================================================
+   REVIEW CARD
+=========================================================== */
+
+function renderReview(){
+
+    const review = document.getElementById("review-card");
+
+    review.innerHTML = `
+
+        <div class="grid md:grid-cols-2 gap-8 text-sm">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Full Name
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.fullName}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Phone
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.phone}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    National ID
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.idNumber}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    County
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.county}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Employment
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.employment}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Monthly Income
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.income}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Guarantor
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.guarantorName}
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Relationship
+                </p>
+
+                <p class="font-semibold mt-1">
+                    ${applicationData.relationship}
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+/* ===========================================================
+   AGREEMENT
+=========================================================== */
+
+function submitApplication() {
+
+    const agreed = document.getElementById("terms-check");
+
+    if (!agreed.checked) {
+
+        alert("Please accept the Terms & Conditions.");
+
+        return;
+
+    }
+
+    showProcessing();
+
+}
+
+
+/* ===========================================================
+   PROCESSING SCREEN
+=========================================================== */
+
+function showProcessing() {
+
+    currentStep = 8;
+    updateProgress();
+
+    const container = document.getElementById("step-container");
+
+    container.innerHTML = `
+
+    <div class="fade-in text-center py-16">
+
+        <div class="w-20 h-20 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin mb-8"></div>
+
+        <h2 class="heading-font text-3xl font-semibold mb-2">
+            Processing Application
+        </h2>
+
+        <p class="text-gray-500 mb-10">
+            Please wait while we assess your application.
+        </p>
+
+        <div
+            id="processing-list"
+            class="max-w-md mx-auto space-y-5 text-left">
+
+        </div>
+
+    </div>
+
+    `;
+
+    const stages = [
+
+        "Verifying National ID",
+
+        "Checking Employment",
+
+        "Reviewing Monthly Income",
+
+        "Calculating Eligibility",
+
+        "Generating Loan Offer"
+
+    ];
+
+    let index = 0;
+
+    const list = document.getElementById("processing-list");
+
+    const timer = setInterval(() => {
+
+        if (index < stages.length) {
+
+            list.innerHTML += `
+
+            <div
+            class="flex items-center gap-3 bg-green-50 border border-green-200 rounded-2xl px-5 py-4">
+
+                <i class="fa-solid fa-circle-check text-green-600"></i>
+
+                <span>${stages[index]}</span>
+
+            </div>
+
+            `;
+
+            index++;
+
+        } else {
+
+            clearInterval(timer);
+
+            setTimeout(showLoanOffer,800);
+
         }
 
-        function showProcessing() {
-            const container = document.getElementById('step-container');
-            container.innerHTML = `
-                <div class="text-center py-20 fade-in">
-                    <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-8"></div>
-                    <h3 class="text-2xl font-semibold mb-10">Processing Your Application...</h3>
-                    <div id="proc-list" class="max-w-sm mx-auto space-y-6 text-left"></div>
-                </div>`;
+    },900);
 
-            const stages = ["Verifying ID", "Checking Employment", "Reviewing Income", "Calculating Eligibility", "Preparing Offer"];
-            let i = 0;
-            const list = document.getElementById('proc-list');
+}
 
-            const interval = setInterval(() => {
-                if (i < stages.length) {
-                    list.innerHTML += `<div class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-emerald-500"></i> ${stages[i]}</div>`;
-                    i++;
-                } else {
-                    clearInterval(interval);
-                    setTimeout(showLoanOffer, 800);
-                }
-            }, 750);
+
+/* ===========================================================
+   LOAN LIMIT CALCULATOR
+=========================================================== */
+
+function calculateLoanAmount(){
+
+    let score = 0;
+
+    /* Income */
+
+    switch(applicationData.income){
+
+        case "KSh 5,000–12,000":
+            score += 1;
+            break;
+
+        case "KSh 12,001–18,000":
+            score += 2;
+            break;
+
+        case "KSh 18,001–25,000":
+            score += 3;
+            break;
+
+        case "KSh 25,001–44,000":
+            score += 5;
+            break;
+
+        case "KSh 44,001–60,000":
+            score += 6;
+            break;
+
+        case "KSh 60,001–80,000":
+            score += 7;
+            break;
+
+        case "KSh 80,001–120,000":
+            score += 8;
+            break;
+
+        default:
+            score += 9;
+
+    }
+
+    /* Employment */
+
+    switch(applicationData.employment){
+
+        case "Government Employee":
+            score += 5;
+            break;
+
+        case "NGO Staff":
+            score += 4;
+            break;
+
+        case "SACCO Employee":
+            score += 4;
+            break;
+
+        case "Private Sector":
+            score += 3;
+            break;
+
+        case "Business Owner":
+            score += 3;
+            break;
+
+        case "Contract Worker":
+            score += 2;
+            break;
+
+        case "Farmer":
+            score += 2;
+            break;
+
+        case "Freelancer":
+            score += 2;
+            break;
+
+        case "Self Employed":
+            score += 2;
+            break;
+
+        default:
+            score += 1;
+
+    }
+
+    /* County Bonus */
+
+    if(
+        applicationData.county==="Nairobi" ||
+        applicationData.county==="Kiambu" ||
+        applicationData.county==="Mombasa" ||
+        applicationData.county==="Nakuru"
+    ){
+
+        score += 1;
+
+    }
+
+    let amount = 5000 + (score * 650);
+
+    amount += Math.floor(Math.random()*700);
+
+    amount = Math.min(18000,amount);
+
+    amount = Math.max(5000,amount);
+
+    return Math.round(amount/100)*100;
+
+}
+
+
+/* ===========================================================
+   REFERENCE NUMBER
+=========================================================== */
+
+function generateReference(){
+
+    const counties={
+        "Nairobi":"NRB",
+        "Kiambu":"KMB",
+        "Mombasa":"MSA",
+        "Kisumu":"KSM",
+        "Nakuru":"NKR"
+    };
+
+    const code =
+        counties[applicationData.county] || "KEN";
+
+    const random =
+        Math.floor(100000+Math.random()*900000);
+
+    return `KL-2026-${code}-${random}`;
+
+}
+
+
+/* ===========================================================
+   OFFER PAGE
+=========================================================== */
+
+function showLoanOffer(){
+
+    applicationData.loanAmount =
+        calculateLoanAmount();
+
+    applicationData.reference =
+        generateReference();
+
+    const initials =
+        applicationData.fullName
+        .split(" ")
+        .map(n=>n[0])
+        .join("")
+        .substring(0,2);
+
+    document.getElementById("step-container").innerHTML = `
+
+    <div class="fade-in text-center">
+
+        <div
+        class="mx-auto w-24 h-24 rounded-full bg-blue-600 text-white text-3xl font-bold flex items-center justify-center">
+
+            ${initials}
+
+        </div>
+
+        <h2 class="heading-font text-3xl font-semibold mt-6">
+
+            ${applicationData.fullName}
+
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+
+            ${applicationData.phone}
+
+        </p>
+
+        <div class="mt-12 bg-green-50 border border-green-200 rounded-3xl p-10">
+
+            <p class="text-green-700 font-medium">
+
+                PRE-APPROVED LIMIT
+
+            </p>
+
+            <h1 class="text-6xl font-bold text-green-700 mt-4">
+
+                KSh ${applicationData.loanAmount.toLocaleString()}
+
+            </h1>
+
+        </div>
+
+        <button
+
+            onclick="finishApplication()"
+
+            class="w-full mt-12 bg-green-600 hover:bg-green-700 text-white py-5 rounded-3xl font-semibold">
+
+            Continue to Dashboard
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+/* ===========================================================
+   FINISH APPLICATION
+=========================================================== */
+
+function finishApplication() {
+
+    localStorage.setItem(
+        "kwikloan_demo",
+        JSON.stringify(applicationData)
+    );
+
+    showSection("dashboard-section");
+
+    renderDashboard();
+
+}
+
+
+/* ===========================================================
+   DASHBOARD
+=========================================================== */
+
+function renderDashboard() {
+
+    document.getElementById("dash-name").textContent =
+        applicationData.fullName;
+
+    document.getElementById("dash-phone").textContent =
+        applicationData.phone;
+
+    document.getElementById("dash-amount").textContent =
+        "KSh " + applicationData.loanAmount.toLocaleString();
+
+    document.getElementById("dash-ref").textContent =
+        applicationData.reference;
+
+    document.getElementById("dash-emp").textContent =
+        applicationData.employment;
+
+    document.getElementById("dash-income").textContent =
+        applicationData.income;
+
+    document.getElementById("dash-guarantor").textContent =
+        applicationData.guarantorName;
+
+}
+
+
+/* ===========================================================
+   PROGRESS BAR
+=========================================================== */
+
+function updateProgress() {
+
+    const titles = [
+
+        "Account",
+        "Personal",
+        "Employment",
+        "Income",
+        "Guarantor",
+        "Review",
+        "Agreement",
+        "Processing",
+        "Offer"
+
+    ];
+
+    const wrapper =
+        document.getElementById("progress-steps");
+
+    wrapper.innerHTML = "";
+
+    titles.forEach((title,index)=>{
+
+        const step = index + 1;
+
+        const div = document.createElement("div");
+
+        if(step < currentStep){
+
+            div.className =
+            "px-5 py-2 rounded-full bg-green-100 text-green-700 flex items-center gap-2";
+
+            div.innerHTML = `
+                <i class="fa-solid fa-check"></i>
+                ${title}
+            `;
+
         }
 
-        function showLoanOffer() {
-            applicationData.loanAmount = calculateLoanAmount();
-            applicationData.reference = generateReference();
+        else if(step===currentStep){
 
-            const container = document.getElementById('step-container');
-            container.innerHTML = `
-                <div class="text-center py-16 fade-in">
-                    <i class="fa-solid fa-circle-check text-7xl text-emerald-500 mb-6"></i>
-                    <h1 class="text-4xl font-semibold">Congratulations!</h1>
-                    <p class="mt-4 text-lg">You qualify for</p>
-                    <p class="text-6xl font-bold text-emerald-700 mt-6">KSh ${applicationData.loanAmount.toLocaleString('en-US')}</p>
-                    <button onclick="finishApplication()" class="mt-16 w-full bg-emerald-600 text-white py-6 rounded-3xl font-semibold">View Dashboard</button>
-                </div>`;
+            div.className =
+            "px-5 py-2 rounded-full bg-blue-600 text-white";
+
+            div.innerHTML = title;
+
         }
 
-        function finishApplication() {
-            localStorage.setItem('kwikloan_app', JSON.stringify(applicationData));
-            showSection('dashboard-section');
-            renderDashboard();
+        else{
+
+            div.className =
+            "px-5 py-2 rounded-full bg-gray-100 text-gray-500";
+
+            div.innerHTML = title;
+
         }
 
-        function renderDashboard() {
-            document.getElementById('dash-name').textContent = applicationData.fullName || "John Kamau Mwangi";
-            document.getElementById('dash-phone').textContent = applicationData.phone;
-            document.getElementById('dash-amount').textContent = `KSh ${applicationData.loanAmount.toLocaleString('en-US')}`;
-            document.getElementById('dash-ref').textContent = applicationData.reference;
-            document.getElementById('dash-emp').textContent = applicationData.employment || "Private Sector";
-            document.getElementById('dash-income').textContent = applicationData.income || "KSh 25,001–44,000";
-            document.getElementById('dash-guarantor').textContent = applicationData.guarantorName || "N/A";
-        }
+        wrapper.appendChild(div);
 
-        function updateCalculator() {
-            const amt = parseInt(document.getElementById('calc-amount').value);
-            document.getElementById('calc-val').textContent = amt.toLocaleString('en-US');
-            document.getElementById('calc-monthly').textContent = `KSh ${Math.round(amt / 6).toLocaleString('en-US')}`;
-        }
+    });
 
-        // Initialize
-        window.onload = () => {
-            const saved = localStorage.getItem('kwikloan_app');
-            if (saved) applicationData = JSON.parse(saved);
+    const percent =
+        ((currentStep-1)/(titles.length-1))*100;
 
-            updateCalculator();
-            showSection('landing');
-        };
-    </script>
+    document.getElementById("progress-bar").style.width =
+        percent + "%";
+
+}
+
+
+/* ===========================================================
+   LOAN CALCULATOR
+=========================================================== */
+
+function updateCalculator(){
+
+    const amount =
+        Number(document.getElementById("calc-amount").value);
+
+    const months =
+        Number(document.getElementById("calc-months").value);
+
+    const interest = 0.12;
+
+    const total =
+        amount + (amount * interest);
+
+    const monthly =
+        Math.round(total / months);
+
+    document.getElementById("calc-val").textContent =
+        amount.toLocaleString();
+
+    document.getElementById("calc-monthly").textContent =
+        "KSh " + monthly.toLocaleString();
+
+}
+
+
+/* ===========================================================
+   LOADED DASHBOARD
+=========================================================== */
+
+function loadSavedDashboard(){
+
+    const saved =
+        localStorage.getItem("kwikloan_demo");
+
+    if(!saved) return;
+
+    applicationData = JSON.parse(saved);
+
+}
+
+
+/* ===========================================================
+   SMALL PAGE ANIMATION
+=========================================================== */
+
+function fadePage(){
+
+    const page =
+        document.getElementById("step-container");
+
+    page.classList.remove("fade-in");
+
+    void page.offsetWidth;
+
+    page.classList.add("fade-in");
+
+}
+
+
+/* ===========================================================
+   RESET DEMO
+=========================================================== */
+
+function resetApplication(){
+
+    if(confirm("Start a new demo application?")){
+
+        localStorage.removeItem("kwikloan_demo");
+
+        applicationData = {};
+
+        currentStep = 1;
+
+        showSection("landing");
+
+    }
+
+}
+
+
+/* ===========================================================
+   WINDOW LOAD
+=========================================================== */
+
+window.onload = function(){
+
+    loadSavedDashboard();
+
+    updateCalculator();
+
+    showSection("landing");
+
+}
+
+
+/* ===========================================================
+   DEMO FOOTER YEAR
+=========================================================== */
+
+const footerYear =
+document.getElementById("footer-year");
+
+if(footerYear){
+
+    footerYear.textContent =
+        new Date().getFullYear();
+
+}
+<!-- FOOTER -->
+
+<footer class="bg-white border-t mt-20">
+
+    <div class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="grid md:grid-cols-4 gap-8">
+
+            <div>
+                <h3 class="heading-font text-xl font-semibold text-blue-700">
+                    KwikLoan Demo
+                </h3>
+
+                <p class="text-gray-500 mt-3 text-sm">
+                    Portfolio demonstration of a modern digital lending
+                    application UI built using HTML, Tailwind CSS and
+                    JavaScript.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="font-semibold mb-3">Company</h4>
+
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li>About</li>
+                    <li>Careers</li>
+                    <li>FAQs</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-semibold mb-3">Legal</h4>
+
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li>Privacy Policy</li>
+                    <li>Terms & Conditions</li>
+                    <li>Responsible Lending</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-semibold mb-3">Support</h4>
+
+                <ul class="space-y-2 text-gray-500 text-sm">
+                    <li>Contact</li>
+                    <li>Complaints</li>
+                    <li>Help Centre</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="border-t mt-10 pt-6 text-center text-gray-500 text-sm">
+
+            © <span id="footer-year"></span>
+            KwikLoan Demo • Built for UI/UX Portfolio Demonstration.
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script>
+
+    <!-- All your JavaScript here -->
+
+</script>
+
 </body>
 </html>
