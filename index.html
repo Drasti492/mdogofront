@@ -28,24 +28,29 @@
         </div>
     </nav>
 
-    <!-- LANDING PAGE -->
+    <!-- LANDING -->
     <div id="landing" class="section">
         <div class="hero-bg text-white py-24 text-center">
             <div class="max-w-4xl mx-auto px-6">
-                <h1 class="heading-font text-5xl md:text-6xl font-semibold leading-tight mb-6">Quick Personal Loans When You Need Them</h1>
-                <p class="text-xl text-blue-100">Instant eligibility. Funds to M-Pesa in 24 hours.</p>
-                
+                <h1 class="heading-font text-5xl md:text-6xl font-semibold leading-tight">Quick Personal Loans<br>When You Need Them</h1>
+                <p class="text-xl mt-4 text-blue-100">Instant eligibility • Funds to M-Pesa in 24 hours</p>
+
                 <div class="max-w-md mx-auto mt-12 bg-white/10 backdrop-blur p-8 rounded-3xl">
                     <h3 class="font-semibold mb-6">Loan Calculator</h3>
-                    <input id="calc-amount" type="range" min="5000" max="12000" value="8000" step="500" oninput="updateCalculator()" class="w-full accent-white">
+                    <input type="range" id="calc-amount" min="5000" max="12000" value="8000" step="500" 
+                           oninput="updateCalculator()" class="w-full accent-white">
                     <div class="flex justify-between text-sm mt-2">
-                        <span>KSh 5,000</span><span id="calc-val" class="font-semibold">8,000</span><span>KSh 12,000</span>
+                        <span>KSh 5,000</span>
+                        <span id="calc-val" class="font-bold">8,000</span>
+                        <span>KSh 12,000</span>
                     </div>
-                    <div class="mt-8 text-left">
-                        <div class="flex justify-between"><span>Est. Monthly</span><span id="calc-monthly" class="font-bold">KSh 1,600</span></div>
-                    </div>
+                    <div class="mt-6">Est. Monthly: <span id="calc-monthly" class="font-bold">KSh 1,600</span></div>
                 </div>
-                <button onclick="startApplication()" class="mt-10 bg-white text-blue-700 px-12 py-5 rounded-3xl text-lg font-semibold">Apply Now</button>
+
+                <button onclick="startApplication()" 
+                        class="mt-10 bg-white text-blue-700 px-12 py-5 rounded-3xl text-lg font-semibold hover:bg-blue-50">
+                    Apply Now
+                </button>
             </div>
         </div>
     </div>
@@ -55,17 +60,9 @@
         <div class="max-w-2xl mx-auto bg-white min-h-screen shadow-2xl">
             <!-- Progress -->
             <div class="sticky top-0 bg-white border-b p-6 z-50">
-                <div class="flex gap-3 overflow-x-auto pb-2 text-xs font-medium">
-                    <div id="prog-1" class="progress-step px-5 py-2 rounded-3xl">Account</div>
-                    <div id="prog-2" class="progress-step px-5 py-2 rounded-3xl">Personal</div>
-                    <div id="prog-3" class="progress-step px-5 py-2 rounded-3xl">Employment</div>
-                    <div id="prog-4" class="progress-step px-5 py-2 rounded-3xl">Income</div>
-                    <div id="prog-5" class="progress-step px-5 py-2 rounded-3xl">Guarantor</div>
-                    <div id="prog-6" class="progress-step px-5 py-2 rounded-3xl">Review</div>
-                    <div id="prog-7" class="progress-step px-5 py-2 rounded-3xl">Agreement</div>
-                </div>
-                <div class="h-1.5 bg-gray-100 rounded-full mt-4 overflow-hidden">
-                    <div id="progress-bar" class="h-1.5 bg-blue-600 rounded-full transition-all" style="width: 14%"></div>
+                <div id="progress-steps" class="flex gap-2 overflow-x-auto pb-3 text-xs font-medium"></div>
+                <div class="h-1.5 bg-gray-100 rounded-full mt-3">
+                    <div id="progress-bar" class="h-1.5 bg-blue-600 rounded-full transition-all"></div>
                 </div>
             </div>
 
@@ -77,37 +74,32 @@
     <div id="dashboard-section" class="section hidden min-h-screen bg-gray-100 py-12">
         <div class="max-w-4xl mx-auto px-6">
             <div class="bg-white rounded-3xl shadow-2xl p-10">
-                <div class="flex justify-between items-start">
+                <div class="flex justify-between">
                     <div>
                         <h1 id="dash-name" class="text-3xl font-semibold"></h1>
                         <p id="dash-phone" class="text-gray-500"></p>
                     </div>
-                    <div class="text-right">
-                        <span class="px-5 py-2 bg-emerald-100 text-emerald-700 rounded-3xl text-sm font-medium">Pending Verification</span>
-                    </div>
+                    <span class="px-5 py-2 bg-emerald-100 text-emerald-700 rounded-3xl text-sm font-medium">Pending Verification</span>
                 </div>
 
-                <div class="mt-12 grid md:grid-cols-2 gap-8">
-                    <div class="bg-emerald-50 border border-emerald-200 rounded-3xl p-8">
-                        <p class="text-emerald-600 text-sm font-medium">YOUR PRE-APPROVED LIMIT</p>
-                        <p id="dash-amount" class="text-6xl font-bold text-emerald-700 mt-3"></p>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div><span class="text-gray-500 block">Reference</span><span id="dash-ref" class="font-mono text-lg"></span></div>
-                        <div><span class="text-gray-500 block">Employment</span><span id="dash-emp"></span></div>
-                        <div><span class="text-gray-500 block">Monthly Income</span><span id="dash-income"></span></div>
-                        <div><span class="text-gray-500 block">Application Date</span><span>02 July 2026</span></div>
-                    </div>
+                <div class="mt-12 bg-emerald-50 border border-emerald-200 rounded-3xl p-10 text-center">
+                    <p class="text-emerald-600 text-sm font-medium">PRE-APPROVED LIMIT</p>
+                    <p id="dash-amount" class="text-6xl font-bold text-emerald-700 mt-3"></p>
                 </div>
 
-                <div class="mt-12 border border-amber-200 bg-amber-50 rounded-3xl p-6 text-sm">
-                    <p class="font-semibold text-amber-800">Important Note</p>
-                    <p class="text-amber-700">Failure to repay on time may result in additional fees, negative credit reporting, and legal action. Please borrow responsibly.</p>
+                <div class="grid grid-cols-2 gap-8 mt-12 text-sm">
+                    <div><span class="text-gray-500">Reference</span><br><span id="dash-ref" class="font-mono"></span></div>
+                    <div><span class="text-gray-500">Employment</span><br><span id="dash-emp"></span></div>
+                    <div><span class="text-gray-500">Monthly Income</span><br><span id="dash-income"></span></div>
+                    <div><span class="text-gray-500">Guarantor</span><br><span id="dash-guarantor"></span></div>
                 </div>
 
-                <button onclick="showSection('landing')" class="mt-12 w-full py-6 border border-gray-300 rounded-3xl font-semibold hover:bg-gray-50">
-                    Back to Home
+                <div class="mt-12 bg-amber-50 border border-amber-200 rounded-3xl p-6 text-sm">
+                    <strong>Important:</strong> Late repayment may result in penalties and credit impact. Borrow responsibly.
+                </div>
+
+                <button onclick="showSection('landing')" class="mt-12 w-full py-6 border-2 rounded-3xl font-semibold hover:bg-gray-50">
+                    Return Home
                 </button>
             </div>
         </div>
@@ -117,7 +109,13 @@
         let currentStep = 1;
         let applicationData = {};
 
-        const counties = ["Nairobi","Kiambu","Mombasa","Kisumu","Nakuru","Eldoret","Nyeri","Meru","Kakamega","Bungoma","Busia","Siaya","Homa Bay","Migori","Kisii","Kericho","Bomet","Trans Nzoia","Uasin Gishu","Nandi","Laikipia","Isiolo","Marsabit","Mandera","Wajir","Garissa","Tana River","Kilifi","Lamu","Taita Taveta","Kwale","Machakos","Makueni","Kitui","Embu","Tharaka Nithi","Murang'a","Kirinyaga","Turkana","West Pokot","Baringo","Kajiado","Samburu","Elgeyo Marakwet"];
+        const counties = [
+            "Nairobi", "Kiambu", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Nyeri", "Meru", "Kakamega", "Bungoma",
+            "Busia", "Siaya", "Homa Bay", "Migori", "Kisii", "Nyamira", "Kericho", "Bomet", "Trans Nzoia", "Uasin Gishu",
+            "Nandi", "Laikipia", "Isiolo", "Marsabit", "Mandera", "Wajir", "Garissa", "Tana River", "Kilifi", "Lamu",
+            "Taita Taveta", "Kwale", "Machakos", "Makueni", "Kitui", "Embu", "Tharaka Nithi", "Murang'a", "Kirinyaga",
+            "Turkana", "West Pokot", "Baringo", "Kajiado", "Samburu", "Elgeyo Marakwet", "Narok", "Nyandarua", "Vihiga"
+        ];
 
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
@@ -127,26 +125,34 @@
         function updateProgress() {
             const percent = Math.min(((currentStep - 1) / 7) * 100, 100);
             document.getElementById('progress-bar').style.width = percent + '%';
+
+            const stepsHTML = `
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Account</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 2 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Personal</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 3 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Employment</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 4 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Income</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 5 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Guarantor</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 6 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Review</div>
+                <div class="px-5 py-2 rounded-3xl ${currentStep === 7 ? 'bg-blue-600 text-white' : 'bg-gray-100'}">Agreement</div>
+            `;
+            document.getElementById('progress-steps').innerHTML = stepsHTML;
         }
 
         function calculateLoanAmount() {
             const income = applicationData.income || "";
             const job = applicationData.employment || "";
-            let base = 5500;
+            let amount = 5500;
 
-            if (income.includes("120k") || income.includes("80k")) base = 12000;
-            else if (income.includes("60k") || income.includes("44k")) base = 10500;
-            else if (income.includes("25k")) base = 8500;
-            else if (income.includes("18k")) base = 7200;
-            else base = 5800;
+            if (income.includes("80k") || income.includes("120k")) amount = 12000;
+            else if (income.includes("60k") || income.includes("44k")) amount = 10500;
+            else if (income.includes("25k")) amount = 8500;
+            else if (income.includes("18k")) amount = 6800;
 
-            // Job multiplier
-            if (job.includes("Government") || job.includes("NGO") || job.includes("SACCO")) base = Math.min(base + 1500, 12000);
-            if (job.includes("Business") || job.includes("Private")) base = Math.min(base + 800, 11500);
+            if (job.includes("Government") || job.includes("NGO") || job.includes("SACCO")) amount += 1500;
+            if (job.includes("Business")) amount += 1000;
 
-            // Add small randomness
-            base = base + Math.floor(Math.random() * 400) - 200;
-            return Math.max(5000, Math.round(base / 100) * 100);
+            amount = Math.max(5000, Math.min(12000, amount + Math.floor(Math.random() * 600) - 300));
+            return Math.round(amount / 100) * 100;
         }
 
         function generateReference() {
@@ -164,113 +170,114 @@
             currentStep = step;
             updateProgress();
             const container = document.getElementById('step-container');
-
             let html = '';
 
             switch(step) {
-                case 1: // Account
+                case 1:
                     html = `
-                    <div class="max-w-md mx-auto fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-2">Create Account</h2>
-                        <div class="space-y-6">
-                            <div>
-                                <label class="block text-sm mb-2">Phone Number</label>
-                                <div class="flex">
-                                    <span class="bg-gray-100 px-6 flex items-center border border-r-0 rounded-l-3xl">+254</span>
-                                    <input id="phone" maxlength="9" placeholder="712345678" class="flex-1 border border-gray-300 rounded-r-3xl px-6 py-5">
-                                </div>
+                        <div class="max-w-md mx-auto fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-2">Create Account</h2>
+                            <label class="block text-sm mb-2">Phone Number</label>
+                            <div class="flex">
+                                <span class="bg-gray-100 px-6 flex items-center border border-r-0 rounded-l-3xl">+254</span>
+                                <input id="phone" maxlength="9" placeholder="712345678" class="flex-1 border border-gray-300 rounded-r-3xl px-6 py-5">
                             </div>
-                            <button onclick="saveAccount()" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>
-                    </div>`;
+                            <button onclick="saveAccount()" class="w-full mt-10 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
+                        </div>`;
                     break;
 
-                case 2: // Personal
+                case 2:
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-8">Personal Details</h2>
-                        <div class="space-y-6">
-                            <input id="full-name" placeholder="Full Name as on ID" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
-                            <input id="id-no" maxlength="8" placeholder="National ID" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-8">Personal Details</h2>
+                            <input id="full-name" placeholder="Full Name" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
+                            <input id="id-no" maxlength="8" placeholder="National ID" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
                             <select id="county" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
                                 <option value="">Select County</option>
-                                ${counties.map(c => `<option>${c}</option>`).join('')}
+                                ${counties.map(c => `<option value="${c}">${c}</option>`).join('')}
                             </select>
-                            <button onclick="savePersonal()" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                        </div>
-                    </div>`;
+                            <button onclick="savePersonal()" class="w-full mt-10 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
+                        </div>`;
                     break;
 
-                case 3: // Employment
+                case 3:
                     const jobs = ["Government Employee","Private Sector","Self Employed","Business Owner","NGO Staff","SACCO Employee","Contract Worker","Farmer","Freelancer","Casual Worker","Pensioner"];
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-8">Employment Type</h2>
-                        <div id="jobs-grid" class="grid grid-cols-2 gap-4"></div>
-                        <button onclick="nextStep(4)" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                    </div>`;
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-8">Employment Type</h2>
+                            <div id="job-grid" class="grid grid-cols-2 gap-4"></div>
+                            <button onclick="saveEmployment()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
+                        </div>`;
                     setTimeout(() => {
-                        document.getElementById('jobs-grid').innerHTML = jobs.map(j => `
-                            <div onclick="selectJob(this)" data-job="${j}" class="employment-option border-2 p-6 rounded-3xl text-center cursor-pointer hover:border-blue-200">${j}</div>
+                        const grid = document.getElementById('job-grid');
+                        grid.innerHTML = jobs.map(job => `
+                            <div onclick="selectJob(this)" data-job="${job}" class="employment-option border-2 p-6 rounded-3xl text-center cursor-pointer hover:border-blue-200">${job}</div>
                         `).join('');
-                    }, 50);
+                    }, 100);
                     break;
 
-                case 4: // Income
+                case 4:
                     const brackets = ["KSh 5,000–12,000","KSh 12,001–18,000","KSh 18,001–25,000","KSh 25,001–44,000","KSh 44,001–60,000","KSh 60,001–80,000","KSh 80,001–120,000","Above KSh 120,000"];
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-8">Monthly Income</h2>
-                        <div id="income-grid" class="grid grid-cols-1 gap-4"></div>
-                        <button onclick="nextStep(5)" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                    </div>`;
-                    setTimeout(() => renderIncome(), 50);
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-8">Monthly Income</h2>
+                            <div id="income-grid" class="grid grid-cols-1 gap-4"></div>
+                            <button onclick="saveIncome()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
+                        </div>`;
+                    setTimeout(() => {
+                        const grid = document.getElementById('income-grid');
+                        grid.innerHTML = brackets.map(br => `
+                            <div onclick="selectIncome(this)" data-val="${br}" class="income-opt border-2 p-6 rounded-3xl text-center cursor-pointer">${br}</div>
+                        `).join('');
+                    }, 100);
                     break;
 
-                case 5: // Guarantor
+                case 5:
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-8">Guarantor</h2>
-                        <input id="g-name" placeholder="Guarantor Full Name" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
-                        <input id="g-phone" placeholder="Guarantor Phone" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
-                        <button onclick="nextStep(6)" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
-                    </div>`;
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-8">Guarantor</h2>
+                            <input id="g-name" placeholder="Guarantor Full Name" class="w-full border border-gray-300 rounded-3xl px-6 py-5 mb-6">
+                            <input id="g-phone" placeholder="Guarantor Phone" class="w-full border border-gray-300 rounded-3xl px-6 py-5">
+                            <button onclick="saveGuarantor()" class="w-full mt-12 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Continue</button>
+                        </div>`;
                     break;
 
-                case 6: // REVIEW (Fixed & Complete)
+                case 6: // REVIEW
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-8">Review Your Application</h2>
-                        <div id="review-content" class="bg-gray-50 border rounded-3xl p-8 space-y-8"></div>
-                        <div class="flex gap-4 mt-10">
-                            <button onclick="editPrevious()" class="flex-1 border border-gray-300 py-5 rounded-3xl font-semibold">Edit Details</button>
-                            <button onclick="nextStep(7)" class="flex-1 bg-blue-600 text-white py-5 rounded-3xl font-semibold">Everything Correct →</button>
-                        </div>
-                    </div>`;
-                    renderReview();
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-8">Review Your Application</h2>
+                            <div id="review-content" class="bg-gray-50 border rounded-3xl p-8 space-y-6 text-sm"></div>
+                            <div class="flex gap-4 mt-12">
+                                <button onclick="editApplication()" class="flex-1 py-6 border border-gray-300 rounded-3xl font-semibold">Edit Details</button>
+                                <button onclick="nextStep(7)" class="flex-1 bg-blue-600 text-white py-6 rounded-3xl font-semibold">Everything Correct</button>
+                            </div>
+                        </div>`;
                     break;
 
-                case 7: // Agreement
+                case 7:
                     html = `
-                    <div class="fade-in">
-                        <h2 class="heading-font text-3xl font-semibold mb-6">Terms & Conditions</h2>
-                        <div class="h-64 overflow-auto border rounded-3xl p-6 bg-gray-50 text-sm mb-8">
-                            By submitting this application, you agree to our Terms of Service and Privacy Policy. You confirm all information is true.
-                        </div>
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" id="agree-check" class="w-5 h-5 accent-blue-600">
-                            <span class="text-sm">I have read and agree to the Terms & Conditions</span>
-                        </label>
-                        <button onclick="submitApplication()" class="w-full mt-12 bg-blue-600 text-white py-6 rounded-3xl font-semibold">Submit Application</button>
-                    </div>`;
+                        <div class="fade-in">
+                            <h2 class="heading-font text-3xl font-semibold mb-6">Terms &amp; Agreement</h2>
+                            <div class="h-64 overflow-auto bg-gray-50 border rounded-3xl p-6 text-sm mb-8">
+                                I confirm that all information provided is accurate and I agree to KwikLoan Terms &amp; Conditions and Privacy Policy.
+                            </div>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="terms-check" class="w-5 h-5 accent-blue-600">
+                                <span>I have read and agree to the Terms &amp; Conditions</span>
+                            </label>
+                            <button onclick="submitApplication()" class="w-full mt-12 bg-blue-600 text-white py-6 rounded-3xl font-semibold">Submit Application</button>
+                        </div>`;
                     break;
             }
+
             container.innerHTML = html;
+
+            if (step === 6) renderReview();
         }
 
         function saveAccount() {
             const phone = document.getElementById('phone').value.trim();
-            if (!phone || phone.length < 9) return alert("Enter valid phone number");
+            if (!phone || phone.length < 9) return alert("Please enter a valid phone number");
             applicationData.phone = "+254" + phone;
             nextStep(2);
         }
@@ -288,13 +295,9 @@
             applicationData.employment = el.dataset.job;
         }
 
-        function renderIncome() {
-            const brackets = ["KSh 5,000–12,000","KSh 12,001–18,000","KSh 18,001–25,000","KSh 25,001–44,000","KSh 44,001–60,000","KSh 60,001–80,000","KSh 80,001–120,000","Above KSh 120,000"];
-            let str = '';
-            brackets.forEach(b => {
-                str += `<div onclick="selectIncome(this)" data-val="${b}" class="income-opt border-2 p-6 rounded-3xl text-center cursor-pointer">${b}</div>`;
-            });
-            document.getElementById('income-grid').innerHTML = str;
+        function saveEmployment() {
+            if (!applicationData.employment) return alert("Please select your employment type");
+            nextStep(4);
         }
 
         function selectIncome(el) {
@@ -303,20 +306,33 @@
             applicationData.income = el.dataset.val;
         }
 
-        function renderReview() {
-            const html = `
-                <div class="grid grid-cols-2 gap-y-8 text-sm">
-                    <div><span class="text-gray-500">Full Name</span><br><strong>${applicationData.fullName || 'John Kamau Mwangi'}</strong></div>
-                    <div><span class="text-gray-500">Phone</span><br><strong>${applicationData.phone}</strong></div>
-                    <div><span class="text-gray-500">National ID</span><br><strong>${applicationData.idNumber || '12345678'}</strong></div>
-                    <div><span class="text-gray-500">County</span><br><strong>${applicationData.county || 'Nairobi'}</strong></div>
-                    <div><span class="text-gray-500">Employment</span><br><strong>${applicationData.employment || 'Not selected'}</strong></div>
-                    <div><span class="text-gray-500">Monthly Income</span><br><strong>${applicationData.income || 'Not selected'}</strong></div>
-                </div>`;
-            document.getElementById('review-content').innerHTML = html;
+        function saveIncome() {
+            if (!applicationData.income) return alert("Please select your monthly income range");
+            nextStep(5);
         }
 
-        function editPrevious() {
+        function saveGuarantor() {
+            applicationData.guarantorName = document.getElementById('g-name').value || "N/A";
+            applicationData.guarantorPhone = document.getElementById('g-phone').value || "N/A";
+            nextStep(6);
+        }
+
+        function renderReview() {
+            const content = document.getElementById('review-content');
+            content.innerHTML = `
+                <div class="grid grid-cols-2 gap-y-8">
+                    <div><span class="text-gray-500">Full Name</span><br><strong>${applicationData.fullName || 'John Kamau Mwangi'}</strong></div>
+                    <div><span class="text-gray-500">Phone</span><br><strong>${applicationData.phone}</strong></div>
+                    <div><span class="text-gray-500">National ID</span><br><strong>${applicationData.idNumber || 'N/A'}</strong></div>
+                    <div><span class="text-gray-500">County</span><br><strong>${applicationData.county || 'Nairobi'}</strong></div>
+                    <div><span class="text-gray-500">Employment</span><br><strong>${applicationData.employment || 'N/A'}</strong></div>
+                    <div><span class="text-gray-500">Monthly Income</span><br><strong>${applicationData.income || 'N/A'}</strong></div>
+                    <div><span class="text-gray-500">Guarantor</span><br><strong>${applicationData.guarantorName || 'N/A'}</strong></div>
+                    <div><span class="text-gray-500">Guarantor Phone</span><br><strong>${applicationData.guarantorPhone || 'N/A'}</strong></div>
+                </div>`;
+        }
+
+        function editApplication() {
             currentStep = 2;
             loadStep(2);
         }
@@ -326,10 +342,11 @@
         }
 
         function submitApplication() {
-            if (!document.getElementById('agree-check').checked) {
-                alert("Please agree to the Terms & Conditions");
-                return;
+            if (!document.getElementById('terms-check').checked) {
+                return alert("Please agree to the Terms & Conditions");
             }
+            currentStep = 7;
+            updateProgress();
             showProcessing();
         }
 
@@ -338,36 +355,37 @@
             container.innerHTML = `
                 <div class="text-center py-20 fade-in">
                     <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-8"></div>
-                    <h3 class="text-2xl font-semibold mb-10">Processing Application...</h3>
-                    <div id="proc-steps" class="max-w-sm mx-auto space-y-6 text-left"></div>
+                    <h3 class="text-2xl font-semibold mb-10">Processing Your Application...</h3>
+                    <div id="proc-list" class="max-w-sm mx-auto space-y-6 text-left"></div>
                 </div>`;
-            
-            const steps = ["Verifying details", "Checking credit", "Assessing eligibility", "Finalizing offer"];
+
+            const stages = ["Verifying ID", "Checking Employment", "Reviewing Income", "Calculating Eligibility", "Preparing Offer"];
             let i = 0;
-            const el = document.getElementById('proc-steps');
+            const list = document.getElementById('proc-list');
+
             const interval = setInterval(() => {
-                if (i < steps.length) {
-                    el.innerHTML += `<div class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-emerald-500"></i> ${steps[i]}</div>`;
+                if (i < stages.length) {
+                    list.innerHTML += `<div class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-emerald-500"></i> ${stages[i]}</div>`;
                     i++;
                 } else {
                     clearInterval(interval);
-                    setTimeout(showOffer, 800);
+                    setTimeout(showLoanOffer, 800);
                 }
-            }, 700);
+            }, 750);
         }
 
-        function showOffer() {
+        function showLoanOffer() {
             applicationData.loanAmount = calculateLoanAmount();
             applicationData.reference = generateReference();
-            
+
             const container = document.getElementById('step-container');
             container.innerHTML = `
                 <div class="text-center py-16 fade-in">
                     <i class="fa-solid fa-circle-check text-7xl text-emerald-500 mb-6"></i>
                     <h1 class="text-4xl font-semibold">Congratulations!</h1>
-                    <p class="mt-3 text-gray-600">You qualify for</p>
+                    <p class="mt-4 text-lg">You qualify for</p>
                     <p class="text-6xl font-bold text-emerald-700 mt-6">KSh ${applicationData.loanAmount.toLocaleString('en-US')}</p>
-                    <button onclick="finishApplication()" class="mt-16 w-full bg-emerald-600 text-white py-6 rounded-3xl font-semibold">Go to Dashboard</button>
+                    <button onclick="finishApplication()" class="mt-16 w-full bg-emerald-600 text-white py-6 rounded-3xl font-semibold">View Dashboard</button>
                 </div>`;
         }
 
@@ -384,15 +402,20 @@
             document.getElementById('dash-ref').textContent = applicationData.reference;
             document.getElementById('dash-emp').textContent = applicationData.employment || "Private Sector";
             document.getElementById('dash-income').textContent = applicationData.income || "KSh 25,001–44,000";
+            document.getElementById('dash-guarantor').textContent = applicationData.guarantorName || "N/A";
         }
 
         function updateCalculator() {
-            const val = document.getElementById('calc-amount').value;
-            document.getElementById('calc-val').textContent = parseInt(val).toLocaleString('en-US');
-            document.getElementById('calc-monthly').textContent = `KSh ${Math.round(val / 6).toLocaleString('en-US')}`;
+            const amt = parseInt(document.getElementById('calc-amount').value);
+            document.getElementById('calc-val').textContent = amt.toLocaleString('en-US');
+            document.getElementById('calc-monthly').textContent = `KSh ${Math.round(amt / 6).toLocaleString('en-US')}`;
         }
 
+        // Initialize
         window.onload = () => {
+            const saved = localStorage.getItem('kwikloan_app');
+            if (saved) applicationData = JSON.parse(saved);
+
             updateCalculator();
             showSection('landing');
         };
