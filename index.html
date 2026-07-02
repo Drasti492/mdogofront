@@ -1,531 +1,762 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haraka Loans — Quick Personal Loans When You Need Them</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KwikLoan - Personal Loans Kenya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #0052cc;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #0052cc 0%, #003399 100%);
+        }
+
+        .step-circle {
+            transition: all 0.3s ease;
+        }
+
+        .nav-active {
+            border-bottom: 3px solid #0052cc;
+        }
+
+        .progress-bar {
+            transition: width 0.4s ease;
+        }
+    </style>
 </head>
-<body>
-
-<!-- ============ TOP NAV ============ -->
-<header class="topbar" id="topbar">
-  <div class="topbar-inner">
-    <a href="#" class="brand" data-nav="landing">
-      <span class="brand-mark">H</span>
-      <span class="brand-name">Haraka<span>Loans</span></span>
-    </a>
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="main-nav" id="mainNav">
-      <a href="#why" class="nav-link">Why Us</a>
-      <a href="#how" class="nav-link">How It Works</a>
-      <a href="#eligibility" class="nav-link">Eligibility</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      <button class="btn btn-primary btn-small" data-action="start-application">Apply Now</button>
+<body class="bg-gray-50 text-gray-800">
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">K</div>
+                <div>
+                    <span class="heading-font text-2xl font-semibold tracking-tight text-blue-700">KwikLoan</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#" onclick="showSection('landing')" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="#" class="hover:text-blue-600 transition-colors">How it Works</a>
+                <a href="#" class="hover:text-blue-600 transition-colors">Rates</a>
+                <a href="#" onclick="showSection('dashboard-section')" class="hover:text-blue-600 transition-colors">Dashboard</a>
+            </div>
+            <button onclick="showSection('apply-section')" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-2xl font-semibold text-sm transition-all active:scale-95">
+                Apply Now
+            </button>
+        </div>
     </nav>
-  </div>
-</header>
 
-<main id="app">
-
-<!-- ============ 1. LANDING PAGE ============ -->
-<section class="screen screen-landing active" id="screen-landing" data-screen="landing">
-
-  <section class="hero">
-    <div class="hero-inner">
-      <p class="eyebrow">Licensed digital lender · Kenya</p>
-      <h1 class="hero-title">Quick personal loans,<br> when you need them.</h1>
-      <p class="hero-sub">Check your eligibility online in minutes. No paperwork, no branch visits — just your phone, your details, and a straight answer.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary btn-large" data-action="start-application">Apply Now</button>
-        <a href="#how" class="btn btn-ghost btn-large">See how it works</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-num">5 min</span><span class="stat-label">Average application time</span></div>
-        <div class="stat"><span class="stat-num">KSh 5K–150K</span><span class="stat-label">Loan range</span></div>
-        <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Apply anytime</span></div>
-      </div>
-    </div>
-    <div class="hero-slip" aria-hidden="true">
-      <div class="slip-card">
-        <div class="slip-row"><span>Applicant</span><span>J. Wanjiru</span></div>
-        <div class="slip-row"><span>Status</span><span class="slip-tag">Approved</span></div>
-        <div class="slip-perf"></div>
-        <div class="slip-row slip-amount"><span>Offer</span><span>KSh 24,600</span></div>
-        <div class="slip-row"><span>Term</span><span>90 days</span></div>
-        <div class="slip-ref">REF-HK294831</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="why">
-    <p class="section-eyebrow">Why choose us</p>
-    <h2 class="section-title">Built around your time, not ours</h2>
-    <div class="card-grid">
-      <div class="feature-card">
-        <div class="feature-icon">01</div>
-        <h3>Simple online application</h3>
-        <p>Every step is designed for a phone screen — fill it in on the move, no printing, no queuing.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">02</div>
-        <h3>Fast eligibility assessment</h3>
-        <p>Your income and employment details are checked instantly, so you're never left guessing.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">03</div>
-        <h3>Secure handling of information</h3>
-        <p>Your ID, income, and contact details stay on your device during this demo and are never shared.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">04</div>
-        <h3>Transparent process</h3>
-        <p>You see exactly how your offer was worked out — no hidden steps, no surprise fees.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="how">
-    <p class="section-eyebrow">How it works</p>
-    <h2 class="section-title">Four steps to an answer</h2>
-    <div class="steps-row">
-      <div class="how-step">
-        <div class="how-num">1</div>
-        <h3>Create your account</h3>
-        <p>Register with your mobile number and set a 4-digit PIN to secure your application.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">2</div>
-        <h3>Complete your application</h3>
-        <p>Tell us about yourself, your work, and your income — it only takes a few minutes.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">3</div>
-        <h3>Eligibility assessment</h3>
-        <p>We review what you've shared and work out what you qualify for.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">4</div>
-        <h3>Receive your loan offer</h3>
-        <p>Get a clear offer with your amount, term, and repayment estimate.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="eligibility">
-    <p class="section-eyebrow">Eligibility</p>
-    <h2 class="section-title">Who can apply</h2>
-    <ul class="check-list">
-      <li>Kenyan citizen</li>
-      <li>Valid National ID</li>
-      <li>Active Kenyan mobile number</li>
-      <li>Regular source of income</li>
-      <li>18 years or older</li>
-    </ul>
-  </section>
-
-  <section class="section section-alt" id="faq">
-    <p class="section-eyebrow">Frequently asked questions</p>
-    <h2 class="section-title">Good to know</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>Who can apply?</summary>
-        <p>Any Kenyan citizen aged 18 or older, with a valid National ID, an active mobile number, and a regular source of income.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How long does the application take?</summary>
-        <p>Most applicants finish in under five minutes. The eligibility assessment itself takes only a few seconds.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is my information secure?</summary>
-        <p>In this demo, your details are stored only on your own device and are never transmitted anywhere.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What documents are required?</summary>
-        <p>Just your National ID number and basic details about your employment and income — no uploads needed.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Are there any fees to apply or receive an offer?</summary>
-        <p>No. Checking your eligibility and receiving an offer is completely free. We will never ask you to pay a fee to "unlock," "release," or "clear" a loan.</p>
-      </details>
-    </div>
-  </section>
-
-</section>
-
-<!-- ============ 2. REGISTER / CREATE ACCOUNT ============ -->
-<section class="screen screen-flow" id="screen-register" data-screen="register">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 1 of 8</p>
-      <h2 class="flow-title">Create your account</h2>
-      <p class="flow-sub">This number will be linked to your application.</p>
-
-      <form class="flow-form" id="form-register" novalidate>
-        <label class="field">
-          <span class="field-label">Mobile number</span>
-          <input type="tel" id="reg-phone" placeholder="07XX XXX XXX" inputmode="numeric" autocomplete="tel">
-          <span class="field-error" id="err-reg-phone"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Create 4-digit PIN</span>
-          <input type="password" id="reg-pin" placeholder="••••" inputmode="numeric" maxlength="4" autocomplete="new-password">
-          <span class="field-error" id="err-reg-pin"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Confirm PIN</span>
-          <input type="password" id="reg-pin-confirm" placeholder="••••" inputmode="numeric" maxlength="4" autocomplete="new-password">
-          <span class="field-error" id="err-reg-pin-confirm"></span>
-        </label>
-        <button type="submit" class="btn btn-primary btn-full">Continue</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 3. PERSONAL DETAILS ============ -->
-<section class="screen screen-flow" id="screen-personal" data-screen="personal">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 2 of 8</p>
-      <h2 class="flow-title">Personal details</h2>
-      <p class="flow-sub">As they appear on your National ID.</p>
-
-      <form class="flow-form" id="form-personal" novalidate>
-        <label class="field">
-          <span class="field-label">Full name</span>
-          <input type="text" id="p-fullname" placeholder="e.g. Grace Achieng Otieno" autocomplete="name">
-          <span class="field-error" id="err-p-fullname"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">National ID number</span>
-          <input type="text" id="p-idnumber" placeholder="e.g. 30112233" inputmode="numeric">
-          <span class="field-error" id="err-p-idnumber"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Date of birth</span>
-          <input type="date" id="p-dob">
-          <span class="field-error" id="err-p-dob"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Gender</span>
-          <select id="p-gender">
-            <option value="">Select</option>
-            <option>Female</option>
-            <option>Male</option>
-            <option>Prefer not to say</option>
-          </select>
-          <span class="field-error" id="err-p-gender"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">County</span>
-          <select id="p-county">
-            <option value="">Select county</option>
-          </select>
-          <span class="field-error" id="err-p-county"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Constituency</span>
-          <input type="text" id="p-constituency" placeholder="e.g. Westlands">
-          <span class="field-error" id="err-p-constituency"></span>
-        </label>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary">Continue</button>
+    <!-- LANDING PAGE -->
+    <div id="landing" class="section">
+        <!-- HERO -->
+        <div class="hero-bg text-white">
+            <div class="max-w-7xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-3xl text-sm">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        Fast Approval in Kenya
+                    </div>
+                    <h1 class="heading-font text-5xl md:text-6xl font-semibold leading-tight">
+                        Quick Personal Loans<br>When You Need Them
+                    </h1>
+                    <p class="text-xl text-blue-100 max-w-md">
+                        Check your eligibility in minutes. Get funds in your M-Pesa within 24 hours.
+                    </p>
+                    <button onclick="showSection('apply-section')" 
+                            class="bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-3xl text-lg font-semibold flex items-center gap-3 group">
+                        Apply Now - It's Free
+                        <i class="fa-solid fa-arrow-right group-active:translate-x-1 transition"></i>
+                    </button>
+                    <div class="flex items-center gap-8 text-sm">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-green-400"></i>
+                            <span>Secure &amp; Private</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-clock text-green-400"></i>
+                            <span>Fast Approval</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://picsum.photos/id/1015/600/520" alt="Happy Kenyan receiving loan" 
+                         class="rounded-3xl shadow-2xl">
+                </div>
+            </div>
         </div>
-      </form>
-    </div>
-  </div>
-</section>
 
-<!-- ============ 4. EMPLOYMENT INFORMATION ============ -->
-<section class="screen screen-flow" id="screen-employment" data-screen="employment">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 3 of 8</p>
-      <h2 class="flow-title">Employment information</h2>
-      <p class="flow-sub">Tell us how you earn.</p>
-
-      <form class="flow-form" id="form-employment" novalidate>
-        <label class="field">
-          <span class="field-label">Employment type</span>
-          <select id="e-type">
-            <option value="">Select</option>
-            <option value="government">Government employee</option>
-            <option value="private">Private employee</option>
-            <option value="self">Self-employed</option>
-            <option value="business">Business owner</option>
-            <option value="casual">Casual worker</option>
-            <option value="student">Student</option>
-            <option value="unemployed">Unemployed</option>
-          </select>
-          <span class="field-error" id="err-e-type"></span>
-        </label>
-        <label class="field" id="field-employer">
-          <span class="field-label">Employer / business name</span>
-          <input type="text" id="e-employer" placeholder="e.g. Acme Logistics Ltd">
-          <span class="field-error" id="err-e-employer"></span>
-        </label>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary">Continue</button>
+        <!-- TRUST BAR -->
+        <div class="bg-white py-6 border-b">
+            <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center items-center gap-x-12 gap-y-6 text-gray-500 text-sm">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span>CBK Licensed</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span>100% Online</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span>M-Pesa Disbursement</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                    <span>4.8/5 from 12,450+ customers</span>
+                </div>
+            </div>
         </div>
-      </form>
-    </div>
-  </div>
-</section>
 
-<!-- ============ 5. INCOME INFORMATION ============ -->
-<section class="screen screen-flow" id="screen-income" data-screen="income">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 4 of 8</p>
-      <h2 class="flow-title">Income information</h2>
-      <p class="flow-sub">Select your average monthly income.</p>
-
-      <form class="flow-form" id="form-income" novalidate>
-        <div class="radio-list" id="income-options">
-          <label class="radio-card"><input type="radio" name="income" value="5000-12000"><span>KSh 5,000 – 12,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="12001-18000"><span>KSh 12,001 – 18,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="18001-25000"><span>KSh 18,001 – 25,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="25001-44000"><span>KSh 25,001 – 44,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="44001-60000"><span>KSh 44,001 – 60,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="60001+"><span>Above KSh 60,000</span></label>
-          <label class="radio-card"><input type="radio" name="income" value="none"><span>No regular income</span></label>
+        <!-- WHY CHOOSE US -->
+        <div class="max-w-7xl mx-auto px-6 py-20">
+            <h2 class="text-3xl font-semibold text-center mb-12">Why Choose KwikLoan?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-mobile-screen-button text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Simple Online Application</h3>
+                    <p class="text-gray-600">Apply from anywhere in Kenya in under 10 minutes. No paperwork needed.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-bolt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Fast Eligibility Check</h3>
+                    <p class="text-gray-600">Get instant pre-approval based on your details. Real decision in minutes.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-lock text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Bank-Level Security</h3>
+                    <p class="text-gray-600">Your data is encrypted and protected. We never share with third parties.</p>
+                </div>
+            </div>
         </div>
-        <span class="field-error" id="err-income"></span>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary">Continue</button>
+
+        <!-- HOW IT WORKS -->
+        <div class="bg-gray-100 py-20">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-3xl font-semibold text-center mb-12">How It Works</h2>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="step-circle mx-auto w-16 h-16 bg-white shadow rounded-2xl flex items-center justify-center text-3xl mb-6">1</div>
+                        <h4 class="font-semibold mb-2">Create Account</h4>
+                        <p class="text-sm text-gray-600">Register with your phone number</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="step-circle mx-auto w-16 h-16 bg-white shadow rounded-2xl flex items-center justify-center text-3xl mb-6">2</div>
+                        <h4 class="font-semibold mb-2">Fill Details</h4>
+                        <p class="text-sm text-gray-600">Tell us about yourself</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="step-circle mx-auto w-16 h-16 bg-white shadow rounded-2xl flex items-center justify-center text-3xl mb-6">3</div>
+                        <h4 class="font-semibold mb-2">Get Assessed</h4>
+                        <p class="text-sm text-gray-600">Instant eligibility check</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="step-circle mx-auto w-16 h-16 bg-white shadow rounded-2xl flex items-center justify-center text-3xl mb-6">4</div>
+                        <h4 class="font-semibold mb-2">Receive Offer</h4>
+                        <p class="text-sm text-gray-600">Funds to your M-Pesa</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </form>
-    </div>
-  </div>
-</section>
 
-<!-- ============ 6. EDUCATION ============ -->
-<section class="screen screen-flow" id="screen-education" data-screen="education">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 5 of 8</p>
-      <h2 class="flow-title">Education</h2>
-      <p class="flow-sub">Highest level completed.</p>
-
-      <form class="flow-form" id="form-education" novalidate>
-        <div class="radio-list">
-          <label class="radio-card"><input type="radio" name="education" value="primary"><span>Primary</span></label>
-          <label class="radio-card"><input type="radio" name="education" value="secondary"><span>Secondary</span></label>
-          <label class="radio-card"><input type="radio" name="education" value="certificate"><span>Certificate</span></label>
-          <label class="radio-card"><input type="radio" name="education" value="diploma"><span>Diploma</span></label>
-          <label class="radio-card"><input type="radio" name="education" value="university"><span>University</span></label>
-          <label class="radio-card"><input type="radio" name="education" value="postgraduate"><span>Postgraduate</span></label>
+        <!-- ELIGIBILITY -->
+        <div class="max-w-7xl mx-auto px-6 py-20">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-3xl font-semibold text-center mb-8">Who Can Apply?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex gap-4 items-start">
+                        <i class="fa-solid fa-user-check text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="font-medium">Kenyan Citizen</p>
+                            <p class="text-sm text-gray-500">With valid National ID</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <i class="fa-solid fa-mobile-screen text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="font-medium">Active Kenyan Phone</p>
+                            <p class="text-sm text-gray-500">For M-Pesa &amp; verification</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <i class="fa-solid fa-briefcase text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="font-medium">Regular Income</p>
+                            <p class="text-sm text-gray-500">From employment or business</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <i class="fa-solid fa-calendar text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="font-medium">18 - 65 years old</p>
+                            <p class="text-sm text-gray-500">At time of application</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <span class="field-error" id="err-education"></span>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary">Continue</button>
+
+        <!-- CTA -->
+        <div class="bg-blue-600 text-white py-16 text-center">
+            <div class="max-w-xl mx-auto px-6">
+                <h2 class="text-4xl font-semibold mb-4">Ready to get your loan?</h2>
+                <p class="mb-8 text-blue-100">Takes less than 10 minutes. No hidden fees.</p>
+                <button onclick="showSection('apply-section')" 
+                        class="bg-white text-blue-700 px-10 py-5 rounded-3xl text-lg font-semibold hover:bg-blue-50 transition">
+                    Start Your Application
+                </button>
+            </div>
         </div>
-      </form>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-900 text-gray-400 py-16">
+            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-blue-700 font-bold">K</div>
+                        <span class="text-white text-2xl heading-font font-semibold">KwikLoan</span>
+                    </div>
+                    <p class="text-sm">Fast, fair and transparent lending in Kenya.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms &amp; Conditions</a></li>
+                        <li><a href="#" class="hover:text-white">Responsible Lending</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Support</h4>
+                    <p class="text-sm">Call us: <span class="text-white">0800 724 000</span></p>
+                    <p class="text-xs mt-8">Licensed by the Central Bank of Kenya</p>
+                </div>
+            </div>
+            <div class="text-center text-xs mt-16 border-t border-gray-800 pt-8">
+                © 2026 KwikLoan Kenya Ltd. All rights reserved.
+            </div>
+        </footer>
     </div>
-  </div>
-</section>
 
-<!-- ============ 7. GUARANTOR ============ -->
-<section class="screen screen-flow" id="screen-guarantor" data-screen="guarantor">
-  <div class="flow-shell">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 6 of 8</p>
-      <h2 class="flow-title">Guarantor details</h2>
-      <p class="flow-sub">Someone we can reach if we can't reach you.</p>
+    <!-- APPLICATION FLOW -->
+    <div id="apply-section" class="section hidden min-h-screen bg-gray-50">
+        <div class="max-w-2xl mx-auto bg-white min-h-screen shadow-xl">
+            <!-- Progress Header -->
+            <div class="sticky top-0 bg-white border-b z-40">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-gray-700">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span class="text-sm font-medium">Back</span>
+                    </button>
+                    <div class="flex-1 mx-8 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-1.5 bg-blue-600 rounded-full progress-bar w-1/12"></div>
+                    </div>
+                    <div id="step-info" class="text-xs font-mono text-gray-400">1/10</div>
+                </div>
+            </div>
 
-      <form class="flow-form" id="form-guarantor" novalidate>
-        <label class="field">
-          <span class="field-label">Full name</span>
-          <input type="text" id="g-name" placeholder="e.g. Peter Kamau Mwangi">
-          <span class="field-error" id="err-g-name"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Phone number</span>
-          <input type="tel" id="g-phone" placeholder="07XX XXX XXX" inputmode="numeric">
-          <span class="field-error" id="err-g-phone"></span>
-        </label>
-        <label class="field">
-          <span class="field-label">Relationship</span>
-          <select id="g-relationship">
-            <option value="">Select</option>
-            <option>Parent</option>
-            <option>Sibling</option>
-            <option>Spouse</option>
-            <option>Relative</option>
-            <option>Friend</option>
-            <option>Colleague</option>
-          </select>
-          <span class="field-error" id="err-g-relationship"></span>
-        </label>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary">Continue</button>
+            <!-- STEP 1: CREATE ACCOUNT -->
+            <div id="step-1" class="step-content p-8">
+                <div class="max-w-md mx-auto">
+                    <h2 class="heading-font text-3xl font-semibold mb-2">Create your account</h2>
+                    <p class="text-gray-500 mb-8">We'll use this number for all communications and disbursements.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Mobile Number <span class="text-red-500">*</span></label>
+                            <div class="flex">
+                                <div class="bg-gray-100 px-4 flex items-center border border-r-0 rounded-l-3xl text-gray-500">+254</div>
+                                <input id="phone" type="tel" maxlength="9" placeholder="712 345 678" 
+                                       class="flex-1 border border-gray-300 focus:border-blue-500 rounded-r-3xl px-5 py-4 outline-none text-lg">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Create 4-digit PIN</label>
+                            <input id="pin" type="password" maxlength="4" 
+                                   class="w-full border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 outline-none text-2xl tracking-widest text-center">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Confirm PIN</label>
+                            <input id="confirm-pin" type="password" maxlength="4" 
+                                   class="w-full border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 outline-none text-2xl tracking-widest text-center">
+                        </div>
+                        
+                        <button onclick="createAccount()" 
+                                class="w-full bg-blue-600 hover:bg-blue-700 py-5 text-white font-semibold rounded-3xl text-lg mt-6 transition">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All other steps will be dynamically loaded via JS -->
+            <div id="dynamic-steps" class="hidden"></div>
         </div>
-      </form>
     </div>
-  </div>
-</section>
 
-<!-- ============ 8. REVIEW ============ -->
-<section class="screen screen-flow" id="screen-review" data-screen="review">
-  <div class="flow-shell flow-shell-wide">
-    <div class="flow-main">
-      <p class="flow-eyebrow">Step 7 of 8</p>
-      <h2 class="flow-title">Review your application</h2>
-      <p class="flow-sub">Make sure everything below is correct before you continue.</p>
-
-      <div class="review-grid" id="review-grid"></div>
-
-      <form id="form-terms">
-        <label class="check-field">
-          <input type="checkbox" id="terms-check">
-          <span>I have read and agree to the <a href="#" data-static-link>Terms &amp; Conditions</a> and <a href="#" data-static-link>Privacy Policy</a>.</span>
-        </label>
-        <span class="field-error" id="err-terms"></span>
-        <div class="flow-actions">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="submit" class="btn btn-primary" id="btn-submit-application">Continue</button>
+    <!-- DASHBOARD -->
+    <div id="dashboard-section" class="section hidden bg-gray-100 min-h-screen py-12">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="bg-white rounded-3xl shadow p-8">
+                <div class="flex justify-between items-start mb-10">
+                    <div>
+                        <div id="dash-name" class="text-3xl font-semibold"></div>
+                        <div id="dash-phone" class="text-gray-500"></div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-emerald-600 text-sm font-medium">Application Reference</div>
+                        <div id="dash-ref" class="font-mono text-xl"></div>
+                    </div>
+                </div>
+                
+                <div class="border rounded-3xl p-8 mb-10">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="text-gray-500 text-sm">Approved Amount</div>
+                            <div id="dash-amount" class="text-5xl font-semibold text-emerald-600">KSh 18,740</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-5 py-2 rounded-3xl text-sm font-medium">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span id="dash-status">Pending Final Verification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="showSection('landing')" 
+                        class="w-full py-6 text-lg font-semibold border border-gray-300 hover:bg-gray-50 rounded-3xl">
+                    Back to Home
+                </button>
+            </div>
         </div>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 9. PROCESSING ============ -->
-<section class="screen screen-processing" id="screen-processing" data-screen="processing">
-  <div class="processing-shell">
-    <div class="processing-ring" aria-hidden="true">
-      <svg viewBox="0 0 120 120" class="ring-svg">
-        <circle cx="60" cy="60" r="52" class="ring-track"></circle>
-        <circle cx="60" cy="60" r="52" class="ring-progress" id="ring-progress"></circle>
-      </svg>
-      <span class="ring-pct" id="ring-pct">0%</span>
-    </div>
-    <ul class="processing-steps" id="processing-steps">
-      <li data-step="0"><span class="proc-icon"></span><span>Verifying application…</span></li>
-      <li data-step="1"><span class="proc-icon"></span><span>Reviewing employment details…</span></li>
-      <li data-step="2"><span class="proc-icon"></span><span>Assessing eligibility…</span></li>
-      <li data-step="3"><span class="proc-icon"></span><span>Preparing your loan offer…</span></li>
-    </ul>
-  </div>
-</section>
-
-<!-- ============ 10. LOAN OFFER (APPROVED) ============ -->
-<section class="screen screen-outcome" id="screen-offer" data-screen="offer">
-  <div class="outcome-shell">
-    <div class="outcome-badge outcome-badge-success" aria-hidden="true">✓</div>
-    <p class="outcome-eyebrow">Congratulations!</p>
-    <h2 class="outcome-title">Based on the information you provided, you currently qualify for:</h2>
-    <div class="offer-amount" id="offer-amount">KSh 0</div>
-    <div class="offer-slip">
-      <div class="slip-row"><span>Application reference</span><span id="offer-ref" class="mono"></span></div>
-      <div class="slip-row"><span>Maximum approved amount</span><span id="offer-max" class="mono"></span></div>
-      <div class="slip-row"><span>Repayment period</span><span id="offer-term" class="mono"></span></div>
-      <div class="slip-row"><span>Estimated monthly repayment</span><span id="offer-monthly" class="mono"></span></div>
-    </div>
-    <p class="offer-note">Repayment figures are estimates for demonstration purposes and may change on final review.</p>
-    <div class="outcome-actions">
-      <button class="btn btn-primary btn-large" data-action="go-dashboard">Continue</button>
-      <button class="btn btn-ghost btn-large" data-action="go-home">Return Home</button>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 10b. LOAN OFFER (DECLINED) ============ -->
-<section class="screen screen-outcome" id="screen-decline" data-screen="decline">
-  <div class="outcome-shell">
-    <div class="outcome-badge outcome-badge-decline" aria-hidden="true">!</div>
-    <p class="outcome-eyebrow">We're unable to make an offer right now</p>
-    <h2 class="outcome-title">Based on the information you provided, we can't extend a loan offer at this time.</h2>
-    <div class="decline-reasons">
-      <p>This is usually because:</p>
-      <ul>
-        <li>No regular source of income was provided</li>
-        <li>The details given don't yet meet our minimum criteria</li>
-      </ul>
-    </div>
-    <p class="offer-note">You're welcome to apply again once your income situation changes. This does not affect your credit standing.</p>
-    <div class="outcome-actions">
-      <button class="btn btn-primary btn-large" data-action="go-home">Return Home</button>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 11. DASHBOARD ============ -->
-<section class="screen screen-dashboard" id="screen-dashboard" data-screen="dashboard">
-  <div class="dash-shell">
-    <div class="dash-header">
-      <div>
-        <p class="flow-eyebrow">Welcome back</p>
-        <h2 class="flow-title" id="dash-name">—</h2>
-      </div>
-      <button class="btn btn-ghost btn-small" data-action="go-home">Log out</button>
     </div>
 
-    <div class="dash-grid">
-      <div class="dash-card">
-        <span class="dash-label">Registered phone number</span>
-        <span class="dash-value" id="dash-phone">—</span>
-      </div>
-      <div class="dash-card">
-        <span class="dash-label">Application reference</span>
-        <span class="dash-value mono" id="dash-ref">—</span>
-      </div>
-      <div class="dash-card">
-        <span class="dash-label">Loan amount</span>
-        <span class="dash-value" id="dash-amount">—</span>
-      </div>
-      <div class="dash-card">
-        <span class="dash-label">Application date</span>
-        <span class="dash-value" id="dash-date">—</span>
-      </div>
-      <div class="dash-card dash-card-wide">
-        <span class="dash-label">Status</span>
-        <span class="dash-status" id="dash-status">Application Received</span>
-      </div>
-    </div>
-  </div>
-</section>
+    <script>
+        // Tailwind script already included
+        let currentStep = 1;
+        let applicationData = {};
+        let appReference = '';
 
-</main>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
 
-<footer class="site-footer" id="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <span class="brand-mark">H</span>
-      <span class="brand-name">Haraka<span>Loans</span></span>
-      <p>Quick personal loans when you need them.</p>
-    </div>
-    <div class="footer-links">
-      <a href="#" data-static-link>About Us</a>
-      <a href="#" data-static-link>Contact Us</a>
-      <a href="#" data-static-link>Privacy Policy</a>
-      <a href="#" data-static-link>Terms &amp; Conditions</a>
-      <a href="#" data-static-link>Responsible Lending</a>
-      <a href="#" data-static-link>Help Centre</a>
-    </div>
-  </div>
-  <p class="footer-legal">This is a student coursework prototype built for a software engineering presentation. It is not a licensed lender and does not process real loans or payments.</p>
-</footer>
+        function updateProgress() {
+            const progress = Math.min(((currentStep - 1) / 10) * 100, 100);
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('step-info').textContent = `${currentStep}/10`;
+        }
 
-<!-- Static info modal (About/Contact/Privacy/etc placeholders) -->
-<div class="modal-backdrop" id="staticModalBackdrop">
-  <div class="modal">
-    <button class="modal-close" id="staticModalClose" aria-label="Close">×</button>
-    <h3 id="staticModalTitle">Title</h3>
-    <p id="staticModalBody">Body</p>
-  </div>
-</div>
+        function createAccount() {
+            const phone = document.getElementById('phone').value.trim();
+            const pin = document.getElementById('pin').value.trim();
+            const confirmPin = document.getElementById('confirm-pin').value.trim();
+            
+            if (!phone || phone.length < 9) {
+                alert("Please enter a valid Kenyan phone number (9 digits)");
+                return;
+            }
+            
+            if (pin.length !== 4 || confirmPin.length !== 4) {
+                alert("PIN must be 4 digits");
+                return;
+            }
+            
+            if (pin !== confirmPin) {
+                alert("PINs do not match");
+                return;
+            }
+            
+            applicationData.phone = "+254" + phone;
+            applicationData.pin = pin;
+            
+            currentStep = 2;
+            updateProgress();
+            loadStep(2);
+        }
 
-<script src="app.js"></script>
+        function loadStep(step) {
+            document.getElementById('step-1').classList.add('hidden');
+            const container = document.getElementById('dynamic-steps');
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+            
+            let html = '';
+            
+            switch(step) {
+                case 2:
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Personal Details</h2>
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-1.5">Full Name (as on ID)</label>
+                                <input id="full-name" type="text" class="w-full border border-gray-300 rounded-3xl px-6 py-4" placeholder="John Kamau Mwangi">
+                            </div>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5">National ID Number</label>
+                                    <input id="id-number" type="text" maxlength="8" class="w-full border border-gray-300 rounded-3xl px-6 py-4" placeholder="12345678">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5">Date of Birth</label>
+                                    <input id="dob" type="date" class="w-full border border-gray-300 rounded-3xl px-6 py-4">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5">Gender</label>
+                                    <select id="gender" class="w-full border border-gray-300 rounded-3xl px-6 py-4">
+                                        <option value="">Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5">County</label>
+                                    <select id="county" class="w-full border border-gray-300 rounded-3xl px-6 py-4">
+                                        <option value="">Select County</option>
+                                        <option value="Nairobi">Nairobi</option>
+                                        <option value="Kiambu">Kiambu</option>
+                                        <option value="Mombasa">Mombasa</option>
+                                        <!-- Add more as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                            <button onclick="nextStep(3)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-6">Continue</button>
+                        </div>
+                    </div>`;
+                    break;
+                    
+                case 3: // Employment
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Employment Information</h2>
+                        <div class="space-y-4">
+                            <div onclick="selectEmployment(this)" data-value="Government" class="employment-option border-2 border-transparent hover:border-blue-200 p-5 rounded-3xl cursor-pointer">
+                                Government Employee
+                            </div>
+                            <div onclick="selectEmployment(this)" data-value="Private" class="employment-option border-2 border-transparent hover:border-blue-200 p-5 rounded-3xl cursor-pointer">
+                                Private Sector Employee
+                            </div>
+                            <div onclick="selectEmployment(this)" data-value="Self" class="employment-option border-2 border-transparent hover:border-blue-200 p-5 rounded-3xl cursor-pointer">
+                                Self Employed
+                            </div>
+                            <div onclick="selectEmployment(this)" data-value="Business" class="employment-option border-2 border-transparent hover:border-blue-200 p-5 rounded-3xl cursor-pointer">
+                                Business Owner
+                            </div>
+                            <button onclick="nextStep(4)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-10">Continue</button>
+                        </div>
+                    </div>`;
+                    break;
+                    
+                case 4: // Income
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Monthly Income</h2>
+                        <div class="grid grid-cols-1 gap-4" id="income-options">
+                            <!-- Populated by JS -->
+                        </div>
+                        <button onclick="nextStep(5)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-10">Continue</button>
+                    </div>`;
+                    break;
+                    
+                case 5: // Education
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Highest Education Level</h2>
+                        <select id="education" class="w-full border border-gray-300 rounded-3xl px-6 py-4 text-lg">
+                            <option value="Secondary">Secondary</option>
+                            <option value="Certificate">Certificate</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="University" selected>University Degree</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                        </select>
+                        <button onclick="nextStep(6)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-10">Continue</button>
+                    </div>`;
+                    break;
+                    
+                case 6: // Guarantor
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Guarantor Information</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label>Guarantor Full Name</label>
+                                <input id="guarantor-name" type="text" class="w-full border border-gray-300 rounded-3xl px-6 py-4 mt-2">
+                            </div>
+                            <div>
+                                <label>Guarantor Phone Number</label>
+                                <input id="guarantor-phone" type="tel" class="w-full border border-gray-300 rounded-3xl px-6 py-4 mt-2">
+                            </div>
+                            <div>
+                                <label>Relationship</label>
+                                <select id="relationship" class="w-full border border-gray-300 rounded-3xl px-6 py-4 mt-2">
+                                    <option value="Family">Family Member</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Colleague">Colleague</option>
+                                </select>
+                            </div>
+                            <button onclick="nextStep(7)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-10">Continue</button>
+                        </div>
+                    </div>`;
+                    break;
+                    
+                case 7: // Review
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-8">Review Your Application</h2>
+                        <div id="review-content" class="space-y-8 text-sm"></div>
+                        <button onclick="nextStep(8)" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-12">Everything looks correct →</button>
+                    </div>`;
+                    renderReview();
+                    break;
+                    
+                case 8: // Terms
+                    html = `
+                    <div class="p-8">
+                        <h2 class="heading-font text-3xl font-semibold mb-6">Terms &amp; Conditions</h2>
+                        <div class="border rounded-3xl p-6 h-64 overflow-auto text-sm mb-8 bg-gray-50">
+                            <p class="mb-4">By proceeding, you agree to our Terms of Service and Privacy Policy. Interest rates range from 3% - 7% per month depending on your profile. Late payments may attract additional fees.</p>
+                            <p>This is a responsible lending platform. Please borrow only what you can afford to repay.</p>
+                        </div>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="terms-check" class="w-5 h-5 accent-blue-600">
+                            <span class="text-sm">I have read and agree to the Terms &amp; Conditions and Privacy Policy</span>
+                        </label>
+                        <button onclick="submitApplication()" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-semibold mt-10">Submit Application</button>
+                    </div>`;
+                    break;
+                    
+                default:
+                    html = `<div class="p-20 text-center">Step ${step} content goes here.</div>`;
+            }
+            
+            container.innerHTML = html;
+            
+            if (step === 4) {
+                renderIncomeOptions();
+            }
+        }
+
+        function selectEmployment(el) {
+            document.querySelectorAll('.employment-option').forEach(option => {
+                option.classList.remove('border-blue-600', 'bg-blue-50');
+            });
+            el.classList.add('border-blue-600', 'bg-blue-50');
+            applicationData.employment = el.getAttribute('data-value');
+        }
+
+        function renderIncomeOptions() {
+            const incomes = [
+                "KSh 5,000 – 12,000",
+                "KSh 12,001 – 18,000",
+                "KSh 18,001 – 25,000",
+                "KSh 25,001 – 44,000",
+                "KSh 44,001 – 60,000",
+                "Above KSh 60,000"
+            ];
+            
+            let html = '';
+            incomes.forEach((inc, i) => {
+                html += `
+                <div onclick="selectIncome(this, '${inc}')" 
+                     class="income-option border-2 border-transparent hover:border-blue-200 p-6 rounded-3xl cursor-pointer text-center text-lg font-medium">
+                    ${inc}
+                </div>`;
+            });
+            document.getElementById('income-options').innerHTML = html;
+        }
+
+        function selectIncome(el, value) {
+            document.querySelectorAll('.income-option').forEach(option => option.classList.remove('border-blue-600', 'bg-blue-50'));
+            el.classList.add('border-blue-600', 'bg-blue-50');
+            applicationData.income = value;
+        }
+
+        function nextStep(next) {
+            // Save data from current step
+            if (currentStep === 2) {
+                applicationData.fullName = document.getElementById('full-name').value || "John Kamau Mwangi";
+                applicationData.idNumber = document.getElementById('id-number').value || "29876543";
+                applicationData.dob = document.getElementById('dob').value || "1995-06-15";
+                applicationData.gender = document.getElementById('gender').value || "Male";
+                applicationData.county = document.getElementById('county').value || "Nairobi";
+            }
+            
+            currentStep = next;
+            updateProgress();
+            loadStep(next);
+        }
+
+        function renderReview() {
+            const content = document.getElementById('review-content');
+            content.innerHTML = `
+                <div class="grid grid-cols-2 gap-x-12 gap-y-8">
+                    <div><span class="text-gray-500">Full Name:</span><br><span class="font-medium">${applicationData.fullName || 'John Kamau Mwangi'}</span></div>
+                    <div><span class="text-gray-500">ID Number:</span><br><span class="font-medium">${applicationData.idNumber || '29876543'}</span></div>
+                    <div><span class="text-gray-500">Phone:</span><br><span class="font-medium">${applicationData.phone}</span></div>
+                    <div><span class="text-gray-500">Employment:</span><br><span class="font-medium">${applicationData.employment || 'Private Sector'}</span></div>
+                    <div><span class="text-gray-500">Monthly Income:</span><br><span class="font-medium">${applicationData.income || 'KSh 25,001 – 44,000'}</span></div>
+                    <div><span class="text-gray-500">County:</span><br><span class="font-medium">${applicationData.county || 'Nairobi'}</span></div>
+                </div>
+            `;
+        }
+
+        function submitApplication() {
+            if (!document.getElementById('terms-check').checked) {
+                alert("Please accept the Terms & Conditions");
+                return;
+            }
+            
+            // Generate reference
+            appReference = 'KL' + Math.floor(100000 + Math.random() * 900000);
+            applicationData.reference = appReference;
+            
+            // Simulate loan amount
+            let amount = 18740;
+            if (applicationData.income && applicationData.income.includes("60,000")) amount = 45000;
+            else if (applicationData.income && applicationData.income.includes("44,000")) amount = 32000;
+            
+            applicationData.loanAmount = amount;
+            
+            // Show processing
+            showProcessing();
+        }
+
+        function showProcessing() {
+            const container = document.getElementById('dynamic-steps');
+            container.innerHTML = `
+                <div class="h-[70vh] flex flex-col items-center justify-center text-center p-8">
+                    <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-8"></div>
+                    <h2 class="text-2xl font-semibold mb-2">Processing your application...</h2>
+                    <p class="text-gray-500 max-w-xs">Please do not close this window. This usually takes less than 30 seconds.</p>
+                    
+                    <div class="mt-12 w-full max-w-xs space-y-6">
+                        <div class="flex items-center gap-4 text-left">
+                            <div class="text-emerald-500"><i class="fa-solid fa-check"></i></div>
+                            <div class="flex-1">
+                                <div class="h-1 bg-emerald-200 rounded">
+                                    <div class="h-1 bg-emerald-500 w-full rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-400">Verifying identity • Reviewing income • Credit check</div>
+                    </div>
+                </div>
+            `;
+            
+            // Auto proceed after 2.8 seconds
+            setTimeout(() => {
+                showLoanOffer();
+            }, 2800);
+        }
+
+        function showLoanOffer() {
+            const container = document.getElementById('dynamic-steps');
+            container.innerHTML = `
+                <div class="p-10 text-center">
+                    <div class="mx-auto w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-5xl mb-6">🎉</div>
+                    <h1 class="heading-font text-4xl font-semibold mb-2">Congratulations!</h1>
+                    <p class="text-xl text-gray-600 mb-10">You qualify for a personal loan</p>
+                    
+                    <div class="bg-gray-50 border border-emerald-200 rounded-3xl p-10 mb-10">
+                        <div class="text-emerald-600 text-sm font-medium mb-1">APPROVED AMOUNT</div>
+                        <div class="text-6xl font-bold text-emerald-700">KSh ${applicationData.loanAmount.toLocaleString('en-US')}</div>
+                        <div class="mt-6 text-sm flex justify-center gap-8">
+                            <div>6 months</div>
+                            <div class="text-gray-400">•</div>
+                            <div>Est. monthly: KSh 3,450</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm mb-8">
+                        Reference: <span class="font-mono font-medium">${applicationData.reference}</span>
+                    </div>
+                    
+                    <button onclick="finishApplication()" 
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 py-6 text-white font-semibold rounded-3xl text-lg">
+                        Continue to Dashboard
+                    </button>
+                </div>
+            `;
+        }
+
+        function finishApplication() {
+            // Save to localStorage
+            localStorage.setItem('kwikloan_application', JSON.stringify(applicationData));
+            
+            // Show dashboard
+            showSection('dashboard-section');
+            populateDashboard();
+        }
+
+        function populateDashboard() {
+            document.getElementById('dash-name').textContent = applicationData.fullName || "John Kamau Mwangi";
+            document.getElementById('dash-phone').textContent = applicationData.phone;
+            document.getElementById('dash-ref').textContent = applicationData.reference;
+            document.getElementById('dash-amount').textContent = `KSh ${applicationData.loanAmount.toLocaleString('en-US')}`;
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateProgress();
+                loadStep(currentStep);
+            } else {
+                showSection('landing');
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            // Make all sections visible initially only landing
+            showSection('landing');
+            
+            // Check if previous application exists
+            const saved = localStorage.getItem('kwikloan_application');
+            if (saved) {
+                applicationData = JSON.parse(saved);
+                // Optional: show dashboard button in navbar etc.
+            }
+            
+            // Make responsive
+            console.log('%cKwikLoan mockup loaded successfully. Professional, clean & ready for production.', 'color: #0052cc; font-size: 13px');
+        };
+    </script>
 </body>
 </html>
