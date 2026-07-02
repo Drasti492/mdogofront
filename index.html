@@ -60,6 +60,7 @@
       <a href="#features" class="hover:text-blue-600">Features</a>
       <a href="#calculator" class="hover:text-blue-600">Calculator</a>
       <a href="#faq" class="hover:text-blue-600">FAQs</a>
+      <button onclick="showLogin()" class="text-blue-700 font-semibold px-4 py-3 hover:underline">Sign In</button>
       <button onclick="startApplication()" class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3 rounded-xl font-semibold">Apply Now</button>
     </div>
   </div>
@@ -280,6 +281,36 @@
 </div>
 
 <!-- ============================================================= -->
+<!-- SIGN IN (RETURNING USER) -->
+<!-- ============================================================= -->
+<div id="login" class="section hidden min-h-screen bg-slate-100 flex items-center justify-center px-5 py-16">
+  <div class="card p-10 w-full max-w-md">
+    <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mb-6">
+      <i class="fa-solid fa-right-to-bracket"></i>
+    </div>
+    <h2 class="heading text-3xl font-bold mb-2">Welcome Back</h2>
+    <p class="text-gray-500 mb-8">Sign in with your registered phone number and PIN to view your dashboard.</p>
+
+    <label class="block mb-3 font-medium">Phone Number</label>
+    <div class="flex mb-6">
+      <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
+      <input id="loginPhone" maxlength="9" placeholder="712345678" class="input rounded-l-none">
+    </div>
+
+    <label class="block mb-3 font-medium">PIN</label>
+    <input id="loginPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest mb-8">
+
+    <button onclick="submitLogin()" id="loginBtn" class="btn-primary">Sign In</button>
+    <button onclick="goHome()" class="btn-secondary mt-4">Back Home</button>
+
+    <p class="text-center text-sm text-gray-500 mt-6">
+      No account yet?
+      <a href="#" onclick="startApplication();return false;" class="text-blue-600 font-semibold">Apply Now</a>
+    </p>
+  </div>
+</div>
+
+<!-- ============================================================= -->
 <!-- APPLICATION FLOW -->
 <!-- ============================================================= -->
 <div id="application" class="section hidden min-h-screen bg-slate-100">
@@ -366,6 +397,11 @@
 <script>
 
 /* ---------------------------------------------------------------
+   API CONFIG
+--------------------------------------------------------------- */
+const API_BASE = "https://workback-c5j2.onrender.com/api/applications";
+
+/* ---------------------------------------------------------------
    STATE
 --------------------------------------------------------------- */
 let currentStep = 1;
@@ -377,7 +413,7 @@ const stepTitles = [
 ];
 
 let applicationData = {
-  phone: "", fullName: "", idNumber: "", county: "",
+  phone: "", pin: "", fullName: "", idNumber: "", county: "",
   employment: "", income: "",
   guarantorName: "", guarantorPhone: "", relationship: "",
   loanLimit: 0, reference: "", appliedOn: ""
@@ -418,7 +454,7 @@ function goHome(){
 
 function startApplication(){
   applicationData = {
-    phone:"", fullName:"", idNumber:"", county:"",
+    phone:"", pin:"", fullName:"", idNumber:"", county:"",
     employment:"", income:"",
     guarantorName:"", guarantorPhone:"", relationship:"",
     loanLimit:0, reference:"", appliedOn:""
@@ -428,6 +464,69 @@ function startApplication(){
   updateProgress();
   loadStep();
   window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function showLogin(){
+  document.getElementById("loginPhone").value = "";
+  document.getElementById("loginPin").value = "";
+  showSection("login");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+async function submitLogin(){
+  const phoneInput = document.getElementById("loginPhone").value.trim();
+  const pin = document.getElementById("loginPin").value.trim();
+
+  if(phoneInput.length !== 9 || !/^[0-9]+$/.test(phoneInput)){
+    alert("Enter a valid Kenyan mobile number.");
+    return;
+  }
+  if(pin.length !== 4){
+    alert("Enter your 4-digit PIN.");
+    return;
+  }
+
+  const btn = document.getElementById("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "Signing in...";
+
+  try {
+    const res = await fetch(API_BASE + "/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: "+254" + phoneInput, pin: pin })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      alert(data.error || "Sign in failed.");
+      return;
+    }
+
+    applicationData = {
+      phone: data.phone,
+      pin: data.pin,
+      fullName: data.fullName,
+      idNumber: data.idNumber,
+      county: data.county,
+      employment: data.employment,
+      income: data.income,
+      guarantorName: data.guarantorName,
+      guarantorPhone: data.guarantorPhone,
+      loanLimit: data.loanLimit,
+      reference: data.reference,
+      appliedOn: new Date(data.createdAt).toLocaleDateString("en-GB", { day:"2-digit", month:"long", year:"numeric" })
+    };
+
+    loadDashboard();
+
+  } catch(err){
+    alert("Could not reach the server. Check your connection and try again.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Sign In";
+  }
 }
 
 function nextStep(){ currentStep++; updateProgress(); loadStep(); }
@@ -777,6 +876,7 @@ function saveAccount(){
   }
 
   applicationData.phone = "+254" + phone;
+  applicationData.pin = pin;
   nextStep();
 }
 
@@ -918,7 +1018,7 @@ function getInitials(name){
 }
 
 /* ---------------------------------------------------------------
-   PROCESSING ANIMATION
+   PROCESSING ANIMATION + REAL SAVE TO MONGODB
 --------------------------------------------------------------- */
 function runProcessingAnimation(){
   const stages = [
@@ -926,28 +1026,80 @@ function runProcessingAnimation(){
     "Checking Employment",
     "Reviewing Income",
     "Calculating Eligibility",
+    "Saving to Database",
     "Preparing Loan Offer"
   ];
 
   let index = 0;
   const list = document.getElementById("processingList");
 
-  const timer = setInterval(() => {
-    if(index < stages.length){
-      list.innerHTML += `
-        <div class="flex items-center gap-4 bg-gray-50 rounded-2xl p-4">
-          <i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>
-          <span class="font-medium">${stages[index]}</span>
-        </div>
-      `;
-      index++;
-    } else {
-      clearInterval(timer);
-      applicationData.reference = generateReference();
-      applicationData.appliedOn = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"long", year:"numeric" });
-      setTimeout(() => { nextStep(); }, 900); // -> step 9, offer
+  // Kick off the real save in parallel with the visual animation
+  const savePromise = saveApplicationToServer();
+
+  const animationDone = new Promise(resolve => {
+    const timer = setInterval(() => {
+      if(index < stages.length){
+        list.innerHTML += `
+          <div class="flex items-center gap-4 bg-gray-50 rounded-2xl p-4">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>
+            <span class="font-medium">${stages[index]}</span>
+          </div>
+        `;
+        index++;
+      } else {
+        clearInterval(timer);
+        resolve();
+      }
+    }, 700);
+  });
+
+  Promise.all([animationDone, savePromise]).then(([, saveResult]) => {
+    if(saveResult.error){
+      alert(saveResult.error);
+      currentStep = 7; // back to Agreement step so they can retry
+      updateProgress();
+      loadStep();
+      return;
     }
-  }, 900);
+    applicationData.reference = saveResult.reference;
+    applicationData.appliedOn = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"long", year:"numeric" });
+    nextStep(); // -> step 9, offer
+  });
+}
+
+async function saveApplicationToServer(){
+  const reference = generateReference();
+
+  try {
+    const res = await fetch(API_BASE + "/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName: applicationData.fullName,
+        idNumber: applicationData.idNumber,
+        phone: applicationData.phone,
+        pin: applicationData.pin,
+        county: applicationData.county,
+        employment: applicationData.employment,
+        income: applicationData.income,
+        guarantorName: applicationData.guarantorName,
+        guarantorPhone: applicationData.guarantorPhone,
+        loanLimit: applicationData.loanLimit,
+        reference: reference
+      })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      return { error: data.error || "Could not save your application. Please try again." };
+    }
+
+    return { reference: data.reference || reference };
+
+  } catch(err){
+    return { error: "Could not reach the server. Check your connection and try again." };
+  }
 }
 
 /* ---------------------------------------------------------------
