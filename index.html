@@ -258,36 +258,18 @@
         <div>
           <h2 class="heading text-2xl font-bold">KwikLoan Demo</h2>
           <p class="text-gray-400 mt-5 leading-8">A modern responsive loan application interface built for software engineering portfolio demonstration.</p>
-          <a href="mailto:kwikloans254@gmail.com" class="inline-flex items-center gap-2 text-gray-300 hover:text-white mt-5 text-sm">
-            <i class="fa-solid fa-envelope"></i> kwikloans254@gmail.com
-          </a>
         </div>
         <div>
           <h3 class="font-semibold mb-5">Company</h3>
-          <ul class="space-y-3 text-gray-400 text-sm">
-            <li><a href="#" onclick="openInfo('about');return false;" class="hover:text-white">About Us</a></li>
-            <li><a href="#" onclick="openInfo('careers');return false;" class="hover:text-white">Careers</a></li>
-            <li><a href="mailto:kwikloans254@gmail.com" class="hover:text-white">Contact</a></li>
-            <li><a href="#faq" class="hover:text-white">FAQs</a></li>
-          </ul>
+          <ul class="space-y-3 text-gray-400"><li>About Us</li><li>Careers</li><li>Contact</li><li>FAQs</li></ul>
         </div>
         <div>
           <h3 class="font-semibold mb-5">Legal</h3>
-          <ul class="space-y-3 text-gray-400 text-sm">
-            <li><a href="#" onclick="openInfo('privacy');return false;" class="hover:text-white">Privacy Policy</a></li>
-            <li><a href="#" onclick="openInfo('terms');return false;" class="hover:text-white">Terms & Conditions</a></li>
-            <li><a href="#" onclick="openInfo('responsible');return false;" class="hover:text-white">Responsible Lending</a></li>
-            <li><a href="#" onclick="openInfo('dataProtection');return false;" class="hover:text-white">Data Protection</a></li>
-          </ul>
+          <ul class="space-y-3 text-gray-400"><li>Privacy Policy</li><li>Terms & Conditions</li><li>Responsible Lending</li><li>Data Protection</li></ul>
         </div>
         <div>
           <h3 class="font-semibold mb-5">Support</h3>
-          <ul class="space-y-3 text-gray-400 text-sm">
-            <li><a href="mailto:kwikloans254@gmail.com" class="hover:text-white">Complaints</a></li>
-            <li><a href="#" onclick="openInfo('cookies');return false;" class="hover:text-white">Cookies</a></li>
-            <li><a href="#faq" class="hover:text-white">Help Centre</a></li>
-            <li><a href="mailto:kwikloans254@gmail.com" class="hover:text-white">Customer Support</a></li>
-          </ul>
+          <ul class="space-y-3 text-gray-400"><li>Complaints</li><li>Cookies</li><li>Help Centre</li><li>Customer Support</li></ul>
         </div>
       </div>
       <div class="border-t border-slate-700 mt-12 pt-8 text-center text-gray-500 text-sm">
@@ -297,14 +279,6 @@
   </footer>
 
 </div>
-
-<!-- ============================================================= -->
-<!-- INFO MODAL (About / Legal / Policies) -->
-<!-- ============================================================= -->
-<div id="infoModal" class="section hidden fixed inset-0 z-[70] bg-black/50 flex items-center justify-center px-5 py-10 overflow-y-auto">
-  <div id="infoModalCard" class="card p-6 sm:p-10 w-full max-w-xl my-auto"></div>
-</div>
-
 
 <!-- ============================================================= -->
 <!-- LOGIN (RETURNING USER) -->
@@ -346,11 +320,10 @@
       <p class="text-gray-500 mb-8">Enter your registered phone number and PIN.</p>
 
       <label class="block mb-3 font-medium">Phone Number</label>
-      <div class="flex mb-2">
+      <div class="flex mb-6">
         <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center font-medium text-gray-600">+254</div>
-        <input id="loginPhone" maxlength="13" placeholder="0712345678 or 712345678" class="input rounded-l-none">
+        <input id="loginPhone" maxlength="9" placeholder="712345678" class="input rounded-l-none">
       </div>
-      <p class="text-xs text-gray-400 mb-6">Any format works: 0712345678, 712345678, or 254712345678.</p>
 
       <label class="block mb-3 font-medium">PIN</label>
       <input id="loginPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest mb-8">
@@ -393,78 +366,64 @@
 <!-- DASHBOARD -->
 <!-- ============================================================= -->
 <div id="dashboard" class="section hidden min-h-screen bg-slate-100">
-  <div class="max-w-6xl mx-auto px-5 sm:px-6 py-10 sm:py-12">
+  <div class="max-w-6xl mx-auto px-6 py-12">
 
-    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+    <div class="flex items-center justify-between mb-8 flex-wrap gap-6">
       <div>
-        <h1 class="heading text-2xl sm:text-4xl font-bold">My Dashboard</h1>
-        <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Your loan application summary</p>
+        <h1 class="heading text-4xl font-bold">My Dashboard</h1>
+        <p class="text-gray-500 mt-2">Your loan application summary</p>
       </div>
-
-      <div class="flex items-center gap-3">
-        <button onclick="openProfile()" class="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl pl-2 pr-4 py-2 hover:shadow-md transition">
-          <div id="profileAvatar" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">JK</div>
-          <div class="text-left hidden sm:block">
-            <p id="dashName" class="font-semibold text-sm leading-tight">—</p>
-            <p id="dashPhone" class="text-gray-400 text-xs leading-tight">—</p>
-          </div>
-          <i class="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
-        </button>
-
-        <button onclick="logoutUser()" title="Log Out" class="w-11 h-11 rounded-2xl border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center transition">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
+      <div class="flex items-center gap-4">
+        <div id="profileAvatar" class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold">JK</div>
+        <div>
+          <h2 id="dashName" class="font-semibold text-xl">—</h2>
+          <p id="dashPhone" class="text-gray-500">—</p>
+        </div>
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-6 sm:gap-8">
+    <div class="grid lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2">
-        <div class="card p-6 sm:p-8">
-          <div class="flex items-center gap-2 text-gray-500 text-sm">
-            <i class="fa-solid fa-wallet text-emerald-500"></i>
-            <span>Eligible Loan Amount</span>
-          </div>
-
-          <div class="flex items-end justify-between flex-wrap gap-5 mt-3">
-            <h1 id="dashLimit" class="heading text-4xl sm:text-5xl font-bold text-emerald-600">KSh 0</h1>
-            <button onclick="openClaim()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-2xl font-semibold text-sm inline-flex items-center gap-2 whitespace-nowrap">
-              <i class="fa-solid fa-hand-holding-dollar"></i> Claim Your Limit
-            </button>
+        <div class="card p-8">
+          <div class="flex items-center justify-between flex-wrap gap-6">
+            <div>
+              <p class="text-gray-500">Eligible Loan Amount</p>
+              <h1 id="dashLimit" class="heading text-6xl font-bold text-emerald-600 mt-4">KSh 0</h1>
+            </div>
+            <div class="flex flex-col items-end gap-3">
+              <i class="fa-solid fa-wallet text-6xl text-emerald-500"></i>
+              <button onclick="openClaim()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-semibold text-sm whitespace-nowrap">
+                Claim Your Limit
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-5 sm:gap-6 mt-6 sm:mt-8">
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Loan Status</p><h3 class="font-semibold text-lg sm:text-xl mt-2 text-amber-600">Pending Verification</h3></div>
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Reference Number</p><h3 id="dashReference" class="font-semibold mt-2">—</h3></div>
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Employment</p><h3 id="dashEmployment" class="font-semibold mt-2">—</h3></div>
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Monthly Income</p><h3 id="dashIncome" class="font-semibold mt-2">—</h3></div>
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Application Date</p><h3 id="dashDate" class="font-semibold mt-2">—</h3></div>
-          <div class="card p-5 sm:p-6"><p class="text-gray-500 text-sm">Next Step</p><h3 class="font-semibold mt-2">Verification In Progress</h3></div>
+        <div class="grid md:grid-cols-2 gap-6 mt-8">
+          <div class="card p-6"><p class="text-gray-500">Loan Status</p><h3 class="font-semibold text-xl mt-2 text-amber-600">Pending Verification</h3></div>
+          <div class="card p-6"><p class="text-gray-500">Reference Number</p><h3 id="dashReference" class="font-semibold mt-2">—</h3></div>
+          <div class="card p-6"><p class="text-gray-500">Employment</p><h3 id="dashEmployment" class="font-semibold mt-2">—</h3></div>
+          <div class="card p-6"><p class="text-gray-500">Monthly Income</p><h3 id="dashIncome" class="font-semibold mt-2">—</h3></div>
+          <div class="card p-6"><p class="text-gray-500">Application Date</p><h3 id="dashDate" class="font-semibold mt-2">—</h3></div>
+          <div class="card p-6"><p class="text-gray-500">Next Step</p><h3 class="font-semibold mt-2">Verification In Progress</h3></div>
         </div>
       </div>
 
       <div>
-        <div class="card p-6 sm:p-8">
-          <h2 class="heading text-xl sm:text-2xl font-semibold">Application Summary</h2>
-          <div class="space-y-5 mt-6 sm:mt-8 text-sm">
+        <div class="card p-8">
+          <h2 class="heading text-2xl font-semibold">Application Summary</h2>
+          <div class="space-y-6 mt-8 text-sm">
             <div><p class="text-gray-500">Applicant</p><strong id="summaryApplicant">—</strong></div>
             <div><p class="text-gray-500">Registered Number</p><strong id="summaryPhone">—</strong></div>
             <div><p class="text-gray-500">County</p><strong id="summaryCounty">—</strong></div>
             <div><p class="text-gray-500">Guarantor</p><strong id="summaryGuarantor">—</strong></div>
           </div>
-          <button onclick="goHome()" class="btn-secondary mt-8">Back Home</button>
+          <button onclick="goHome()" class="btn-secondary mt-10">Back Home</button>
         </div>
       </div>
     </div>
 
   </div>
-</div>
-
-<!-- ============================================================= -->
-<!-- PROFILE PANEL -->
-<!-- ============================================================= -->
-<div id="profileModal" class="section hidden fixed inset-0 z-[70] bg-black/50 flex items-center justify-center px-5 py-10 overflow-y-auto">
-  <div id="profileModalCard" class="card p-6 sm:p-10 w-full max-w-lg my-auto"></div>
 </div>
 
 <!-- ============================================================= -->
@@ -550,70 +509,6 @@ function startApplication(){
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
-/* ---------------------------------------------------------------
-   FOOTER INFO MODAL (About / Legal / Policies)
---------------------------------------------------------------- */
-const INFO_CONTENT = {
-  about: {
-    icon: "fa-circle-info",
-    title: "About Us",
-    body: "KwikLoan Demo is a portfolio project showcasing a full personal-loan application flow — from onboarding and eligibility scoring to a live dashboard backed by MongoDB. It is not a licensed lender and does not process real loans."
-  },
-  careers: {
-    icon: "fa-briefcase",
-    title: "Careers",
-    body: "This is a demonstration project built for a software engineering assignment, so there are no live positions right now. In a real product this page would list open roles and how to apply."
-  },
-  privacy: {
-    icon: "fa-lock",
-    title: "Privacy Policy",
-    body: "This demo stores the information you enter (name, ID number, phone, income bracket, guarantor details) in a MongoDB database for the purpose of demonstrating a working application flow. No data is sold or shared with third parties, and this project is not a real financial institution."
-  },
-  terms: {
-    icon: "fa-file-signature",
-    title: "Terms & Conditions",
-    body: "By using this demo, you acknowledge it is a simulated lending experience built for educational and portfolio purposes. Loan offers, eligibility limits, and payment prompts are illustrative and do not constitute a real financial agreement."
-  },
-  responsible: {
-    icon: "fa-hand-holding-heart",
-    title: "Responsible Lending",
-    body: "Real lenders are expected to assess affordability, disclose full costs upfront, and avoid pressuring borrowers into debt they can't repay. This demo illustrates parts of that process (eligibility checks, terms acceptance) as a UI exercise, not as financial advice."
-  },
-  dataProtection: {
-    icon: "fa-shield-halved",
-    title: "Data Protection",
-    body: "Data entered into this demo is stored for demonstration purposes only and can be cleared at any time. In a production system, this would be handled under applicable data protection law (e.g. Kenya's Data Protection Act, 2019)."
-  },
-  cookies: {
-    icon: "fa-cookie-bite",
-    title: "Cookies",
-    body: "This demo does not use tracking cookies or third-party analytics. Your application data is kept in memory during your session and persisted to MongoDB only when you submit an application or sign in."
-  }
-};
-
-function openInfo(key){
-  const info = INFO_CONTENT[key];
-  if(!info) return;
-
-  document.getElementById("infoModalCard").innerHTML = `
-    <div class="text-center mb-6">
-      <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mx-auto mb-5">
-        <i class="fa-solid ${info.icon}"></i>
-      </div>
-      <h2 class="heading text-2xl font-bold">${info.title}</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO CONTENT</span>
-    </div>
-    <p class="text-gray-600 leading-7 text-sm">${info.body}</p>
-    <button onclick="closeInfo()" class="btn-primary mt-8">Close</button>
-  `;
-
-  document.getElementById("infoModal").classList.remove("hidden");
-}
-
-function closeInfo(){
-  document.getElementById("infoModal").classList.add("hidden");
-}
-
 function showLogin(){
   document.getElementById("loginPhone").value = "";
   document.getElementById("loginPin").value = "";
@@ -622,12 +517,11 @@ function showLogin(){
 }
 
 async function submitLogin(){
-  const phoneRaw = document.getElementById("loginPhone").value.trim();
+  const phoneInput = document.getElementById("loginPhone").value.trim();
   const pin = document.getElementById("loginPin").value.trim();
 
-  const normalizedPhone = normalizeKenyanPhone(phoneRaw);
-  if(!normalizedPhone){
-    alert("Enter a valid Kenyan mobile number (e.g. 0712345678, 712345678, or 254712345678).");
+  if(phoneInput.length !== 9 || !/^[0-9]+$/.test(phoneInput)){
+    alert("Enter a valid Kenyan mobile number.");
     return;
   }
   if(pin.length !== 4){
@@ -643,7 +537,7 @@ async function submitLogin(){
     const res = await fetch(API_BASE + "/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: "+" + normalizedPhone, pin: pin })
+      body: JSON.stringify({ phone: "+254" + phoneInput, pin: pin })
     });
 
     const data = await res.json();
@@ -722,10 +616,10 @@ function loadStep(){
           <label class="block mb-3 font-medium">Phone Number</label>
           <div class="flex">
             <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center font-medium text-gray-600">+254</div>
-            <input id="phone" maxlength="13" placeholder="0712345678 or 712345678" class="input rounded-l-none"
+            <input id="phone" maxlength="9" placeholder="712345678" class="input rounded-l-none"
               value="${applicationData.phone.replace('+254','')}">
           </div>
-          <p class="text-xs text-gray-400 mt-2">You can enter it as 0712345678, 712345678, or 254712345678.</p>
+          <p class="text-xs text-gray-400 mt-2">We'll use this number to identify your account and send loan updates.</p>
 
           <div class="grid grid-cols-2 gap-5 mt-8">
             <div>
@@ -877,10 +771,9 @@ function loadStep(){
               <label class="block mb-3 font-medium">Guarantor Phone Number</label>
               <div class="flex">
                 <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
-                <input id="guarantorPhone" maxlength="13" class="input rounded-l-none" placeholder="0712345678 or 712345678"
+                <input id="guarantorPhone" maxlength="9" class="input rounded-l-none" placeholder="712345678"
                   value="${applicationData.guarantorPhone.replace('+254','')}">
               </div>
-              <p class="text-xs text-gray-400 mt-2">Any format works: 0712345678, 712345678, or 254712345678.</p>
             </div>
 
             <div>
@@ -926,17 +819,19 @@ function loadStep(){
             </div>
           </div>
 
-          <div class="bg-blue-50 border border-blue-200 rounded-3xl p-8 mt-8 flex items-center gap-5">
-            <i class="fa-solid fa-lock text-3xl text-blue-600"></i>
-            <div>
-              <p class="font-semibold text-blue-700">Your eligibility is being finalized</p>
-              <p class="text-gray-500 text-sm mt-1">Your loan limit will be revealed on your dashboard after submission.</p>
+          <div class="bg-blue-50 border border-blue-200 rounded-3xl p-8 mt-8">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-blue-600">Estimated Eligible Amount</p>
+                <h2 class="text-4xl font-bold text-blue-700 mt-2">KSh ${applicationData.loanLimit.toLocaleString()}</h2>
+              </div>
+              <i class="fa-solid fa-sack-dollar text-5xl text-blue-600"></i>
             </div>
           </div>
 
           <p class="text-center text-xs text-gray-400 mt-6">
             <i class="fa-solid fa-lock mr-1"></i>
-            Once confirmed, your information can't be changed.
+            Your eligible amount is now locked in and can't be changed after this step.
           </p>
 
           <div class="flex gap-4 mt-6">
@@ -999,11 +894,8 @@ function loadStep(){
           <p class="text-gray-500 mt-2">${applicationData.phone}</p>
 
           <div class="mt-12 bg-emerald-50 border border-emerald-200 rounded-3xl p-10">
-            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-5">
-              <i class="fa-solid fa-check"></i>
-            </div>
-            <h2 class="heading text-2xl font-bold text-emerald-700">Application Submitted</h2>
-            <p class="text-gray-500 mt-3 text-sm">Your eligible loan limit has been calculated and is waiting for you on your dashboard.</p>
+            <p class="text-emerald-600 text-sm tracking-wide">PRE-APPROVED LIMIT</p>
+            <h1 class="text-6xl font-bold text-emerald-700 mt-4">KSh ${applicationData.loanLimit.toLocaleString()}</h1>
           </div>
 
           <div class="grid md:grid-cols-2 gap-6 mt-10 text-left">
@@ -1018,7 +910,7 @@ function loadStep(){
           </div>
 
           <button onclick="loadDashboard()" class="mt-12 w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-2xl font-semibold">
-            View My Loan Limit on Dashboard
+            Continue to Dashboard
           </button>
         </div>
       `;
@@ -1030,13 +922,12 @@ function loadStep(){
    SAVE / VALIDATION FUNCTIONS
 --------------------------------------------------------------- */
 function saveAccount(){
-  const phoneRaw = document.getElementById("phone").value.trim();
+  const phone = document.getElementById("phone").value.trim();
   const pin = document.getElementById("pin").value;
   const confirmPin = document.getElementById("confirmPin").value;
 
-  const normalizedPhone = normalizeKenyanPhone(phoneRaw);
-  if(!normalizedPhone){
-    alert("Enter a valid Kenyan mobile number (e.g. 0712345678, 712345678, or 254712345678).");
+  if(phone.length !== 9 || !/^[0-9]+$/.test(phone)){
+    alert("Enter a valid Kenyan mobile number.");
     return;
   }
   if(pin.length !== 4){
@@ -1048,7 +939,7 @@ function saveAccount(){
     return;
   }
 
-  applicationData.phone = "+" + normalizedPhone;
+  applicationData.phone = "+254" + phone;
   applicationData.pin = pin;
   nextStep();
 }
@@ -1107,17 +998,15 @@ function saveIncome(){
 
 function saveGuarantor(){
   const name = document.getElementById("guarantorName").value.trim();
-  const phoneRaw = document.getElementById("guarantorPhone").value.trim();
+  const phone = document.getElementById("guarantorPhone").value.trim();
   const relationship = document.getElementById("relationship").value;
 
   if(name.length < 4){
     alert("Enter guarantor name.");
     return;
   }
-
-  const normalizedPhone = normalizeKenyanPhone(phoneRaw);
-  if(!normalizedPhone){
-    alert("Enter a valid guarantor phone number (e.g. 0712345678, 712345678, or 254712345678).");
+  if(phone.length !== 9 || !/^[0-9]+$/.test(phone)){
+    alert("Enter a valid guarantor phone number.");
     return;
   }
   if(relationship === ""){
@@ -1126,7 +1015,7 @@ function saveGuarantor(){
   }
 
   applicationData.guarantorName = name;
-  applicationData.guarantorPhone = "+" + normalizedPhone;
+  applicationData.guarantorPhone = "+254" + phone;
   applicationData.relationship = relationship;
   nextStep();
 }
@@ -1203,49 +1092,6 @@ function generateReference(){
 function getInitials(name){
   if(!name) return "?";
   return name.split(" ").filter(Boolean).map(w => w.charAt(0)).join("").substring(0,2).toUpperCase();
-}
-
-/* ---------------------------------------------------------------
-   PHONE NUMBER NORMALIZER
-   Accepts whatever format a user types and converts it to a clean
-   "254XXXXXXXXX" (12-digit) Kenyan mobile number. Handles:
-     0712345678      (local, leading 0)
-     712345678       (local, no leading 0)
-     254712345678    (already has country code)
-     2540712345678   (country code + accidental leading 0)
-     +254712345678, spaces, dashes — anything non-digit is stripped
-   Returns null if the result isn't a valid-looking Kenyan number.
---------------------------------------------------------------- */
-function normalizeKenyanPhone(raw){
-  let digits = String(raw || "").replace(/\D/g, "");
-  if(!digits) return null;
-
-  // "254" + accidental leading 0, e.g. 2540712345678 (13 digits)
-  if(digits.startsWith("2540") && digits.length === 13){
-    digits = "254" + digits.slice(4);
-  }
-
-  // Already correct: 254 + 9-digit local number (12 digits)
-  if(digits.startsWith("254") && digits.length === 12){
-    return digits;
-  }
-
-  // Local format with leading 0, e.g. 0712345678 (10 digits)
-  if(digits.startsWith("0") && digits.length === 10){
-    return "254" + digits.slice(1);
-  }
-
-  // Bare 9-digit local number, e.g. 712345678
-  if(/^[71]\d{8}$/.test(digits)){
-    return "254" + digits;
-  }
-
-  // Anything longer that still starts with 254 — salvage the last 9 digits
-  if(digits.startsWith("254") && digits.length > 12){
-    return "254" + digits.slice(-9);
-  }
-
-  return null;
 }
 
 /* ---------------------------------------------------------------
@@ -1356,56 +1202,7 @@ function loadDashboard(){
 }
 
 /* ---------------------------------------------------------------
-   PROFILE PANEL
---------------------------------------------------------------- */
-function openProfile(){
-  document.getElementById("profileModalCard").innerHTML = `
-    <div class="text-center mb-8">
-      <div class="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-        ${getInitials(applicationData.fullName)}
-      </div>
-      <h2 class="heading text-2xl font-bold">${applicationData.fullName || "—"}</h2>
-      <p class="text-gray-500 text-sm mt-1">${applicationData.phone || "—"}</p>
-    </div>
-
-    <div class="bg-gray-50 border rounded-3xl p-6 space-y-5 text-sm">
-      <div class="flex justify-between"><span class="text-gray-500">National ID</span><strong>${applicationData.idNumber || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">County</span><strong>${applicationData.county || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Employment</span><strong>${applicationData.employment || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Monthly Income</span><strong>${applicationData.income || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Guarantor</span><strong>${applicationData.guarantorName || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Guarantor Phone</span><strong>${applicationData.guarantorPhone || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Reference Number</span><strong>${applicationData.reference || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Applied On</span><strong>${applicationData.appliedOn || "—"}</strong></div>
-    </div>
-
-    <button onclick="closeProfile()" class="btn-secondary mt-6">Close</button>
-    <button onclick="logoutUser()" class="w-full mt-3 text-red-500 font-semibold py-3 rounded-2xl hover:bg-red-50 transition">
-      <i class="fa-solid fa-right-from-bracket mr-2"></i>Log Out
-    </button>
-  `;
-
-  document.getElementById("profileModal").classList.remove("hidden");
-}
-
-function closeProfile(){
-  document.getElementById("profileModal").classList.add("hidden");
-}
-
-function logoutUser(){
-  if(!confirm("Log out of your KwikLoan demo account?")) return;
-
-  applicationData = {
-    phone:"", pin:"", fullName:"", idNumber:"", county:"",
-    employment:"", income:"",
-    guarantorName:"", guarantorPhone:"", relationship:"",
-    loanLimit:0, reference:"", appliedOn:""
-  };
-
-  document.getElementById("profileModal")?.classList.add("hidden");
-  document.getElementById("claim")?.classList.add("hidden");
-  goHome();
-}
+   CLAIM YOUR LIMIT — DEMO ONLY
    No real network requests. No real money moves. This simulates
    the approval + activation-fee UX that real lending apps use,
    purely for portfolio/demo purposes.
@@ -1432,11 +1229,10 @@ function renderClaimForm(){
     </div>
 
     <label class="block mb-3 font-medium">Recipient Phone Number (Demo)</label>
-    <div class="flex mb-2">
+    <div class="flex mb-8">
       <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
-      <input id="claimPhone" maxlength="13" placeholder="0712345678 or 712345678" class="input rounded-l-none">
+      <input id="claimPhone" maxlength="9" placeholder="712345678" class="input rounded-l-none">
     </div>
-    <p class="text-xs text-gray-400 mb-6">Any format works: 0712345678, 712345678, or 254712345678.</p>
 
     <button onclick="runClaimVerification()" class="btn-primary">Get Your First Loan</button>
     <button onclick="closeClaim()" class="btn-secondary mt-4">Cancel</button>
