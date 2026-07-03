@@ -60,8 +60,8 @@
       <a href="#features" class="hover:text-blue-600">Features</a>
       <a href="#calculator" class="hover:text-blue-600">Calculator</a>
       <a href="#faq" class="hover:text-blue-600">FAQs</a>
-      <button onclick="showLogin()" class="text-blue-700 font-semibold px-4 py-3 hover:underline">Sign In</button>
-      <button onclick="startApplication()" class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3 rounded-xl font-semibold">Apply Now</button>
+      <button onclick="showLogin()" class="text-blue-700 font-semibold px-4 py-3 hover:underline">Login</button>
+      <button onclick="startApplication()" class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3 rounded-xl font-semibold">Sign Up</button>
     </div>
   </div>
 </nav>
@@ -120,11 +120,11 @@
             <div>
               <div class="flex justify-between mb-3">
                 <span>Desired Amount</span>
-                <strong id="calc-display">KSh 10,000</strong>
+                <strong id="calc-display">KSh 5,000</strong>
               </div>
-              <input id="calc-amount" type="range" min="5000" max="18000" step="500" value="10000" oninput="updateCalculator()" class="w-full accent-white">
+              <input id="calc-amount" type="range" min="3500" max="6500" step="50" value="5000" oninput="updateCalculator()" class="w-full accent-white">
               <div class="flex justify-between text-sm mt-2 text-blue-100">
-                <span>KSh 5,000</span><span>KSh 18,000</span>
+                <span>KSh 3,500</span><span>KSh 6,500</span>
               </div>
             </div>
 
@@ -238,7 +238,7 @@
         </div>
         <div class="card p-8">
           <h3 class="heading text-xl font-semibold">How is the loan limit determined?</h3>
-          <p class="text-gray-500 mt-4 leading-8">The demo calculates eligibility using employment category and monthly income to generate a realistic pre-approved amount between KSh 5,000 and KSh 18,000.</p>
+          <p class="text-gray-500 mt-4 leading-8">The demo calculates eligibility using employment category and monthly income to generate a realistic pre-approved amount between KSh 3,500 and KSh 6,500.</p>
         </div>
         <div class="card p-8">
           <h3 class="heading text-xl font-semibold">How long does the application take?</h3>
@@ -281,32 +281,62 @@
 </div>
 
 <!-- ============================================================= -->
-<!-- SIGN IN (RETURNING USER) -->
+<!-- LOGIN (RETURNING USER) -->
 <!-- ============================================================= -->
-<div id="login" class="section hidden min-h-screen bg-slate-100 flex items-center justify-center px-5 py-16">
-  <div class="card p-10 w-full max-w-md">
-    <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mb-6">
-      <i class="fa-solid fa-right-to-bracket"></i>
+<div id="login" class="section hidden min-h-screen bg-slate-100 flex items-center justify-center px-5 py-10 sm:py-16">
+  <div class="card overflow-hidden w-full max-w-4xl grid md:grid-cols-2">
+
+    <!-- Brand panel -->
+    <div class="hero-bg text-white p-8 sm:p-12 flex flex-col justify-center order-2 md:order-1">
+      <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center text-2xl mb-6">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h2 class="heading text-3xl font-bold leading-tight">Welcome back to KwikLoan</h2>
+      <p class="text-blue-100 mt-4 leading-7">
+        Sign in to check your loan status, track your reference number, and manage your account.
+      </p>
+      <div class="space-y-4 mt-10">
+        <div class="flex items-center gap-3 text-sm">
+          <i class="fa-solid fa-circle-check text-blue-200"></i>
+          <span>Secure phone number & PIN login</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <i class="fa-solid fa-circle-check text-blue-200"></i>
+          <span>View your saved application anytime</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <i class="fa-solid fa-circle-check text-blue-200"></i>
+          <span>Track loan status in real time</span>
+        </div>
+      </div>
     </div>
-    <h2 class="heading text-3xl font-bold mb-2">Welcome Back</h2>
-    <p class="text-gray-500 mb-8">Sign in with your registered phone number and PIN to view your dashboard.</p>
 
-    <label class="block mb-3 font-medium">Phone Number</label>
-    <div class="flex mb-6">
-      <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
-      <input id="loginPhone" maxlength="9" placeholder="712345678" class="input rounded-l-none">
+    <!-- Form panel -->
+    <div class="p-8 sm:p-12 order-1 md:order-2">
+      <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mb-6">
+        <i class="fa-solid fa-right-to-bracket"></i>
+      </div>
+      <h2 class="heading text-3xl font-bold mb-2">Login</h2>
+      <p class="text-gray-500 mb-8">Enter your registered phone number and PIN.</p>
+
+      <label class="block mb-3 font-medium">Phone Number</label>
+      <div class="flex mb-6">
+        <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center font-medium text-gray-600">+254</div>
+        <input id="loginPhone" maxlength="9" placeholder="712345678" class="input rounded-l-none">
+      </div>
+
+      <label class="block mb-3 font-medium">PIN</label>
+      <input id="loginPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest mb-8">
+
+      <button onclick="submitLogin()" id="loginBtn" class="btn-primary">Login</button>
+      <button onclick="goHome()" class="btn-secondary mt-4">Back Home</button>
+
+      <p class="text-center text-sm text-gray-500 mt-6">
+        No account yet?
+        <a href="#" onclick="startApplication();return false;" class="text-blue-600 font-semibold">Sign Up</a>
+      </p>
     </div>
 
-    <label class="block mb-3 font-medium">PIN</label>
-    <input id="loginPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest mb-8">
-
-    <button onclick="submitLogin()" id="loginBtn" class="btn-primary">Sign In</button>
-    <button onclick="goHome()" class="btn-secondary mt-4">Back Home</button>
-
-    <p class="text-center text-sm text-gray-500 mt-6">
-      No account yet?
-      <a href="#" onclick="startApplication();return false;" class="text-blue-600 font-semibold">Apply Now</a>
-    </p>
   </div>
 </div>
 
@@ -400,7 +430,7 @@
 <!-- CLAIM YOUR LIMIT (DEMO) -->
 <!-- ============================================================= -->
 <div id="claim" class="section hidden fixed inset-0 z-[60] bg-black/50 flex items-center justify-center px-5 py-10 overflow-y-auto">
-  <div id="claimCard" class="card p-10 w-full max-w-lg my-auto"></div>
+  <div id="claimCard" class="card p-6 sm:p-10 w-full max-w-lg my-auto"></div>
 </div>
 
 <!-- ============================================================= -->
@@ -412,6 +442,7 @@
    API CONFIG
 --------------------------------------------------------------- */
 const API_BASE = "https://mdogoback.onrender.com/api/applications";
+const PAYMENTS_API_BASE = "https://mdogoback.onrender.com/api/payments";
 
 /* ---------------------------------------------------------------
    STATE
@@ -500,7 +531,7 @@ async function submitLogin(){
 
   const btn = document.getElementById("loginBtn");
   btn.disabled = true;
-  btn.textContent = "Signing in...";
+  btn.textContent = "Logging in...";
 
   try {
     const res = await fetch(API_BASE + "/login", {
@@ -537,7 +568,7 @@ async function submitLogin(){
     alert("Could not reach the server. Check your connection and try again.");
   } finally {
     btn.disabled = false;
-    btn.textContent = "Sign In";
+    btn.textContent = "Login";
   }
 }
 
@@ -574,15 +605,21 @@ function loadStep(){
     case 1: // ACCOUNT
       container.innerHTML = `
         <div class="fade-in max-w-lg mx-auto">
-          <h2 class="heading text-3xl font-bold mb-2">Create Your Account</h2>
-          <p class="text-gray-500 mb-8">Enter your Kenyan mobile number to continue.</p>
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mx-auto mb-5">
+              <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h2 class="heading text-3xl font-bold">Create Your Account</h2>
+            <p class="text-gray-500 mt-2">Enter your Kenyan mobile number to get started.</p>
+          </div>
 
           <label class="block mb-3 font-medium">Phone Number</label>
           <div class="flex">
-            <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
+            <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center font-medium text-gray-600">+254</div>
             <input id="phone" maxlength="9" placeholder="712345678" class="input rounded-l-none"
               value="${applicationData.phone.replace('+254','')}">
           </div>
+          <p class="text-xs text-gray-400 mt-2">We'll use this number to identify your account and send loan updates.</p>
 
           <div class="grid grid-cols-2 gap-5 mt-8">
             <div>
@@ -594,8 +631,20 @@ function loadStep(){
               <input id="confirmPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest">
             </div>
           </div>
+          <p class="text-xs text-gray-400 mt-2">Choose a 4-digit PIN — you'll use it to log back into your account.</p>
 
-          <button onclick="saveAccount()" class="btn-primary mt-10">Continue</button>
+          <button onclick="saveAccount()" class="btn-primary mt-8">Continue</button>
+
+          <div class="flex items-center gap-4 my-6">
+            <div class="h-px bg-gray-200 flex-1"></div>
+            <span class="text-xs text-gray-400">SECURE • ENCRYPTED • DEMO</span>
+            <div class="h-px bg-gray-200 flex-1"></div>
+          </div>
+
+          <p class="text-center text-sm text-gray-500">
+            Already have an account?
+            <a href="#" onclick="showLogin();return false;" class="text-blue-600 font-semibold">Login</a>
+          </p>
         </div>
       `;
       break;
@@ -780,9 +829,13 @@ function loadStep(){
             </div>
           </div>
 
-          <div class="flex gap-4 mt-10">
-            <button onclick="previousStep()" class="btn-secondary">Back</button>
-            <button onclick="nextStep()" class="btn-primary">Continue</button>
+          <p class="text-center text-xs text-gray-400 mt-6">
+            <i class="fa-solid fa-lock mr-1"></i>
+            Your eligible amount is now locked in and can't be changed after this step.
+          </p>
+
+          <div class="flex gap-4 mt-6">
+            <button onclick="nextStep()" class="btn-primary">Confirm & Continue</button>
           </div>
         </div>
       `;
@@ -813,7 +866,6 @@ function loadStep(){
           </label>
 
           <div class="flex gap-4 mt-10">
-            <button onclick="previousStep()" class="btn-secondary">Back</button>
             <button onclick="submitApplication()" class="btn-primary">Submit Application</button>
           </div>
         </div>
@@ -977,43 +1029,56 @@ function submitApplication(){
 }
 
 /* ---------------------------------------------------------------
-   ELIGIBILITY ENGINE
+   ELIGIBILITY ENGINE — range: KSh 3,500 to KSh 6,500
+   Uses a weighted score (employment + income + county) mapped onto
+   the range, plus a randomized jitter, so applicants with identical
+   answers still don't land on the exact same limit.
 --------------------------------------------------------------- */
 function calculateEligibility(){
-  let amount = 5000;
+  const MIN_LIMIT = 3500;
+  const MAX_LIMIT = 6500;
 
-  switch(applicationData.employment){
-    case "Government Employee": amount += 4200; break;
-    case "NGO Employee": amount += 3600; break;
-    case "SACCO Employee": amount += 3500; break;
-    case "Private Employee": amount += 3200; break;
-    case "Business Owner": amount += 2700; break;
-    case "Self Employed": amount += 2400; break;
-    case "Contract Employee": amount += 2100; break;
-    case "Farmer": amount += 1800; break;
-    case "Freelancer": amount += 1600; break;
-    case "Casual Worker": amount += 1200; break;
-    case "Pensioner": amount += 1700; break;
-  }
+  const employmentScore = {
+    "Government Employee": 10,
+    "NGO Employee": 9,
+    "SACCO Employee": 8,
+    "Private Employee": 7,
+    "Business Owner": 6,
+    "Self Employed": 5,
+    "Contract Employee": 5,
+    "Pensioner": 4,
+    "Farmer": 4,
+    "Freelancer": 3,
+    "Casual Worker": 2
+  }[applicationData.employment] ?? 3;
 
-  if(applicationData.income.includes("120")) amount += 5200;
-  else if(applicationData.income.includes("80")) amount += 4200;
-  else if(applicationData.income.includes("60")) amount += 3300;
-  else if(applicationData.income.includes("44")) amount += 2500;
-  else if(applicationData.income.includes("25")) amount += 1800;
-  else if(applicationData.income.includes("18")) amount += 1200;
-  else amount += 600;
+  let incomeScore = 1;
+  if(applicationData.income.includes("120")) incomeScore = 10;
+  else if(applicationData.income.includes("80")) incomeScore = 9;
+  else if(applicationData.income.includes("60")) incomeScore = 8;
+  else if(applicationData.income.includes("44")) incomeScore = 6;
+  else if(applicationData.income.includes("25")) incomeScore = 5;
+  else if(applicationData.income.includes("18")) incomeScore = 3;
+  else if(applicationData.income.includes("12")) incomeScore = 2;
+  else incomeScore = 1;
 
-  if(["Nairobi","Kiambu","Mombasa","Nakuru"].includes(applicationData.county)){
-    amount += 500;
-  }
+  const countyBonus = ["Nairobi","Kiambu","Mombasa","Nakuru"].includes(applicationData.county) ? 1 : 0;
 
-  amount += Math.floor(Math.random() * 500);
+  // Combine into a 0–1 position along the range
+  const maxScore = 10 + 10 + 1; // 21
+  const rawScore = employmentScore + incomeScore + countyBonus;
+  const position = rawScore / maxScore;
 
-  amount = Math.min(18000, amount);
-  amount = Math.max(5000, amount);
+  // Base amount from the applicant's profile
+  let amount = MIN_LIMIT + position * (MAX_LIMIT - MIN_LIMIT);
 
-  return Math.round(amount / 100) * 100;
+  // Randomized jitter so no two applicants land on an identical figure,
+  // even with the same employment/income/county combination
+  amount += (Math.random() * 400) - 200; // +/- 200 spread
+
+  amount = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, amount));
+
+  return Math.round(amount / 50) * 50;
 }
 
 function generateReference(){
@@ -1179,10 +1244,12 @@ function runClaimVerification(){
   const isValid = phoneInput.length === 9 && /^[0-9]+$/.test(phoneInput);
 
   const stages = [
-    "Verifying user",
-    "Checking credentials",
+    "Verifying identity number",
+    "Verifying phone & username",
+    "Checking good conduct records",
+    "Checking CRB listing for defaulting loans",
     "Checking terms & conditions",
-    "Checking loan duration",
+    "Confirming loan duration",
     "Finalizing decision"
   ];
 
@@ -1190,7 +1257,7 @@ function runClaimVerification(){
     <div class="text-center py-6">
       <div class="w-20 h-20 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
       <h2 class="heading text-2xl font-bold mt-8">Reviewing Your Claim</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO</span>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO — simulated checks only</span>
       <div id="claimStages" class="max-w-sm mx-auto mt-10 space-y-4 text-left"></div>
     </div>
   `;
@@ -1211,11 +1278,13 @@ function runClaimVerification(){
       clearInterval(timer);
       setTimeout(() => showClaimResult(isValid, phoneInput), 700);
     }
-  }, 650);
+  }, 600);
 }
 
 function showClaimResult(approved, phoneInput){
   if(approved){
+    const fee = calculateCollateralFee(applicationData.loanLimit);
+
     document.getElementById("claimCard").innerHTML = `
       <div class="text-center">
         <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-6">
@@ -1226,16 +1295,21 @@ function showClaimResult(approved, phoneInput){
         <p class="text-gray-500 mt-4 text-sm">(Demo) Recipient: +254${phoneInput}</p>
 
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8 text-left text-sm leading-6">
-          <p class="font-semibold text-amber-700 mb-2">About the Collateral Fee</p>
+          <p class="font-semibold text-amber-700 mb-2">Collateral Fee Required</p>
           <p class="text-gray-600">
-            Many real lenders ask for a small activation or collateral fee before releasing funds,
-            as a way to confirm the applicant is serious. This demo shows that step in the interface only —
-            no real payment is requested and no money moves.
+            A small collateral fee confirms you're a serious applicant before your loan is activated.
+            This runs on the <strong>PayHero sandbox</strong> — a real STK push will be simulated,
+            but it is a test environment, so no real money is charged.
           </p>
         </div>
 
-        <button onclick="simulateDemoPayment(${applicationData.loanLimit})" class="btn-primary mt-8">
-          Simulate Activation Fee (Demo)
+        <div class="bg-white border rounded-2xl p-6 mt-6">
+          <p class="text-gray-500 text-sm">Collateral Fee</p>
+          <h3 class="heading text-3xl font-bold text-blue-700 mt-1">KSh ${fee.toLocaleString()}</h3>
+        </div>
+
+        <button onclick="initiateCollateralPayment('${phoneInput}', ${fee})" class="btn-primary mt-8">
+          Pay Collateral Fee (Sandbox)
         </button>
         <button onclick="closeClaim()" class="btn-secondary mt-4">Close</button>
       </div>
@@ -1257,30 +1331,99 @@ function showClaimResult(approved, phoneInput){
   }
 }
 
-function simulateDemoPayment(amount){
+function calculateCollateralFee(loanLimit){
+  // Flat demo/sandbox amount — deliberately small and fixed so
+  // sandbox test transactions stay low and unsuspicious.
+  return 350;
+}
+
+/* ---------------------------------------------------------------
+   COLLATERAL FEE — REAL SANDBOX PAYHERO STK PUSH
+   Hits your deployed backend's /api/payments routes, which talk to
+   PayHero's SANDBOX environment. No live/production keys are used.
+--------------------------------------------------------------- */
+async function initiateCollateralPayment(phoneInput, fee){
   document.getElementById("claimCard").innerHTML = `
     <div class="text-center py-10">
       <div class="w-20 h-20 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
-      <h2 class="heading text-2xl font-bold mt-8">Simulating Payment</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO — no real transaction</span>
-      <p class="text-gray-500 mt-4 text-sm">No request is sent to any payment provider.</p>
+      <h2 class="heading text-2xl font-bold mt-8">Sending Payment Request</h2>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX — no real charge</span>
+      <p class="text-gray-500 mt-4 text-sm">An M-Pesa prompt will be sent to +254${phoneInput}. Enter the sandbox PIN when prompted.</p>
     </div>
   `;
 
-  setTimeout(() => {
-    document.getElementById("claimCard").innerHTML = `
-      <div class="text-center">
-        <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-6">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <h2 class="heading text-2xl font-bold text-emerald-700">Demo Payment Simulated</h2>
-        <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO</span>
-        <p class="text-gray-500 mt-4 text-sm">Loan Disbursed (Demo) — KSh ${amount.toLocaleString()}</p>
-        <p class="text-gray-400 mt-2 text-xs">No real money was sent or received in this simulation.</p>
-        <button onclick="closeClaim()" class="btn-primary mt-8">Close</button>
+  try {
+    const res = await fetch(PAYMENTS_API_BASE + "/stk-push", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        phone: phoneInput,
+        amountKES: fee,
+        phoneModel: "KwikLoan Collateral Fee (Sandbox Demo)"
+      })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok || !data.paymentId){
+      showPaymentFailed(data.message || "Could not start the sandbox payment. Please try again.");
+      return;
+    }
+
+    pollPaymentStatus(data.paymentId, fee, 0);
+
+  } catch(err){
+    showPaymentFailed("Could not reach the payments server. Check your connection and try again.");
+  }
+}
+
+function pollPaymentStatus(paymentId, fee, attempt){
+  const MAX_ATTEMPTS = 20; // ~60 seconds at 3s intervals
+
+  fetch(PAYMENTS_API_BASE + "/status/" + paymentId)
+    .then(res => res.json())
+    .then(data => {
+      if(data.status === "success"){
+        showPaymentSuccess(fee);
+      } else if(data.status === "failed"){
+        showPaymentFailed("The sandbox payment was not completed. You can try again.");
+      } else if(attempt < MAX_ATTEMPTS){
+        setTimeout(() => pollPaymentStatus(paymentId, fee, attempt + 1), 3000);
+      } else {
+        showPaymentFailed("We didn't get a response in time. Please try again.");
+      }
+    })
+    .catch(() => {
+      showPaymentFailed("Lost connection while checking payment status.");
+    });
+}
+
+function showPaymentSuccess(fee){
+  document.getElementById("claimCard").innerHTML = `
+    <div class="text-center">
+      <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-6">
+        <i class="fa-solid fa-circle-check"></i>
       </div>
-    `;
-  }, 1600);
+      <h2 class="heading text-2xl font-bold text-emerald-700">Payment Successful</h2>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX</span>
+      <p class="text-gray-500 mt-4 text-sm">Collateral fee of KSh ${fee.toLocaleString()} confirmed. Your loan is now marked Activated (Demo).</p>
+      <button onclick="closeClaim()" class="btn-primary mt-8">Close</button>
+    </div>
+  `;
+}
+
+function showPaymentFailed(message){
+  document.getElementById("claimCard").innerHTML = `
+    <div class="text-center">
+      <div class="w-20 h-20 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-3xl mx-auto mb-6">
+        <i class="fa-solid fa-circle-xmark"></i>
+      </div>
+      <h2 class="heading text-2xl font-bold text-red-700">Payment Not Completed</h2>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX</span>
+      <p class="text-gray-500 mt-4 text-sm">${message}</p>
+      <button onclick="closeClaim()" class="btn-secondary mt-4">Close</button>
+    </div>
+  `;
 }
 
 
