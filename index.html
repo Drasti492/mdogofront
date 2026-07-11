@@ -39,6 +39,55 @@
 
   .section { display:block; }
   .hidden { display:none !important; }
+#withdrawalToast{
+  position:fixed;
+  top:90px;
+  left:16px;
+  z-index:40;
+  max-width:320px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:10px 14px;
+  box-shadow:0 10px 30px rgba(15,23,42,.12);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transform:translateX(-130%);
+  opacity:0;
+  transition:transform .4s ease, opacity .4s ease;
+  pointer-events:none;
+}
+#withdrawalToast.show{
+  transform:translateX(0);
+  opacity:1;
+}
+#withdrawalToast .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#22c55e;
+  flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(34,197,94,.2);
+}
+#withdrawalToast .toast-text{
+  font-size:12.5px;
+  line-height:1.3;
+  color:#374151;
+}
+#withdrawalToast .toast-text strong{ color:#111827; }
+#withdrawalToast .toast-demo{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.04em;
+  color:#b45309;
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  padding:1px 6px;
+  border-radius:999px;
+  margin-left:4px;
+}
+@media (max-width:640px){
+  #withdrawalToast{ left:10px; right:10px; max-width:none; top:78px; }
+}
 </style>
 </head>
 
@@ -1653,6 +1702,97 @@ window.onload = function(){
   showSection("landing");
   document.getElementById("footer-year").textContent = new Date().getFullYear();
 };
+
+
+/* ---------------------------------------------------------------
+   DASHBOARD-ONLY DEMO ACTIVITY TICKER
+   Purely cosmetic social-proof notification. Clearly marked DEMO.
+   Runs only while the dashboard is visible.
+--------------------------------------------------------------- */
+const TICKER_INTERVAL_MS = 6000; // time between notifications
+
+const TICKER_NAMES = [
+  "James","Mary","Peter","Grace","John","Faith","David","Ann","Brian","Mercy",
+  "Kevin","Joyce","Dennis","Esther","Samuel","Ruth","Michael","Lucy","Daniel","Alice",
+  "Joseph","Nancy","Paul","Winnie","Erick","Beatrice","Charles","Irene","George","Diana",
+  "Vincent","Caroline","Patrick","Sharon","Victor","Purity","Anthony","Agnes","Felix","Naomi",
+  "Emmanuel","Rose","Stephen","Catherine","Moses","Eunice","Robert","Susan","Isaac","Rebecca"
+];
+
+let tickerQueue = [];
+let tickerTimer = null;
+
+function shuffledNameQueue(){
+  const arr = [...TICKER_NAMES];
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function nextTickerName(){
+  if(tickerQueue.length === 0){
+    tickerQueue = shuffledNameQueue(); // reshuffle once all 50 have shown
+  }
+  return tickerQueue.pop();
+}
+
+function maskedDemoPhone(){
+  const mid = Math.floor(10 + Math.random() * 89);
+  const last = Math.floor(10 + Math.random() * 89);
+  return `07${mid}•••${last}`;
+}
+
+function randomTickerAmount(){
+  // Matches the same eligible range used across the demo
+  const amount = 3500 + Math.floor(Math.random() * ((6500 - 3500) / 50 + 1)) * 50;
+  return amount;
+}
+
+function showWithdrawalToast(){
+  let toast = document.getElementById("withdrawalToast");
+  if(!toast){
+    toast = document.createElement("div");
+    toast.id = "withdrawalToast";
+    document.body.appendChild(toast);
+  }
+
+  const name = nextTickerName();
+  const phone = maskedDemoPhone();
+  const amount = randomTickerAmount();
+
+  toast.innerHTML = `
+    <span class="dot"></span>
+    <span class="toast-text">
+      <strong>${name} ${phone}</strong> withdrew a loan of <strong>KSh ${amount.toLocaleString()}</strong>
+      <span class="toast-demo">DEMO</span>
+    </span>
+  `;
+
+  toast.classList.add("show");
+
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 4000);
+}
+
+function startWithdrawalTicker(){
+  stopWithdrawalTicker();
+  tickerQueue = shuffledNameQueue();
+  showWithdrawalToast();
+  tickerTimer = setInterval(showWithdrawalToast, TICKER_INTERVAL_MS);
+}
+
+function stopWithdrawalTicker(){
+  if(tickerTimer){
+    clearInterval(tickerTimer);
+    tickerTimer = null;
+  }
+  const toast = document.getElementById("withdrawalToast");
+  if(toast) toast.classList.remove("show");
+}
 
 </script>
 
