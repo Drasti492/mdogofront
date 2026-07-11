@@ -1384,7 +1384,8 @@ async function saveApplicationToServer(){
 /* ---------------------------------------------------------------
    DASHBOARD
 --------------------------------------------------------------- */
-function loadDashboard(){
+function loadDashboard()(
+startWithdrawalTicker();
   document.getElementById("dashName").textContent = applicationData.fullName;
   document.getElementById("dashPhone").textContent = applicationData.phone;
   document.getElementById("profileAvatar").textContent = getInitials(applicationData.fullName);
