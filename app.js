@@ -1,529 +1,712 @@
-/* =========================================================
-   HARAKA LOANS — Application logic
-   Handles: navigation between screens, form validation,
-   phone/PIN checks, localStorage state, eligibility
-   calculation, reference number generation, dashboard.
-   No network calls — everything runs client-side.
-   ========================================================= */
+/* ==========================================================================
+   KOPA RAHISI — Application logic
+   Coursework mock: no real network calls, no real payments.
+   All "payment" and "CRB" behaviour below is simulated client-side to
+   illustrate an advance-fee loan-scam UX pattern for a fraud-awareness
+   assignment. Nothing here contacts a backend or moves real money.
+   ========================================================================== */
 
-const KENYA_COUNTIES = [
-  "Mombasa","Kwale","Kilifi","Tana River","Lamu","Taita-Taveta","Garissa","Wajir",
-  "Mandera","Marsabit","Isiolo","Meru","Tharaka-Nithi","Embu","Kitui","Machakos",
-  "Makueni","Nyandarua","Nyeri","Kirinyaga","Murang'a","Kiambu","Turkana","West Pokot",
-  "Samburu","Trans Nzoia","Uasin Gishu","Elgeyo-Marakwet","Nandi","Baringo","Laikipia",
-  "Nakuru","Narok","Kajiado","Kericho","Bomet","Kakamega","Vihiga","Bungoma","Busia",
-  "Siaya","Kisumu","Homa Bay","Migori","Kisii","Nyamira","Nairobi"
-];
+(() => {
+  "use strict";
 
-const STATE_KEY = "haraka_loan_state";
-
-const state = {
-  screenHistory: [],
-  data: {
-    phone: "",
-    fullname: "",
-    idnumber: "",
-    dob: "",
-    gender: "",
-    county: "",
-    constituency: "",
-    employmentType: "",
-    employer: "",
-    income: "",
-    education: "",
-    guarantorName: "",
-    guarantorPhone: "",
-    guarantorRelationship: "",
-    reference: "",
-    approved: null,
-    offerAmount: 0,
-    maxAmount: 0,
-    termDays: 0,
-    monthlyRepayment: 0,
-    appliedAt: ""
-  }
-};
-
-function saveState(){
-  try{ localStorage.setItem(STATE_KEY, JSON.stringify(state.data)); }catch(e){}
-}
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STATE_KEY);
-    if(raw) Object.assign(state.data, JSON.parse(raw));
-  }catch(e){}
-}
-
-/* ============ SCREEN NAVIGATION ============ */
-const FLOW_ORDER = ["landing","register","personal","employment","income","education","guarantor","review","processing","offer","dashboard"];
-
-function showScreen(name, opts={}){
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  const target = document.querySelector(`[data-screen="${name}"]`);
-  if(!target) return;
-  target.classList.add("active");
-  if(!opts.skipHistory) state.screenHistory.push(name);
-  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
-
-  const isFlowStep = ["register","personal","employment","income","education","guarantor","review"].includes(name);
-  document.getElementById("topbar").style.display = (name === "processing" || name === "offer" || name === "decline" || name === "dashboard") ? "none" : "";
-  document.getElementById("site-footer").style.display = (isFlowStep || name === "processing" || name === "offer" || name === "decline" || name === "dashboard") ? "none" : "";
-}
-
-function goBack(){
-  state.screenHistory.pop(); // remove current
-  const prev = state.screenHistory.pop() || "landing";
-  showScreen(prev);
-}
-
-/* ============ VALIDATION HELPERS ============ */
-function isValidKenyanPhone(v){
-  const cleaned = v.replace(/\s+/g, "");
-  return /^(0(7|1)\d{8})$|^(\+254(7|1)\d{8})$|^(254(7|1)\d{8})$/.test(cleaned);
-}
-function normalizePhone(v){
-  let c = v.replace(/\s+/g, "");
-  if(c.startsWith("+254")) c = "0" + c.slice(4);
-  else if(c.startsWith("254")) c = "0" + c.slice(3);
-  return c;
-}
-function setError(fieldId, msg){
-  const errEl = document.getElementById("err-" + fieldId);
-  const inputEl = document.getElementById(fieldId);
-  if(errEl) errEl.textContent = msg || "";
-  if(inputEl){
-    const field = inputEl.closest(".field");
-    if(field) field.classList.toggle("has-error", !!msg);
-  }
-}
-function clearErrors(...ids){ ids.forEach(id => setError(id, "")); }
-
-/* ============ REGISTER ============ */
-document.getElementById("form-register").addEventListener("submit", e => {
-  e.preventDefault();
-  const phone = document.getElementById("reg-phone").value.trim();
-  const pin = document.getElementById("reg-pin").value.trim();
-  const pinConfirm = document.getElementById("reg-pin-confirm").value.trim();
-  clearErrors("reg-phone","reg-pin","reg-pin-confirm");
-
-  let valid = true;
-  if(!isValidKenyanPhone(phone)){
-    setError("reg-phone", "Enter a valid Kenyan mobile number, e.g. 0712 345 678");
-    valid = false;
-  }
-  if(!/^\d{4}$/.test(pin)){
-    setError("reg-pin", "PIN must be exactly 4 digits");
-    valid = false;
-  }
-  if(pin !== pinConfirm){
-    setError("reg-pin-confirm", "PINs do not match");
-    valid = false;
-  }
-  if(!valid) return;
-
-  state.data.phone = normalizePhone(phone);
-  saveState();
-  showScreen("personal");
-});
-
-/* ============ PERSONAL DETAILS ============ */
-const countySelect = document.getElementById("p-county");
-KENYA_COUNTIES.forEach(c => {
-  const opt = document.createElement("option");
-  opt.value = c; opt.textContent = c;
-  countySelect.appendChild(opt);
-});
-
-document.getElementById("form-personal").addEventListener("submit", e => {
-  e.preventDefault();
-  const fullname = document.getElementById("p-fullname").value.trim();
-  const idnumber = document.getElementById("p-idnumber").value.trim();
-  const dob = document.getElementById("p-dob").value;
-  const gender = document.getElementById("p-gender").value;
-  const county = document.getElementById("p-county").value;
-  const constituency = document.getElementById("p-constituency").value.trim();
-  clearErrors("p-fullname","p-idnumber","p-dob","p-gender","p-county","p-constituency");
-
-  let valid = true;
-  if(fullname.split(" ").filter(Boolean).length < 2){
-    setError("p-fullname", "Enter your full name as on your ID");
-    valid = false;
-  }
-  if(!/^\d{6,10}$/.test(idnumber)){
-    setError("p-idnumber", "Enter a valid National ID number");
-    valid = false;
-  }
-  if(!dob){
-    setError("p-dob", "Enter your date of birth");
-    valid = false;
-  }else{
-    const age = ageFromDob(dob);
-    if(age < 18){
-      setError("p-dob", "You must be at least 18 years old");
-      valid = false;
-    }
-  }
-  if(!gender){ setError("p-gender", "Select an option"); valid = false; }
-  if(!county){ setError("p-county", "Select your county"); valid = false; }
-  if(!constituency){ setError("p-constituency", "Enter your constituency"); valid = false; }
-  if(!valid) return;
-
-  Object.assign(state.data, {fullname, idnumber, dob, gender, county, constituency});
-  saveState();
-  showScreen("employment");
-});
-
-function ageFromDob(dobStr){
-  const dob = new Date(dobStr);
-  const now = new Date();
-  let age = now.getFullYear() - dob.getFullYear();
-  const m = now.getMonth() - dob.getMonth();
-  if(m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
-  return age;
-}
-
-/* ============ EMPLOYMENT ============ */
-const employerField = document.getElementById("field-employer");
-document.getElementById("e-type").addEventListener("change", e => {
-  const needsEmployer = ["government","private","self","business"].includes(e.target.value);
-  employerField.style.display = needsEmployer ? "" : "none";
-});
-employerField.style.display = "none";
-
-document.getElementById("form-employment").addEventListener("submit", e => {
-  e.preventDefault();
-  const type = document.getElementById("e-type").value;
-  const employer = document.getElementById("e-employer").value.trim();
-  clearErrors("e-type","e-employer");
-
-  let valid = true;
-  if(!type){ setError("e-type", "Select your employment type"); valid = false; }
-  const needsEmployer = ["government","private","self","business"].includes(type);
-  if(needsEmployer && !employer){
-    setError("e-employer", "Enter your employer or business name");
-    valid = false;
-  }
-  if(!valid) return;
-
-  state.data.employmentType = type;
-  state.data.employer = needsEmployer ? employer : "";
-  saveState();
-  showScreen("income");
-});
-
-/* ============ INCOME ============ */
-document.getElementById("form-income").addEventListener("submit", e => {
-  e.preventDefault();
-  const selected = document.querySelector('input[name="income"]:checked');
-  clearErrors();
-  document.getElementById("err-income").textContent = "";
-  if(!selected){
-    document.getElementById("err-income").textContent = "Select your income range";
-    return;
-  }
-  state.data.income = selected.value;
-  saveState();
-  showScreen("education");
-});
-
-/* ============ EDUCATION ============ */
-document.getElementById("form-education").addEventListener("submit", e => {
-  e.preventDefault();
-  const selected = document.querySelector('input[name="education"]:checked');
-  document.getElementById("err-education").textContent = "";
-  if(!selected){
-    document.getElementById("err-education").textContent = "Select your highest level of education";
-    return;
-  }
-  state.data.education = selected.value;
-  saveState();
-  showScreen("guarantor");
-});
-
-/* ============ GUARANTOR ============ */
-document.getElementById("form-guarantor").addEventListener("submit", e => {
-  e.preventDefault();
-  const name = document.getElementById("g-name").value.trim();
-  const phone = document.getElementById("g-phone").value.trim();
-  const relationship = document.getElementById("g-relationship").value;
-  clearErrors("g-name","g-phone","g-relationship");
-
-  let valid = true;
-  if(name.split(" ").filter(Boolean).length < 2){
-    setError("g-name", "Enter the guarantor's full name");
-    valid = false;
-  }
-  if(!isValidKenyanPhone(phone)){
-    setError("g-phone", "Enter a valid Kenyan mobile number");
-    valid = false;
-  }
-  if(!relationship){
-    setError("g-relationship", "Select a relationship");
-    valid = false;
-  }
-  if(!valid) return;
-
-  state.data.guarantorName = name;
-  state.data.guarantorPhone = normalizePhone(phone);
-  state.data.guarantorRelationship = relationship;
-  saveState();
-  renderReview();
-  showScreen("review");
-});
-
-/* ============ REVIEW ============ */
-const EMPLOYMENT_LABELS = {
-  government: "Government employee", private: "Private employee", self: "Self-employed",
-  business: "Business owner", casual: "Casual worker", student: "Student", unemployed: "Unemployed"
-};
-const INCOME_LABELS = {
-  "5000-12000": "KSh 5,000 – 12,000", "12001-18000": "KSh 12,001 – 18,000",
-  "18001-25000": "KSh 18,001 – 25,000", "25001-44000": "KSh 25,001 – 44,000",
-  "44001-60000": "KSh 44,001 – 60,000", "60001+": "Above KSh 60,000", "none": "No regular income"
-};
-const EDUCATION_LABELS = {
-  primary: "Primary", secondary: "Secondary", certificate: "Certificate",
-  diploma: "Diploma", university: "University", postgraduate: "Postgraduate"
-};
-
-function renderReview(){
-  const d = state.data;
-  const items = [
-    ["Full name", d.fullname],
-    ["National ID", d.idnumber],
-    ["Mobile number", d.phone],
-    ["Date of birth", d.dob],
-    ["Gender", d.gender],
-    ["County", d.county],
-    ["Constituency", d.constituency],
-    ["Employment", EMPLOYMENT_LABELS[d.employmentType] || "—"],
-    ["Employer/Business", d.employer || "—"],
-    ["Monthly income", INCOME_LABELS[d.income] || "—"],
-    ["Education", EDUCATION_LABELS[d.education] || "—"],
-    ["Guarantor", d.guarantorName],
-    ["Guarantor phone", d.guarantorPhone],
-    ["Relationship", d.guarantorRelationship],
+  /* ---------------------------------------------------------------------
+     Reference data
+     --------------------------------------------------------------------- */
+  const COUNTIES = [
+    "Mombasa","Kwale","Kilifi","Tana River","Lamu","Taita-Taveta","Garissa","Wajir",
+    "Mandera","Marsabit","Isiolo","Meru","Tharaka-Nithi","Embu","Kitui","Machakos",
+    "Makueni","Nyandarua","Nyeri","Kirinyaga","Murang'a","Kiambu","Turkana","West Pokot",
+    "Samburu","Trans Nzoia","Uasin Gishu","Elgeyo-Marakwet","Nandi","Baringo","Laikipia",
+    "Nakuru","Narok","Kajiado","Kericho","Bomet","Kakamega","Vihiga","Bungoma","Busia",
+    "Siaya","Kisumu","Homa Bay","Migori","Kisii","Nyamira","Nairobi"
   ];
-  const grid = document.getElementById("review-grid");
-  grid.innerHTML = items.map(([label,val]) => 
-    `<div class="review-item"><span>${label}</span><span>${escapeHtml(val || "—")}</span></div>`
-  ).join("");
-}
 
-function escapeHtml(str){
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
-}
+  // Diverse, non-repeating pool of Kenyan first names across communities.
+  const KENYAN_NAMES = [
+    "Wanjiku","Mwangi","Njoroge","Wambui","Kamau","Achieng","Otieno","Adhiambo",
+    "Odhiambo","Auma","Kipyegon","Cherono","Kiptoo","Chebet","Rotich","Jepkosgei",
+    "Wanjala","Nasimiyu","Wafula","Nekesa","Mutua","Mumo","Kavata","Nduku",
+    "Onyango","Akinyi","Owino","Nyambura","Kariuki","Muthoni","Njeri","Gitau",
+    "Cheruiyot","Jelagat","Kiplagat","Chepkoech","Barasa","Simiyu","Naliaka","Wekesa",
+    "Mutiso","Kioko","Kilonzo","Musyoka","Omondi","Awuor","Okoth","Atieno",
+    "Kiprotich","Chepngeno","Langat","Jerop","Wafubwa","Khisa","Situma","Nabwire",
+    "Mueni","Ndunge","Kasyoka","Mbithe","Kamotho","Waweru","Ngugi","Wairimu",
+    "Sang","Cherotich","Kigen","Chepkurui","Habiba","Fatuma","Abdi","Amina",
+    "Halima","Mohamed","Nyaboke","Moraa","Bosire","Kemunto","Gisemba","Bikeri"
+  ];
 
-/* ============ TERMS + SUBMIT ============ */
-document.getElementById("form-terms").addEventListener("submit", e => {
-  e.preventDefault();
-  const checked = document.getElementById("terms-check").checked;
-  document.getElementById("err-terms").textContent = "";
-  if(!checked){
-    document.getElementById("err-terms").textContent = "You must agree to the Terms & Conditions and Privacy Policy to continue";
-    return;
+  const usedNames = new Set();
+
+  function nextRandomName() {
+    if (usedNames.size >= KENYAN_NAMES.length) usedNames.clear();
+    let name;
+    do {
+      name = KENYAN_NAMES[Math.floor(Math.random() * KENYAN_NAMES.length)];
+    } while (usedNames.has(name));
+    usedNames.add(name);
+    return name;
   }
-  state.data.appliedAt = new Date().toISOString();
-  state.data.reference = generateReference();
-  saveState();
-  showScreen("processing");
-  runProcessing();
-});
 
-function generateReference(){
-  const digits = Math.floor(100000 + Math.random() * 900000);
-  return `HK-${digits}`;
-}
+  function randomLoanAmount() {
+    // KSh 5,000 – 40,000, rounded to nearest 100
+    const amt = Math.floor((Math.random() * (40000 - 5000) + 5000) / 100) * 100;
+    return amt;
+  }
 
-/* ============ PROCESSING ANIMATION ============ */
-function runProcessing(){
-  const steps = document.querySelectorAll("#processing-steps li");
-  const ringProgress = document.getElementById("ring-progress");
-  const ringPct = document.getElementById("ring-pct");
-  const circumference = 2 * Math.PI * 52;
-  ringProgress.style.strokeDasharray = circumference;
-  ringProgress.style.strokeDashoffset = circumference;
-  steps.forEach(s => s.classList.remove("active","done"));
+  /* ---------------------------------------------------------------------
+     State
+     --------------------------------------------------------------------- */
+  const state = load();
 
-  let i = 0;
-  function nextStep(){
-    if(i > 0) steps[i-1].classList.remove("active");
-    if(i > 0) steps[i-1].classList.add("done");
-    if(i >= steps.length){
-      setTimeout(() => finishApplication(), 500);
-      return;
+  function load() {
+    try {
+      return JSON.parse(localStorage.getItem("kr_application")) || {};
+    } catch {
+      return {};
     }
-    steps[i].classList.add("active");
-    const pct = Math.round(((i+1) / steps.length) * 100);
-    const offset = circumference - (pct/100) * circumference;
-    ringProgress.style.strokeDashoffset = offset;
-    ringPct.textContent = pct + "%";
-    i++;
-    setTimeout(nextStep, 900);
   }
-  nextStep();
-}
-
-/* ============ ELIGIBILITY CALCULATION ============ */
-function calculateOffer(){
-  const d = state.data;
-
-  const noIncomeEmployment = ["student","unemployed"].includes(d.employmentType);
-  const noIncomeSelected = d.income === "none";
-
-  if(noIncomeEmployment || noIncomeSelected){
-    return { approved: false };
+  function save() {
+    localStorage.setItem("kr_application", JSON.stringify(state));
   }
 
-  const bands = {
-    "5000-12000":   { min: 8000,  max: 15000,  term: 60 },
-    "12001-18000":  { min: 15000, max: 25000,  term: 75 },
-    "18001-25000":  { min: 25000, max: 35000,  term: 90 },
-    "25001-44000":  { min: 35000, max: 60000,  term: 120 },
-    "44001-60000":  { min: 60000, max: 90000,  term: 150 },
-    "60001+":       { min: 90000, max: 150000, term: 180 }
+  /* ---------------------------------------------------------------------
+     Screen navigation
+     --------------------------------------------------------------------- */
+  const screens = document.querySelectorAll(".screen");
+  function showScreen(name) {
+    screens.forEach(s => s.classList.toggle("active", s.dataset.screen === name));
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+  }
+
+  document.querySelectorAll('[data-action="apply"]').forEach(el =>
+    el.addEventListener("click", () => { showScreen("app"); goToStep("register"); })
+  );
+  document.querySelectorAll('[data-action="landing"]').forEach(el =>
+    el.addEventListener("click", () => showScreen("landing"))
+  );
+  document.querySelectorAll('[data-action="dashboard"]').forEach(el =>
+    el.addEventListener("click", () => { populateDashboard(); showScreen("dashboard"); })
+  );
+  document.querySelectorAll('[data-nav="landing"]').forEach(el =>
+    el.addEventListener("click", e => { e.preventDefault(); showScreen("landing"); })
+  );
+
+  /* ---------------------------------------------------------------------
+     Hamburger menu
+     --------------------------------------------------------------------- */
+  const hamburger = document.getElementById("hamburger");
+  const mainNav = document.getElementById("mainNav");
+  if (hamburger && mainNav) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      mainNav.classList.toggle("active");
+    });
+    document.addEventListener("click", e => {
+      if (!mainNav.contains(e.target) && !hamburger.contains(e.target)) {
+        hamburger.classList.remove("active");
+        mainNav.classList.remove("active");
+      }
+    });
+    mainNav.querySelectorAll("a, button").forEach(el =>
+      el.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        mainNav.classList.remove("active");
+      })
+    );
+  }
+
+  /* ---------------------------------------------------------------------
+     Smooth scroll for in-page anchors
+     --------------------------------------------------------------------- */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      const id = link.getAttribute("href");
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        showScreen("landing");
+        setTimeout(() => target.scrollIntoView({ behavior: "smooth" }), 30);
+      }
+    });
+  });
+
+  /* ---------------------------------------------------------------------
+     FAQ accordion
+     --------------------------------------------------------------------- */
+  document.querySelectorAll(".accordion-trigger").forEach(trigger => {
+    trigger.addEventListener("click", () => {
+      const item = trigger.closest(".accordion-item");
+      const panel = item.querySelector(".accordion-panel");
+      const isOpen = item.classList.contains("open");
+      item.parentElement.querySelectorAll(".accordion-item").forEach(i => {
+        i.classList.remove("open");
+        i.querySelector(".accordion-panel").style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add("open");
+        panel.style.maxHeight = panel.scrollHeight + 40 + "px";
+      }
+    });
+  });
+
+  /* ---------------------------------------------------------------------
+     Populate counties
+     --------------------------------------------------------------------- */
+  const countySelect = document.getElementById("pCounty");
+  if (countySelect) {
+    countySelect.innerHTML = '<option value="" disabled selected>Select</option>' +
+      COUNTIES.map(c => `<option>${c}</option>`).join("");
+  }
+
+  /* ---------------------------------------------------------------------
+     Application steps
+     --------------------------------------------------------------------- */
+  const STEP_ORDER = ["register","personal","employment","income","education","guarantor","review","terms"];
+  const STEP_LABELS = {
+    register: "Account", personal: "Personal details", employment: "Employment",
+    income: "Income", education: "Education", guarantor: "Guarantor",
+    review: "Review", terms: "Terms"
   };
-  const band = bands[d.income];
-  if(!band) return { approved: false };
+  let currentStepIndex = 0;
 
-  // Employment type adjusts the offered amount within the band
-  const typeMultiplier = {
-    government: 1.0, private: 0.9, business: 0.85, self: 0.75, casual: 0.6
-  }[d.employmentType] ?? 0.7;
-
-  let amount = Math.round((band.min + (band.max - band.min) * typeMultiplier) / 100) * 100;
-  amount = Math.min(amount, band.max);
-  amount = Math.max(amount, band.min);
-
-  const maxAmount = band.max;
-  const termDays = band.term;
-  // Simple flat-rate estimate for demonstration purposes: 10% flat fee over the term
-  const totalRepayable = Math.round(amount * 1.10);
-  const monthlyRepayment = Math.round(totalRepayable / (termDays / 30));
-
-  return { approved: true, amount, maxAmount, termDays, monthlyRepayment };
-}
-
-function finishApplication(){
-  const result = calculateOffer();
-  state.data.approved = result.approved;
-
-  if(!result.approved){
-    saveState();
-    showScreen("decline");
-    return;
+  const railList = document.getElementById("railList");
+  if (railList) {
+    railList.innerHTML = STEP_ORDER.map((key, i) => `
+      <li class="rail-item" data-rail="${key}">
+        <span class="rail-dot">${i + 1}</span>
+        <span class="rail-label">${STEP_LABELS[key]}</span>
+      </li>`).join("");
   }
 
-  state.data.offerAmount = result.amount;
-  state.data.maxAmount = result.maxAmount;
-  state.data.termDays = result.termDays;
-  state.data.monthlyRepayment = result.monthlyRepayment;
-  saveState();
-  renderOffer();
-  showScreen("offer");
-}
+  function goToStep(key) {
+    currentStepIndex = STEP_ORDER.indexOf(key);
+    document.querySelectorAll(".app-step").forEach(s => s.classList.toggle("active", s.dataset.step === key));
+    updateRail();
+    updateMobileProgress();
+    if (key === "review") renderReview();
+  }
 
-function renderOffer(){
-  const d = state.data;
-  document.getElementById("offer-amount").textContent = `KSh ${d.offerAmount.toLocaleString()}`;
-  document.getElementById("offer-ref").textContent = d.reference;
-  document.getElementById("offer-max").textContent = `KSh ${d.maxAmount.toLocaleString()}`;
-  document.getElementById("offer-term").textContent = `${d.termDays} days`;
-  document.getElementById("offer-monthly").textContent = `KSh ${d.monthlyRepayment.toLocaleString()} / month (est.)`;
-}
+  function updateRail() {
+    document.querySelectorAll(".rail-item").forEach((item, i) => {
+      item.classList.toggle("done", i < currentStepIndex);
+      item.classList.toggle("current", i === currentStepIndex);
+    });
+  }
 
-/* ============ DASHBOARD ============ */
-function renderDashboard(){
-  const d = state.data;
-  document.getElementById("dash-name").textContent = d.fullname || "Applicant";
-  document.getElementById("dash-phone").textContent = d.phone || "—";
-  document.getElementById("dash-ref").textContent = d.reference || "—";
-  document.getElementById("dash-amount").textContent = d.offerAmount ? `KSh ${d.offerAmount.toLocaleString()}` : "—";
-  document.getElementById("dash-date").textContent = d.appliedAt ? new Date(d.appliedAt).toLocaleDateString("en-KE", {year:"numeric", month:"long", day:"numeric"}) : "—";
-  document.getElementById("dash-status").textContent = "Application Received";
-}
+  function updateMobileProgress() {
+    const fill = document.getElementById("progressFill");
+    const label = document.getElementById("progressLabel");
+    const pct = ((currentStepIndex + 1) / STEP_ORDER.length) * 100;
+    if (fill) fill.style.width = pct + "%";
+    if (label) label.textContent = `Step ${currentStepIndex + 1} of ${STEP_ORDER.length} — ${STEP_LABELS[STEP_ORDER[currentStepIndex]]}`;
+  }
 
-/* ============ GLOBAL ACTIONS ============ */
-document.addEventListener("click", e => {
-  const actionEl = e.target.closest("[data-action]");
-  if(actionEl){
-    const action = actionEl.dataset.action;
-    if(action === "start-application"){
-      showScreen("register");
-    }else if(action === "go-dashboard"){
-      renderDashboard();
-      showScreen("dashboard");
-    }else if(action === "go-home"){
-      resetApplication();
-      showScreen("landing");
+  document.querySelectorAll("[data-back]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (currentStepIndex > 0) goToStep(STEP_ORDER[currentStepIndex - 1]);
+      else showScreen("landing");
+    });
+  });
+
+  document.querySelectorAll('[data-next="terms"]').forEach(btn =>
+    btn.addEventListener("click", () => goToStep("terms"))
+  );
+
+  /* ---------------------------------------------------------------------
+     Validation helpers
+     --------------------------------------------------------------------- */
+  function setError(id, msg) {
+    const el = document.getElementById("err-" + id);
+    const input = document.getElementById(id);
+    if (el) el.textContent = msg || "";
+    if (input) input.classList.toggle("invalid", !!msg);
+    return !msg;
+  }
+
+  function isValidKenyanPhone(v) {
+    const cleaned = v.replace(/\s+/g, "");
+    return /^(?:\+254|0)(7|1)\d{8}$/.test(cleaned);
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Register
+     --------------------------------------------------------------------- */
+  const registerForm = document.querySelector('[data-step="register"]');
+  if (registerForm) {
+    registerForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const phone = document.getElementById("regPhone").value.trim();
+      const pin = document.getElementById("regPin").value.trim();
+      const pinConfirm = document.getElementById("regPinConfirm").value.trim();
+
+      let ok = true;
+      ok = setError("regPhone", isValidKenyanPhone(phone) ? "" : "Enter a valid Kenyan mobile number.") && ok;
+      ok = setError("regPin", /^\d{4}$/.test(pin) ? "" : "PIN must be exactly 4 digits.") && ok;
+      ok = setError("regPinConfirm", pin === pinConfirm && pinConfirm.length === 4 ? "" : "PINs do not match.") && ok;
+      if (!ok) return;
+
+      state.phone = phone;
+      save();
+      goToStep("personal");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Personal
+     --------------------------------------------------------------------- */
+  const personalForm = document.querySelector('[data-step="personal"]');
+  if (personalForm) {
+    personalForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const fullName = document.getElementById("pFullName").value.trim();
+      const idNumber = document.getElementById("pIdNumber").value.trim();
+      const dob = document.getElementById("pDob").value;
+      const gender = document.getElementById("pGender").value;
+      const county = document.getElementById("pCounty").value;
+      const constituency = document.getElementById("pConstituency").value.trim();
+
+      let ok = true;
+      ok = setError("pFullName", fullName.length >= 3 ? "" : "Enter your full name.") && ok;
+      ok = setError("pIdNumber", /^\d{6,10}$/.test(idNumber) ? "" : "Enter a valid ID number.") && ok;
+      ok = setError("pDob", dob ? "" : "Select your date of birth.") && ok;
+      ok = setError("pConstituency", constituency.length >= 2 ? "" : "Enter your constituency.") && ok;
+      if (!gender) { alert("Please select your gender."); ok = false; }
+      if (!county) { alert("Please select your county."); ok = false; }
+      if (!ok) return;
+
+      Object.assign(state, { fullName, idNumber, dob, gender, county, constituency });
+      save();
+      goToStep("employment");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Employment
+     --------------------------------------------------------------------- */
+  const employmentForm = document.querySelector('[data-step="employment"]');
+  const eType = document.getElementById("eType");
+  const employerField = document.getElementById("employerField");
+  function toggleEmployerField() {
+    const noEmployer = ["Student", "Unemployed"];
+    employerField.style.display = noEmployer.includes(eType.value) ? "none" : "flex";
+  }
+  if (eType) { eType.addEventListener("change", toggleEmployerField); toggleEmployerField(); }
+
+  if (employmentForm) {
+    employmentForm.addEventListener("submit", e => {
+      e.preventDefault();
+      if (!eType.value) { alert("Please select your employment type."); return; }
+      state.employmentType = eType.value;
+      state.employer = document.getElementById("eEmployer").value.trim();
+      save();
+      goToStep("income");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Income
+     --------------------------------------------------------------------- */
+  const incomeForm = document.querySelector('[data-step="income"]');
+  if (incomeForm) {
+    incomeForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const selected = incomeForm.querySelector('input[name="income"]:checked');
+      if (!selected) { setError("income", "Select your monthly income range."); return; }
+      setError("income", "");
+      state.income = selected.value;
+      save();
+      goToStep("education");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Education
+     --------------------------------------------------------------------- */
+  const educationForm = document.querySelector('[data-step="education"]');
+  if (educationForm) {
+    educationForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const selected = educationForm.querySelector('input[name="education"]:checked');
+      if (!selected) { setError("education", "Select your highest level of education."); return; }
+      setError("education", "");
+      state.education = selected.value;
+      save();
+      goToStep("guarantor");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Guarantor
+     --------------------------------------------------------------------- */
+  const guarantorForm = document.querySelector('[data-step="guarantor"]');
+  if (guarantorForm) {
+    guarantorForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const gName = document.getElementById("gName").value.trim();
+      const gPhone = document.getElementById("gPhone").value.trim();
+      const gRelationship = document.getElementById("gRelationship").value;
+
+      let ok = true;
+      ok = setError("gName", gName.length >= 3 ? "" : "Enter guarantor's full name.") && ok;
+      ok = setError("gPhone", isValidKenyanPhone(gPhone) ? "" : "Enter a valid Kenyan mobile number.") && ok;
+      if (!gRelationship) { alert("Please select the relationship."); ok = false; }
+      if (!ok) return;
+
+      Object.assign(state, { gName, gPhone, gRelationship });
+      save();
+      goToStep("review");
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Review
+     --------------------------------------------------------------------- */
+  function renderReview() {
+    const list = document.getElementById("reviewList");
+    if (!list) return;
+    list.innerHTML = `
+      <div class="review-group">
+        <h4>Account</h4>
+        <div class="review-row"><span>Mobile number</span><strong>${state.phone || "—"}</strong></div>
+      </div>
+      <div class="review-group">
+        <h4>Personal details</h4>
+        <div class="review-row"><span>Full name</span><strong>${state.fullName || "—"}</strong></div>
+        <div class="review-row"><span>National ID</span><strong>${state.idNumber || "—"}</strong></div>
+        <div class="review-row"><span>Date of birth</span><strong>${state.dob || "—"}</strong></div>
+        <div class="review-row"><span>Gender</span><strong>${state.gender || "—"}</strong></div>
+        <div class="review-row"><span>County</span><strong>${state.county || "—"}</strong></div>
+        <div class="review-row"><span>Constituency</span><strong>${state.constituency || "—"}</strong></div>
+      </div>
+      <div class="review-group">
+        <h4>Employment &amp; income</h4>
+        <div class="review-row"><span>Employment type</span><strong>${state.employmentType || "—"}</strong></div>
+        <div class="review-row"><span>Employer / business</span><strong>${state.employer || "—"}</strong></div>
+        <div class="review-row"><span>Monthly income</span><strong>KSh ${state.income || "—"}</strong></div>
+        <div class="review-row"><span>Education</span><strong>${state.education || "—"}</strong></div>
+      </div>
+      <div class="review-group">
+        <h4>Guarantor</h4>
+        <div class="review-row"><span>Full name</span><strong>${state.gName || "—"}</strong></div>
+        <div class="review-row"><span>Phone number</span><strong>${state.gPhone || "—"}</strong></div>
+        <div class="review-row"><span>Relationship</span><strong>${state.gRelationship || "—"}</strong></div>
+      </div>
+    `;
+  }
+
+  /* ---------------------------------------------------------------------
+     STEP: Terms + Submit
+     --------------------------------------------------------------------- */
+  const submitBtn = document.getElementById("submitApplicationBtn");
+  if (submitBtn) {
+    submitBtn.addEventListener("click", () => {
+      const agree = document.getElementById("termsAgree").checked;
+      if (!agree) { setError("terms", "You must agree to the Terms & Conditions to continue."); return; }
+      setError("terms", "");
+
+      // Generate application reference. Exact approved amount, collateral
+      // fee and repayment terms are set once the applicant picks a limit
+      // tier (see selectTier), after the CRB-flag step.
+      state.reference = "KR-" + Date.now().toString().slice(-8);
+      state.applicationDate = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+      save();
+
+      showScreen("processing");
+      runProcessingSequence();
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     Tiered limits, collateral fees and repayment terms
+     Sandbox demo only — figures are illustrative, no real payment moves.
+     Rule (confirmed against lecturer's notes):
+       total repayable   = approved amount + 20%
+       weekly repayment  = total repayable ÷ 8   (always 8 weeks, since
+                            120% ÷ 15%-of-principal-per-week resolves to
+                            a fixed 8-week term regardless of amount)
+     --------------------------------------------------------------------- */
+  const TIERS = [
+    { min: 2000,  max: 5000,  collateral: 180 },
+    { min: 5000,  max: 8000,  collateral: 260 },
+    { min: 8000,  max: 11000, collateral: 310 },
+    { min: 11000, max: 14000, collateral: 450 },
+    { min: 14000, max: 17000, collateral: 550 },
+    { min: 17000, max: 20000, collateral: 670 }
+  ];
+  const REPAYMENT_WEEKS = 8;
+
+  function roundTo10(n) { return Math.round(n / 10) * 10; }
+
+  function renderTierTable() {
+    const body = document.getElementById("tierTableBody");
+    if (!body) return;
+    body.innerHTML = TIERS.map((t, i) => {
+      const illustrativeWeekly = roundTo10((t.min * 1.2) / REPAYMENT_WEEKS);
+      return `<tr>
+        <td>KSh ${t.min.toLocaleString()} – ${t.max.toLocaleString()}</td>
+        <td>KSh ${t.collateral.toLocaleString()}</td>
+        <td>KSh ${illustrativeWeekly.toLocaleString()}/wk</td>
+        <td><button type="button" class="btn btn-primary btn-sm" data-tier="${i}">Get</button></td>
+      </tr>`;
+    }).join("");
+    body.querySelectorAll("[data-tier]").forEach(btn =>
+      btn.addEventListener("click", () => selectTier(parseInt(btn.dataset.tier, 10)))
+    );
+  }
+
+  function selectTier(index) {
+    const tier = TIERS[index];
+    const approved = roundTo10(tier.min + Math.random() * (tier.max - tier.min)) ; // nearest 10
+    const approvedAmount = Math.round(approved / 100) * 100; // nearest 100, stays within range
+    const totalRepayable = roundTo10(approvedAmount * 1.2);
+    const weeklyRepayment = roundTo10(totalRepayable / REPAYMENT_WEEKS);
+
+    state.tierIndex = index;
+    state.offerAmount = approvedAmount;
+    state.collateralFee = tier.collateral;
+    state.totalRepayable = totalRepayable;
+    state.weeklyRepayment = weeklyRepayment;
+    state.repaymentWeeks = REPAYMENT_WEEKS;
+    save();
+
+    document.getElementById("tcAmount").textContent = `KSh ${approvedAmount.toLocaleString()}`;
+    document.getElementById("tcCollateral").textContent = `KSh ${tier.collateral.toLocaleString()}`;
+    document.getElementById("tcWeekly").textContent = `KSh ${weeklyRepayment.toLocaleString()} / week`;
+    document.getElementById("tcWeeks").textContent = `${REPAYMENT_WEEKS} weeks`;
+    document.getElementById("tcTotal").textContent = `KSh ${totalRepayable.toLocaleString()}`;
+
+    showScreen("tierconfirm");
+  }
+
+  renderTierTable();
+
+  /* ---------------------------------------------------------------------
+     Processing sequence -> ends in CRB "block" (coursework illustration)
+     --------------------------------------------------------------------- */
+  function runProcessingSequence() {
+    const keys = ["verify", "credit", "rate", "crb"];
+    const items = keys.map(k => document.querySelector(`#checkSteps li[data-key="${k}"]`));
+    items.forEach(li => li.classList.remove("active", "done", "failed"));
+
+    let i = 0;
+    function step() {
+      if (i > 0) items[i - 1].classList.replace("active", i - 1 === keys.length - 1 ? "failed" : "done");
+      if (i >= keys.length) {
+        setTimeout(() => showScreen("crbblock"), 500);
+        return;
+      }
+      items[i].classList.add("active");
+      i++;
+      setTimeout(step, 1000);
     }
-    document.getElementById("mainNav").classList.remove("active");
-    document.getElementById("hamburger").classList.remove("active");
+    step();
   }
 
-  const backEl = e.target.closest("[data-back]");
-  if(backEl){ goBack(); }
+  /* ---------------------------------------------------------------------
+     Unblacklist modal + simulated STK push
+     (No network call — purely a frontend animation for coursework use.)
+     --------------------------------------------------------------------- */
+  const unblacklistBtn = document.getElementById("unblacklistBtn");
+  const unblacklistModal = document.getElementById("unblacklistModal");
+  const modalClose = document.getElementById("modalClose");
+  const sendPromptBtn = document.getElementById("sendPromptBtn");
+  const stkModal = document.getElementById("stkModal");
+  const getLoanNowBtn = document.getElementById("getLoanNowBtn");
 
-  const staticLink = e.target.closest("[data-static-link]");
-  if(staticLink){
-    e.preventDefault();
-    openStaticModal(staticLink.textContent.trim());
+  if (unblacklistBtn) {
+    unblacklistBtn.addEventListener("click", () => {
+      showScreen("tiertable");
+    });
   }
 
-  const navLink = e.target.closest(".nav-link");
-  if(navLink && navLink.tagName === "A"){
-    document.getElementById("mainNav").classList.remove("active");
-    document.getElementById("hamburger").classList.remove("active");
+  if (getLoanNowBtn) {
+    getLoanNowBtn.addEventListener("click", () => {
+      document.getElementById("unblockPhone").value = state.phone || "";
+      const fee = state.collateralFee || 0;
+      document.getElementById("modalTitle").textContent = "Pay collateral fee";
+      document.getElementById("modalFeeAmount").textContent = `KSh ${fee.toLocaleString()}`;
+      sendPromptBtn.textContent = `Pay collateral fee — KSh ${fee.toLocaleString()}`;
+      unblacklistModal.classList.add("active");
+    });
+  }
+  if (modalClose) {
+    modalClose.addEventListener("click", () => unblacklistModal.classList.remove("active"));
+  }
+  unblacklistModal?.addEventListener("click", e => {
+    if (e.target === unblacklistModal) unblacklistModal.classList.remove("active");
+  });
+
+  if (sendPromptBtn) {
+    sendPromptBtn.addEventListener("click", () => {
+      const phone = document.getElementById("unblockPhone").value.trim();
+      if (!isValidKenyanPhone(phone)) {
+        setError("unblockPhone", "Enter a valid Kenyan mobile number.");
+        return;
+      }
+      setError("unblockPhone", "");
+      unblacklistModal.classList.remove("active");
+      simulatePayment();
+    });
   }
 
-  const brandLink = e.target.closest('[data-nav="landing"]');
-  if(brandLink){
-    e.preventDefault();
-    showScreen("landing");
+  function simulatePayment() {
+    const title = document.getElementById("stkStatusTitle");
+    const sub = document.getElementById("stkStatusSub");
+    title.textContent = "Sending payment prompt…";
+    sub.textContent = "A simulated prompt has been sent to your phone. Enter your M-PESA PIN to confirm.";
+    stkModal.classList.add("active");
+
+    setTimeout(() => {
+      title.textContent = "Confirming payment…";
+      sub.textContent = "Simulated confirmation in progress. No real transaction is taking place.";
+    }, 1800);
+
+    setTimeout(() => {
+      stkModal.classList.remove("active");
+      showScreen("pending");
+    }, 3400);
   }
-});
 
-function resetApplication(){
-  state.screenHistory = [];
-}
-
-/* ============ STATIC INFO MODAL ============ */
-const STATIC_CONTENT = {
-  "About Us": "Haraka Loans is a coursework prototype demonstrating a digital lending application flow for a software engineering class presentation. It is not a licensed financial institution.",
-  "Contact Us": "This is a demo build. In a live product, this page would list a support phone line, email address, and office hours.",
-  "Privacy Policy": "In this demo, all information you enter stays on your own device in local browser storage and is never transmitted to a server.",
-  "Terms & Conditions": "This is placeholder text for a coursework demo. A live lender would publish full loan terms, interest rates, and borrower obligations here.",
-  "Responsible Lending": "A live lender would use this page to explain affordability checks, borrower protections, and how to seek help if repayment becomes difficult.",
-  "Help Centre": "This is a demo build with no live support channel. In a real product, this page would host guides and a way to reach customer support."
-};
-function openStaticModal(title){
-  document.getElementById("staticModalTitle").textContent = title;
-  document.getElementById("staticModalBody").textContent = STATIC_CONTENT[title] || "Content coming soon.";
-  document.getElementById("staticModalBackdrop").classList.add("active");
-}
-document.getElementById("staticModalClose").addEventListener("click", () => {
-  document.getElementById("staticModalBackdrop").classList.remove("active");
-});
-document.getElementById("staticModalBackdrop").addEventListener("click", e => {
-  if(e.target.id === "staticModalBackdrop") e.target.classList.remove("active");
-});
-
-/* ============ HAMBURGER MENU ============ */
-const hamburger = document.getElementById("hamburger");
-const mainNav = document.getElementById("mainNav");
-hamburger.addEventListener("click", () => {
-  hamburger.classList.toggle("active");
-  mainNav.classList.toggle("active");
-});
-document.addEventListener("click", e => {
-  if(!mainNav.contains(e.target) && !hamburger.contains(e.target)){
-    hamburger.classList.remove("active");
-    mainNav.classList.remove("active");
+  /* ---------------------------------------------------------------------
+     Dashboard
+     --------------------------------------------------------------------- */
+  function populateDashboard() {
+    document.getElementById("dashName").textContent = state.fullName || "—";
+    document.getElementById("dashPhone").textContent = state.phone || "—";
+    document.getElementById("dashRef").textContent = state.reference || "—";
+    document.getElementById("dashAmount").textContent = state.offerAmount ? `KSh ${state.offerAmount.toLocaleString()}` : "—";
+    document.getElementById("dashWeekly").textContent = state.weeklyRepayment ? `KSh ${state.weeklyRepayment.toLocaleString()} / week` : "—";
+    document.getElementById("dashWeeks").textContent = state.repaymentWeeks ? `${state.repaymentWeeks} weeks` : "—";
+    document.getElementById("dashTotal").textContent = state.totalRepayable ? `KSh ${state.totalRepayable.toLocaleString()}` : "—";
+    document.getElementById("dashDate").textContent = state.applicationDate || "—";
+    const statusEl = document.getElementById("dashStatus");
+    statusEl.textContent = "Pending Final Verification";
+    statusEl.classList.remove("received");
   }
-});
 
-/* ============ INIT ============ */
-loadState();
-showScreen("landing", {skipHistory:true});
+  /* ---------------------------------------------------------------------
+     Educational banner dismiss
+     --------------------------------------------------------------------- */
+  const eduBanner = document.getElementById("eduBanner");
+  const eduClose = document.getElementById("eduClose");
+  if (eduClose) eduClose.addEventListener("click", () => eduBanner.classList.add("hidden"));
+
+  /* ---------------------------------------------------------------------
+     Ticker popup — fake "recent approvals" social proof
+     Illustrates a manipulation pattern used on real scam lending sites:
+     fabricated activity notifications to build false trust/urgency.
+     Runs continuously in the background; every ~2s, non-repeating names.
+     --------------------------------------------------------------------- */
+  const tickerPopup = document.getElementById("tickerPopup");
+  const tickerAvatar = document.getElementById("tickerAvatar");
+  const tickerText = document.getElementById("tickerText");
+  let tickerTimer = null;
+  let tickerVisible = false;
+
+  function showTicker() {
+    if (tickerVisible) return;
+    const name = nextRandomName();
+    const amount = randomLoanAmount();
+    tickerAvatar.textContent = name.charAt(0);
+    tickerText.innerHTML = `<strong>${name}</strong> just received a loan of KSh ${amount.toLocaleString()}`;
+    tickerPopup.classList.add("show");
+    tickerVisible = true;
+    setTimeout(() => {
+      tickerPopup.classList.remove("show");
+      tickerVisible = false;
+    }, 3200);
+  }
+
+  function startTicker() {
+    if (tickerTimer) return;
+    showTicker();
+    tickerTimer = setInterval(showTicker, 5200); // ~2s visible + ~3.2s gap, non-overlapping
+  }
+
+  // Start once the page has settled.
+  setTimeout(startTicker, 2500);
+
+  /* ---------------------------------------------------------------------
+     Dashboard demo withdrawal ticker
+     "Claim your limit" style marketing notification, as used on real
+     lending sites to show recent activity. Ours is explicitly labeled
+     DEMO in the UI itself and never claims to reflect a real user,
+     phone number, or withdrawal — it exists purely to illustrate the
+     pattern for coursework, on the dashboard screen only.
+     --------------------------------------------------------------------- */
+  const DASH_NAMES = [
+    "James","Evans","Brian","Kevin","Dennis","Peter","Samuel","Joseph","Michael","Daniel",
+    "Faith","Mercy","Grace","Ann","Lucy","Esther","Purity","Irene","Diana","Sharon",
+    "Mwangi","Otieno","Wanjiku","Nyambura","Kipyegon","Chebet","Wafula","Nekesa","Achieng","Odhiambo",
+    "Kamau","Njoroge","Wambui","Muthoni","Kariuki","Cherono","Kiptoo","Rotich","Jepkosgei","Barasa",
+    "Simiyu","Naliaka","Mutua","Nduku","Kilonzo","Omondi","Awuor","Moraa","Bosire","Abdi"
+  ];
+  let dashUsedNames = new Set();
+
+  function nextDashName() {
+    if (dashUsedNames.size >= DASH_NAMES.length) dashUsedNames.clear();
+    let name;
+    do {
+      name = DASH_NAMES[Math.floor(Math.random() * DASH_NAMES.length)];
+    } while (dashUsedNames.has(name));
+    dashUsedNames.add(name);
+    return name;
+  }
+
+  function maskedDemoPhone() {
+    // Not a real number — random digits, masked, for display only.
+    const prefix = Math.random() > 0.5 ? "07" : "01";
+    const d = () => Math.floor(Math.random() * 10);
+    const first2 = `${d()}${d()}`;
+    const last2 = `${d()}${d()}`;
+    return `${prefix}${first2}***${last2}`;
+  }
+
+  function randomDashAmount() {
+    // Same limit range offered on this site: KSh 5,000 – 40,000.
+    return Math.floor((Math.random() * (40000 - 5000) + 5000) / 100) * 100;
+  }
+
+  const dashTicker = document.getElementById("dashWithdrawTicker");
+  const dwtAvatar = document.getElementById("dwtAvatar");
+  const dwtText = document.getElementById("dwtText");
+  let dashTickerInterval = null;
+
+  function showDashTicker() {
+    if (!dashTicker) return;
+    const name = nextDashName();
+    const phone = maskedDemoPhone();
+    const amount = randomDashAmount();
+    dwtAvatar.textContent = name.charAt(0);
+    dwtText.innerHTML = `<strong>${name}</strong> <span class="dwt-phone">${phone}</span><br>withdrew a loan of KSh ${amount.toLocaleString()} <span class="dwt-phone">(demo)</span>`;
+    dashTicker.classList.add("show");
+    setTimeout(() => dashTicker.classList.remove("show"), 850);
+  }
+
+  function startDashTicker() {
+    if (dashTickerInterval) return;
+    showDashTicker();
+    dashTickerInterval = setInterval(showDashTicker, 1000);
+  }
+
+  function stopDashTicker() {
+    clearInterval(dashTickerInterval);
+    dashTickerInterval = null;
+    dashTicker?.classList.remove("show");
+  }
+
+  // Hook into screen navigation: only run while the dashboard is visible.
+  const _originalShowScreen = showScreen;
+  showScreen = function (name) {
+    _originalShowScreen(name);
+    if (name === "dashboard") startDashTicker();
+    else stopDashTicker();
+  };
+
+  /* ---------------------------------------------------------------------
+     Init
+     --------------------------------------------------------------------- */
+  showScreen("landing");
+})();
