@@ -13,7 +13,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
     <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
@@ -159,7 +158,7 @@
       <h2 class="heading text-3xl font-bold text-center mb-10">FAQs</h2>
       <div class="space-y-4">
         <div class="card p-6"><h3 class="font-semibold">Who can apply?</h3><p class="text-gray-500 mt-2 text-sm">Kenyan adults with a valid ID, mobile number and a source of income.</p></div>
-        <div class="card p-6"><h3 class="font-semibold">What is the security fee?</h3><p class="text-gray-500 mt-2 text-sm">A collateral fee tied to the limit range you select. This is a sandbox demo — no real loan is disbursed outside the demo environment.</p></div>
+        <div class="card p-6"><h3 class="font-semibold">What is the security fee?</h3><p class="text-gray-500 mt-2 text-sm">A collateral fee tied to the limit range you select. Sandbox demo only.</p></div>
         <div class="card p-6"><h3 class="font-semibold">How long does the application take?</h3><p class="text-gray-500 mt-2 text-sm">Most people finish the form in under five minutes.</p></div>
       </div>
     </div>
@@ -168,7 +167,7 @@
   <footer class="bg-slate-900 text-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
       <h2 class="heading text-xl font-bold">KwikLoan Kenya</h2>
-      <p class="text-gray-400 mt-3 text-sm max-w-md mx-auto">Sandbox coursework demo — not a licensed live lender. No real disbursements outside sandbox payments.</p>
+      <p class="text-gray-400 mt-3 text-sm max-w-md mx-auto">Sandbox coursework demo — not a licensed live lender.</p>
       <p class="text-gray-500 text-xs mt-8">© <span id="footer-year"></span> KwikLoan • Demo project</p>
     </div>
   </footer>
@@ -224,7 +223,7 @@
         </div>
         <h2 class="heading text-2xl sm:text-3xl font-bold">Choose your limit range</h2>
         <p class="text-gray-500 mt-2 text-sm max-w-lg mx-auto">
-          Select any range you are comfortable with. Each range has a security (collateral) fee. Exact amount is assigned when you select.
+          Select any range you are comfortable with. Each range has a security (collateral) fee.
         </p>
       </div>
       <div class="tier-table-scroll">
@@ -241,6 +240,7 @@
         </table>
       </div>
       <p class="text-center text-xs text-gray-400 mt-4">Sandbox demo — fees and limits are illustrative.</p>
+      <button type="button" onclick="loadDashboard()" class="btn-secondary mt-6">Back to dashboard</button>
     </div>
   </div>
 </div>
@@ -269,62 +269,77 @@
   </div>
 </div>
 
-<!-- COLLATERAL PAYMENT MODAL -->
+<!-- PAYMENT MODAL -->
 <div id="payModal" class="modal-overlay">
   <div class="modal-box max-w-md" id="payModalCard"></div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="section hidden min-h-screen bg-slate-100">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
       <div>
-        <h1 class="heading text-2xl sm:text-4xl font-bold">My Dashboard</h1>
-        <p class="text-gray-500 mt-1 text-sm">Your loan application summary</p>
+        <h1 class="heading text-2xl sm:text-3xl font-bold">My application</h1>
+        <p class="text-gray-500 text-sm mt-1">Track your limit, security fee and status</p>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="openProfile()" class="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl pl-2 pr-4 py-2 hover:shadow-md transition">
-          <div id="profileAvatar" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">JK</div>
-          <div class="text-left hidden sm:block">
-            <p id="dashName" class="font-semibold text-sm leading-tight">—</p>
-            <p id="dashPhone" class="text-gray-400 text-xs leading-tight">—</p>
-          </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openProfile()" title="My details"
+          class="w-11 h-11 rounded-2xl bg-white border border-gray-200 text-blue-700 hover:shadow-md flex items-center justify-center">
+          <i class="fa-solid fa-user"></i>
         </button>
-        <button onclick="logoutUser()" class="w-11 h-11 rounded-2xl border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center">
+        <button type="button" onclick="logoutUser()" title="Log out"
+          class="w-11 h-11 rounded-2xl border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
     </div>
-    <div class="grid lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 space-y-6">
-        <div class="card p-6">
-          <p class="text-gray-500 text-sm flex items-center gap-2"><i class="fa-solid fa-wallet text-emerald-500"></i> Approved loan amount</p>
-          <h1 id="dashLimit" class="heading text-4xl font-bold text-emerald-600 mt-2">KSh 0</h1>
+
+    <div class="card p-5 sm:p-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <p class="text-gray-500 text-sm">Selected loan amount</p>
+          <h2 id="dashLimit" class="heading text-3xl sm:text-4xl font-bold text-emerald-600 mt-1">KSh 0</h2>
         </div>
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div class="card p-5"><p class="text-gray-500 text-sm">Status</p><h3 id="dashStatus" class="font-semibold text-lg mt-1 text-amber-600">Pending verification</h3></div>
-          <div class="card p-5"><p class="text-gray-500 text-sm">Reference</p><h3 id="dashReference" class="font-semibold mt-1">—</h3></div>
-          <div class="card p-5"><p class="text-gray-500 text-sm">Security fee</p><h3 id="dashCollateral" class="font-semibold mt-1">—</h3></div>
-          <div class="card p-5"><p class="text-gray-500 text-sm">Weekly repayment</p><h3 id="dashWeekly" class="font-semibold mt-1">—</h3></div>
-          <div class="card p-5"><p class="text-gray-500 text-sm">Period</p><h3 id="dashWeeks" class="font-semibold mt-1">—</h3></div>
-          <div class="card p-5"><p class="text-gray-500 text-sm">Applied on</p><h3 id="dashDate" class="font-semibold mt-1">—</h3></div>
+        <div class="text-left sm:text-right">
+          <p class="text-gray-500 text-sm">Status</p>
+          <span id="dashStatus" class="inline-block mt-1 px-3 py-1.5 rounded-full text-sm font-semibold bg-gray-50 text-gray-600 border border-gray-200">—</span>
         </div>
       </div>
-      <div class="card p-6">
-        <h2 class="heading text-xl font-semibold">Summary</h2>
-        <div class="space-y-4 mt-6 text-sm">
-          <div><p class="text-gray-500">Applicant</p><strong id="summaryApplicant">—</strong></div>
-          <div><p class="text-gray-500">Phone</p><strong id="summaryPhone">—</strong></div>
-          <div><p class="text-gray-500">County</p><strong id="summaryCounty">—</strong></div>
-          <div><p class="text-gray-500">Guarantor</p><strong id="summaryGuarantor">—</strong></div>
-        </div>
-        <button onclick="goHome()" class="btn-secondary mt-8">Back home</button>
+    </div>
+
+    <div class="card overflow-hidden mb-6">
+      <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-3 flex-wrap">
+        <h3 class="heading font-semibold text-lg">Application details</h3>
+        <button type="button" onclick="openProfile()" class="text-sm text-blue-600 font-semibold inline-flex items-center gap-2 hover:underline">
+          <i class="fa-solid fa-id-card"></i> View profile
+        </button>
       </div>
+      <div class="overflow-x-auto">
+        <table class="dash-table w-full text-sm">
+          <tbody>
+            <tr><td class="label">Applicant</td><td id="dashName" class="value">—</td></tr>
+            <tr><td class="label">Phone</td><td id="dashPhone" class="value">—</td></tr>
+            <tr><td class="label">Reference</td><td id="dashReference" class="value">—</td></tr>
+            <tr><td class="label">Security fee</td><td id="dashCollateral" class="value">—</td></tr>
+            <tr><td class="label">Weekly repayment</td><td id="dashWeekly" class="value">—</td></tr>
+            <tr><td class="label">Repayment period</td><td id="dashWeeks" class="value">—</td></tr>
+            <tr><td class="label">Total repayable</td><td id="dashTotal" class="value">—</td></tr>
+            <tr><td class="label">Applied on</td><td id="dashDate" class="value">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button type="button" onclick="goToApplyTiers()" class="btn-primary sm:flex-1">
+        <i class="fa-solid fa-table-list mr-2"></i> Apply / choose limit range
+      </button>
+      <button type="button" onclick="goHome()" class="btn-secondary sm:flex-1">Back home</button>
     </div>
   </div>
 </div>
 
-<!-- PROFILE MODAL -->
+<!-- PROFILE -->
 <div id="profileModal" class="modal-overlay">
   <div class="modal-box max-w-lg" id="profileModalCard"></div>
 </div>

