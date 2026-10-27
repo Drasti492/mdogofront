@@ -575,7 +575,7 @@ function openPayModal() {
     </div>
     <button type="button" onclick="initiateCollateralPayment()" class="btn-primary">Pay KSh ${fee.toLocaleString()}</button>
     <button type="button" onclick="closePayModal()" class="btn-secondary mt-3">Cancel</button>
-    <p class="text-xs text-gray-400 text-center mt-3">Sandbox STK — demo only.</p>`;
+    <p class="text-xs text-gray-400 text-center mt-3">.</p>`;
   document.getElementById("payModal").classList.add("active");
 }
 
@@ -857,7 +857,7 @@ function showWithdrawalToast() {
     <span class="dot"></span>
     <span class="toast-text">
       <strong>${name} ${phone}</strong> withdrew a loan of <strong>KSh ${amount.toLocaleString()}</strong>
-      <span class="toast-demo">DEMO</span>
+      <span class="toast-demo">PAID</span>
     </span>`;
   toast.classList.add("show");
   clearTimeout(toast._hideTimer);
