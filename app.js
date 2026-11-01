@@ -514,9 +514,9 @@ function showTierTable() {
   body.innerHTML = TIERS.map((t, i) => {
     const weeklyFrom = roundTo10((t.min * 1.2) / REPAYMENT_WEEKS);
     return `<tr>
-      <td>KSh ${t.min.toLocaleString()} – ${t.max.toLocaleString()}</td>
-      <td>KSh ${t.collateral.toLocaleString()}</td>
-      <td>KSh ${weeklyFrom.toLocaleString()}/wk</td>
+      <td>${t.min.toLocaleString()}–${t.max.toLocaleString()}</td>
+      <td>${t.collateral.toLocaleString()}</td>
+      <td>${weeklyFrom.toLocaleString()}/wk</td>
       <td><button type="button" class="btn-sm" onclick="selectTier(${i})">Select</button></td>
     </tr>`;
   }).join("");
