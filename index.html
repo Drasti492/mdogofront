@@ -216,34 +216,48 @@
 <!-- TIER TABLE -->
 <div id="tiertable" class="section hidden min-h-screen bg-slate-100">
   <div class="max-w-4xl mx-auto py-8 px-4">
-    <div class="card p-5 sm:p-8">
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mx-auto mb-4">
+    <div class="card p-4 sm:p-8">
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <button type="button" onclick="loadDashboard()" class="btn-secondary btn-compact order-2 sm:order-1">
+          <i class="fa-solid fa-arrow-left mr-2"></i> Back to dashboard
+        </button>
+        <p class="text-xs text-gray-400 text-center sm:text-right order-1 sm:order-2">Sandbox demo</p>
+      </div>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl mx-auto mb-3">
           <i class="fa-solid fa-table-list"></i>
         </div>
-        <h2 class="heading text-2xl sm:text-3xl font-bold">Choose your limit range</h2>
+        <h2 class="heading text-xl sm:text-3xl font-bold">Choose your limit range</h2>
         <p class="text-gray-500 mt-2 text-sm max-w-lg mx-auto">
-          Select any range you are comfortable with. And confirm repayment period.
+          Select any range. Each has a security fee. Exact amount is set when you select.
         </p>
       </div>
-      <div class="tier-table-scroll">
+
+      <div class="tier-table-wrap">
         <table class="tier-table">
           <thead>
             <tr>
-              <th>Limit range (KSh)</th>
-              <th>Security fee</th>
-              <th>Weekly from</th>
+              <th>Limit range</th>
+              <th>Fee</th>
+              <th>Weekly</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="tierTableBody"></tbody>
         </table>
       </div>
-      <p class="text-center text-xs text-gray-400 mt-4">fees and limits are illustrative.</p>
-      <button type="button" onclick="loadDashboard()" class="btn-secondary mt-6">Back to dashboard</button>
+
+      <p class="text-center text-xs text-gray-400 mt-4">Fees and limits are illustrative.</p>
+
+      <button type="button" onclick="loadDashboard()" class="btn-secondary mt-6">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Back to dashboard
+      </button>
     </div>
   </div>
 </div>
+
 
 <!-- OFFER POPUP -->
 <div id="offerModal" class="modal-overlay">
